@@ -12,7 +12,7 @@ PWA del catalogo, HTML/CSS/JS senza framework. Sito: https://meapps-it.github.io
 
 Mantieni la PWA aperta durante il caricamento. L’indicatore mostra l’invio al server; al 100% occorre ancora attendere la conferma di GitHub. La pubblicazione del catalogo avviene soltanto dopo il successo del caricamento. Se la scheda non si salva, il link già caricato rimane nel modulo per riprovare senza duplicare l’APK.
 
-GitHub impone file inferiori a 2 GiB; il caricamento attraverso la funzione Supabase ha anche un limite di durata dell’esecuzione. Una connessione lenta o APK molto grandi possono superarlo. Non è un caricamento riprendibile: in caso di interruzione si riprova. Un’APK reale non è stata ancora provata perché manca il collegamento GitHub dell’Admin.
+GitHub impone file inferiori a 2 GiB; il caricamento attraverso la funzione Supabase ha anche un limite di durata dell’esecuzione (150 secondi nel piano gratuito; il trasferimento a GitHub viene interrotto dopo 120 secondi per gestire l’errore). Una connessione lenta o APK molto grandi possono superarlo. Non è un caricamento riprendibile: in caso di interruzione si riprova. Un’APK reale non è stata ancora provata perché manca il collegamento GitHub dell’Admin.
 
 Eliminare una scheda non elimina gli APK già pubblicati. Esporta/Importa JSON conserva o ripristina il catalogo; l’importazione sostituisce il catalogo pubblico con conferma. Preferiti personali nel browser; copia dell’ultimo catalogo disponibile offline. Il sito aggiorna il catalogo all’apertura, al ritorno in primo piano e ogni minuto mentre si consulta la home.
 
