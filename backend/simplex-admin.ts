@@ -1,3 +1,4 @@
+import { uploadAsset } from './github-upload.ts';
 // GitHub credential is confined to a service-role-only table; never returned to clients.
 const ORIGIN='https://meapps-it.github.io';
 const REPO='meapps-it/SimplexApp';
@@ -42,7 +43,7 @@ Deno.serve(async(req:Request)=>{
    if(prefix[0]!==80||prefix[1]!==75||prefix[2]!==3||prefix[3]!==4){await reader.cancel();throw Error('Il file selezionato non è un archivio APK valido');}
    const release=await github(token,'repos/'+REPO+'/releases','POST',{tag_name:id+'-'+version.replace(/[^a-zA-Z0-9._-]/g,'-')+'-'+crypto.randomUUID().slice(0,8),target_commitish:'main',name:id+' · '+version,draft:true,body:'APK pubblicata dall’Admin SimplexApp.'});
    let count=prefix.length;const stream=new ReadableStream<Uint8Array>({start(c){c.enqueue(prefix)},async pull(c){const chunk=await reader.read();if(chunk.done){if(count!==size)c.error(Error('File incompleto'));else c.close();return}count+=chunk.value.length;if(count>size){await reader.cancel();c.error(Error('Dimensione del file non valida'));return}c.enqueue(chunk.value)},cancel(){return reader.cancel()}});
-   try{const uploadURL=release.upload_url.split('{')[0]+'?name='+encodeURIComponent(id+'-'+version.replace(/[^a-zA-Z0-9._-]/g,'-')+'.apk');const r=await fetch(uploadURL,{method:'POST',signal:AbortSignal.timeout(120000),headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','Content-Type':'application/vnd.android.package-archive','Content-Length':String(size)},body:stream});if(!r.ok)throw Error('Caricamento GitHub non riuscito ('+r.status+'). Riprova.');const asset=await r.json();await github(token,'repos/'+REPO+'/releases/'+release.id,'PATCH',{draft:false});return reply({url:asset.browser_download_url,size:asset.size})}
+   try{const uploadURL=release.upload_url.split('{')[0]+'?name='+encodeURIComponent(id+'-'+version.replace(/[^a-zA-Z0-9._-]/g,'-')+'.apk');const asset=await uploadAsset(uploadURL,token,size,stream);await github(token,'repos/'+REPO+'/releases/'+release.id,'PATCH',{draft:false});return reply({url:asset.browser_download_url,size:asset.size})}
    catch(e){await github(token,'repos/'+REPO+'/releases/'+release.id,'DELETE').catch(()=>{});throw e}
   }
   return reply({error:'Operazione non riconosciuta'},400);
