@@ -4,15 +4,15 @@
 html[data-theme=premium]{--ink:#172c50;--muted:#647590;--blue:#1769ed;background:#f2f6fc}
 html[data-theme=premium] body{background:#f2f6fc}
 html[data-theme=premium] .app-shell{max-width:850px;padding:0 14px 108px}
-html[data-theme=premium] .cover{margin:0 -14px 20px;padding:18px 18px 20px;background:#073eae url('assets/pwa-512.png?v=11') right center/auto 100% no-repeat;border-radius:0 0 28px 28px;box-shadow:0 10px 25px #175bbe22;color:#fff}
+html[data-theme=premium] .cover{margin:0 -14px 20px;padding:18px 18px 20px;background:linear-gradient(135deg,#0638a8 0%,#0a63e8 58%,#12a8ff 100%);border-radius:0 0 28px 28px;box-shadow:0 10px 25px #175bbe22;color:#fff}
 html[data-theme=premium] .top{padding:0;background:none}
 html[data-theme=premium] .brand strong{font-size:34px;letter-spacing:-1.3px}
 html[data-theme=premium] .brand>img{width:43px;height:47px}
 html[data-theme=premium] .brand span{font-size:12px;color:#d5eaff}
 html[data-theme=premium] .avatar{display:none}
-html[data-theme=premium] .hero{display:block;margin:16px 0 0;min-height:0;background:none;border-radius:0;box-shadow:none;overflow:visible}
-html[data-theme=premium] .mascot{display:none}
-html[data-theme=premium] .hero-copy{padding:0;max-width:62%}
+html[data-theme=premium] .hero{display:block;position:relative;margin:16px 0 0;min-height:150px;background:none;border-radius:0;box-shadow:none;overflow:visible}
+html[data-theme=premium] .mascot{display:block;position:absolute;right:-8px;bottom:-18px;width:44%;height:auto;max-height:178px;object-fit:contain;object-position:right bottom;z-index:1;background:transparent}
+html[data-theme=premium] .hero-copy{position:relative;z-index:2;padding:0;max-width:62%}
 html[data-theme=premium] .hero h1{font-size:30px;line-height:1.1;letter-spacing:-.8px;margin:0 0 10px}
 html[data-theme=premium] .hero h1 b{color:#60d8ff}
 html[data-theme=premium] .hero p{font-size:14px;line-height:1.45;color:#e5f0ff;margin:0;max-width:320px}
