@@ -8,7 +8,7 @@ const server=http.createServer((req,res)=>{
  let received=0;req.on('data',b=>received+=b.length);req.on('end',()=>{
   assert.equal(received,8);
   res.writeHead(mode==='uploadFail'?502:201,{'Content-Type':'application/json'});
-  res.end(JSON.stringify({browser_download_url:'https://github.com/meapps-it/SimplexApp/releases/download/test/app.apk',size:8}));
+  res.end(JSON.stringify({id:123,browser_download_url:'https://github.com/meapps-it/SimplexApp/releases/download/untagged-draft/app.apk',size:8}));
  });
 });
 await new Promise(done=>server.listen(0,'127.0.0.1',done));
@@ -24,6 +24,7 @@ globalThis.fetch=async(url,opts={})=>{url=String(url);calls.push({url,method:opt
  if(url==='https://api.github.com/user')return json({login:mode==='wrongGithub'?'other':'meapps-it'});
  if(url==='https://api.github.com/repos/meapps-it/SimplexApp')return json({permissions:{push:true}});
  if(url.endsWith('/releases')&&opts.method==='POST')return json({id:9,upload_url:'https://uploads.github.com/test{?name}'});
+ if(url.endsWith('/releases/assets/123'))return json({id:123,browser_download_url:'https://github.com/meapps-it/SimplexApp/releases/download/test/app.apk',size:8});
  if(url.endsWith('/releases/9'))return json({});
  throw Error('Unexpected URL '+url);
 };
@@ -41,7 +42,7 @@ assert.equal((await send('import',{apps:[app,app]})).status,400);
 assert.equal((await send('apk&id=test&version=1',new Uint8Array([1,2,3,4]),{'x-file-size':'4'},true)).status,400);
 assert.equal((await send('apk&id=test&version=1',new Uint8Array([80,75,3,4]),{'x-file-size':String(2*1024*1024*1024)},true)).status,400);
 connected=false;assert.equal((await send('apk&id=test&version=1',new Uint8Array([80,75,3,4]),{'x-file-size':'4'},true)).status,409);
-connected=true;calls=[];const apk=new Uint8Array([80,75,3,4,1,2,3,4]);const upload=await(await send('apk&id=test&version=1',apk,{'x-file-size':'8'},true)).json();assert.equal(upload.size,8);assert.ok(calls.find(x=>x.method==='PATCH'&&x.url.endsWith('/releases/9')));
+connected=true;calls=[];const apk=new Uint8Array([80,75,3,4,1,2,3,4]);const upload=await(await send('apk&id=test&version=1',apk,{'x-file-size':'8'},true)).json();assert.equal(upload.size,8);assert.equal(upload.url,'https://github.com/meapps-it/SimplexApp/releases/download/test/app.apk');assert.ok(calls.find(x=>x.method==='PATCH'&&x.url.endsWith('/releases/9')));
 mode='uploadFail';// preserve admin identity while simulating upstream upload failure
 const original=fetch;globalThis.fetch=async(url,opts)=>String(url).endsWith('/auth/v1/user')?new Response(JSON.stringify({id:'admin'})):String(url).includes('/rest/v1/simplex_admins?')?new Response(JSON.stringify([{user_id:'admin'}])):original(url,opts);
 calls=[];assert.equal((await send('apk&id=test&version=1',apk,{'x-file-size':'8'},true)).status,400);assert.ok(calls.find(x=>x.method==='DELETE'&&x.url.endsWith('/releases/9')));
@@ -51,4 +52,4 @@ await assert.rejects(uploadAsset('https://evil.test/upload','test',8,binaryStrea
 await assert.rejects(uploadAsset('https://uploads.github.com/test','test',8,binaryStream(apk.subarray(0,4))),/incompleto/);
 await assert.rejects(uploadAsset('https://uploads.github.com/test','test',8,binaryStream(new Uint8Array(9))),/Dimensione/);
 https.request=originalRequest;await new Promise(done=>server.close(done));
-console.log('PASS: authentication, admin authorization, CORS, secret isolation, catalogue validation, duplicate import, APK validation, real HTTP Content-Length without chunked encoding, truncated/oversized stream rejection, upload destination validation, release publication and failed-upload cleanup.');
+console.log('PASS: authentication, admin authorization, CORS, secret isolation, catalogue validation, duplicate import, APK validation, real HTTP Content-Length without chunked encoding, truncated/oversized stream rejection, upload destination validation, post-publication URL refresh (draft URL never returned), release publication and failed-upload cleanup.');
