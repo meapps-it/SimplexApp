@@ -1,0 +1,44 @@
+[
+  {
+    "id": "toi",
+    "name": "Turni Operai Italia",
+    "version": "0.3.0",
+    "description": "Gestisci i tuoi turni di lavoro in modo semplice",
+    "category": "Produttività",
+    "status": "In test",
+    "featured": true,
+    "update": "Nuove personalizzazioni dei turni",
+    "updateKind": "Novità",
+    "icon": "assets/toi.png",
+    "playUrl": "",
+    "apkUrl": ""
+  },
+  {
+    "id": "spesa",
+    "name": "SpesaScan",
+    "version": "0.1",
+    "description": "Scansiona, organizza e risparmia sulla spesa",
+    "category": "Utility",
+    "status": "In arrivo",
+    "featured": true,
+    "update": "Riconoscimento prodotti migliorato",
+    "updateKind": "Aggiornamento",
+    "icon": "assets/spesa.png",
+    "playUrl": "",
+    "apkUrl": ""
+  },
+  {
+    "id": "vg",
+    "name": "Gestionale V&G",
+    "version": "0.7.1",
+    "description": "La soluzione completa per la tua azienda",
+    "category": "Produttività",
+    "status": "Disponibile",
+    "featured": true,
+    "update": "Nuove funzioni e miglioramenti",
+    "updateKind": "Nuova versione",
+    "icon": "assets/vg.png",
+    "playUrl": "",
+    "apkUrl": ""
+  }
+]
