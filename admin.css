@@ -8,3 +8,5 @@ progress{width:100%;height:18px;accent-color:#1777f2}details{margin-top:16px}sum
 
 .admin-screens{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}.admin-screens:empty{display:none}.admin-screens>div{width:100px}.admin-screens img{width:100px;height:140px;object-fit:contain;background:#edf3fa;border-radius:10px}.admin-screens button{width:100%;font-size:12px;padding:8px}
 #adminView .admin-head{color:#173456}#adminView .admin-head>div>div{color:#627087;margin-top:4px}
+
+.category-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.category-actions .secondary{padding:9px 11px;font-size:12px;min-height:38px}
