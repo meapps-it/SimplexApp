@@ -36,6 +36,11 @@ mode='admin';assert.equal((await send('save',{}, {Origin:'https://evil.test'})).
 const status=await(await send('status')).json();assert.equal(status.githubConnected,true);assert.ok(!JSON.stringify(status).includes('server-only-test-token'));
 const app={id:'test',name:'Test',category:'Utility',version:'1',icon:'https://example.test/icon.png'};
 assert.equal((await send('save',{app})).status,200);
+const detailApp={...app,fullDescription:'Funzioni e istruzioni\nSeconda riga',screenshots:['https://example.test/screen.png']};
+const detailSaved=await(await send('save',{app:detailApp})).json();assert.equal(detailSaved.app.fullDescription,detailApp.fullDescription);assert.deepEqual(detailSaved.app.screenshots,detailApp.screenshots);
+assert.equal((await send('save',{app:{...detailApp,screenshots:['javascript:alert(1)']}})).status,400);
+assert.equal((await send('save',{app:{...detailApp,screenshots:Array(13).fill('https://example.test/screen.png')}})).status,400);
+assert.equal((await send('save',{app:{...detailApp,screenshots:'invalid'}})).status,400);
 assert.equal((await send('save',{app:{...app,icon:'javascript:alert(1)'}})).status,400);
 assert.equal((await send('save',{app:{...app,id:'../bad'}})).status,400);
 assert.equal((await send('import',{apps:[app,app]})).status,400);

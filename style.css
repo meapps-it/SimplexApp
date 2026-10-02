@@ -8,3 +8,25 @@ html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
 @media(min-width:601px){.featured h3{font-size:14px;letter-spacing:-.6px;white-space:nowrap}.featured p{font-size:11.5px;line-height:1.25}.featured .actions{padding-top:5px}.app-shell{padding-top:17px}.hero{margin-top:20px}.catalog .app-card{min-height:225px}.catalog p{font-size:12px}}
 @media(max-width:600px){.mascot{object-fit:cover;object-position:30% center}}
 .section-head h2 img[src="assets/logo.png"]{mask-image:url('assets/original-0.svg');mask-size:100% 100%;mask-repeat:no-repeat}
+/* App detail pages and deliberate Admin access. */
+nav{grid-template-columns:repeat(3,1fr)}
+.site-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:28px 6px 8px;padding-top:18px;border-top:1px solid #d8e5f2;color:#66768b;font-size:12px;flex-wrap:wrap}
+.admin-entry{border:1px solid #cddaea;background:#ffffffa8;color:#546780;padding:11px 16px;border-radius:14px;font-size:12px;min-height:44px}
+.card-link::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.card-link:focus-visible::after{outline:3px solid #fbbd3a;outline-offset:3px}
+.app-card .fav{z-index:2}.app-card p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.update{position:relative}.update-link{position:absolute;inset:0;border-radius:inherit}
+.detail-shell{padding-top:22px}.detail-shell>.backbtn{margin-bottom:20px;box-shadow:0 5px 16px #1c67ae22;min-height:44px}
+.detail-hero{display:flex;gap:22px;align-items:center;padding:26px;border-radius:26px;background:linear-gradient(130deg,#f7fcff,#dfefff 70%,#eae1ff);box-shadow:0 10px 25px #83b8df20;min-width:0}
+.detail-hero>div{min-width:0}.detail-icon{width:110px;height:110px;object-fit:cover;border-radius:26px;flex-shrink:0;box-shadow:0 8px 18px #2b72b526}
+.detail-hero h1{font-size:30px;line-height:1.1;margin:7px 0 10px;overflow-wrap:anywhere;letter-spacing:-.8px}
+.detail-hero p{color:#53677f;line-height:1.4;margin:0 0 12px;overflow-wrap:anywhere}
+.detail-category{color:#1762c6;font-size:12px;font-weight:750}.detail-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px}
+.detail-actions{display:flex;gap:10px;margin:18px 0;flex-wrap:wrap}.detail-actions .btn{min-width:160px;min-height:48px}.detail-fav{min-height:48px}.detail-fav[aria-pressed=true]{color:#c42666;background:#ffe5f0}
+.detail-panel{padding:22px}.detail-panel h2{font-size:20px;margin:0 0 16px}.long-description{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere;color:#516078;font-size:15px;margin:12px 0}
+.screenshots{display:flex;gap:14px;overflow-x:auto;max-width:100%;padding:4px 3px 14px;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
+.screenshot{border:1px solid #dce7f2;border-radius:18px;background:#eff5fc;padding:0;flex:0 0 180px;height:320px;overflow:hidden;scroll-snap-align:start;box-shadow:0 5px 10px #28659c12}
+.screenshot img{width:100%;height:100%;object-fit:contain;display:block}
+.detail-panel .note,.availability{font-size:13px;line-height:1.5;color:#6b7a90}.detail-facts{margin:0}.detail-facts>div{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-bottom:1px solid #eaf0f7}.detail-facts>div:last-child{border:0}.detail-facts dt{color:#64748b}.detail-facts dd{margin:0;font-weight:650;text-align:right;overflow-wrap:anywhere;min-width:0}
+#screenDialog{width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 28px);padding:14px;background:#f5f9ff}#screenDialog .close-dialog{float:none;display:block;margin-left:auto;margin-bottom:10px;min-height:44px}#screenImage{display:block;margin:auto;max-height:calc(100dvh - 112px);width:100%;object-fit:contain}
+@media(max-width:600px){.detail-shell{padding-top:18px}.detail-hero{padding:20px 16px;gap:14px;border-radius:22px;align-items:flex-start}.detail-icon{width:78px;height:78px;border-radius:19px}.detail-hero h1{font-size:23px;letter-spacing:-.5px}.detail-hero p{font-size:13px}.detail-meta{font-size:11px;gap:5px}.detail-actions{gap:8px}.detail-actions .btn{min-width:140px;font-size:13px}.detail-fav{width:100%;font-size:13px}.detail-panel{padding:17px}.detail-panel h2{font-size:18px}.long-description{font-size:14px}.screenshot{flex-basis:155px;height:276px}.site-footer{font-size:11px;gap:12px}.detail-facts{font-size:13px}}

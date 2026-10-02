@@ -31,3 +31,10 @@ Eliminare una scheda non elimina gli APK già pubblicati. Esporta/Importa JSON c
 ## Verifica
 
 `node tests/backend.test.mjs` (Node 24): auth, autorizzazione, CORS, isolamento del segreto, validazione del catalogo/APK, upload streaming e pulizia della release fallita con servizi simulati. Verificati sul servizio reale: lettura pubblica catalogo, rifiuto lettura privata, rifiuto scrittura anonima e rifiuto accesso non autenticato alla funzione. Test upload reale e login dell’utente richiedono la configurazione iniziale privata.
+
+### Pagine app e screenshot
+Tocca una scheda in Home, Catalogo o Novità per aprire la pagina dell’app. Il cuore continua a gestire i preferiti. Download e Google Play sono nella pagina dettagli. Le pagine sono condivisibili tramite `#app/ID` e supportano il tasto Indietro.
+
+L’accesso Admin si trova nel footer, al termine della pagina, e non è più nella barra fissa o nell’avatar. Nell’Admin trovi Descrizione completa e Screenshot dell’app: fino a 12 immagini PNG/JPEG/WebP (8 MB per immagine), ottimizzate a 1600 pixel e salvate nel bucket immagini. Puoi anche gestire i link, uno per riga, per rimuovere o riordinare screenshot. Pubblica app salva questi dati per tutti. Le schede esistenti conservano i loro dati; gli screenshot devono essere aggiunti dall’Admin.
+
+La pagina `tests/responsive.html` permette di controllare l’app in un riquadro a 360, 393, 412 o 430 pixel senza cambiare i dati pubblicati.
