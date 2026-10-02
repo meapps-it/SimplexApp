@@ -1,0 +1,95 @@
+/* Shared controls preserve the original Classica layout. */
+.share-app{position:relative;z-index:3;border:1px solid #dce6f4;background:#f4f8ff;color:#24599d;border-radius:10px;min-height:36px;margin-top:8px;font-size:12px;font-weight:650}
+#shareURL{display:block;width:100%;min-width:0;padding:12px;margin-top:8px;border:1px solid #d6e2ef;border-radius:12px;color:#243f64;background:#f6f9ff}#shareDialog h2{clear:both;padding-top:15px;font-size:21px}
+html[data-theme=premium]{--ink:#172c50;--muted:#647590;--blue:#1769ed;background:#f2f6fc}
+html[data-theme=premium] body{background:#f2f6fc}
+html[data-theme=premium] .app-shell{max-width:850px;padding:0 14px 108px}
+html[data-theme=premium] .cover{margin:0 -14px 20px;padding:18px 18px 20px;background:#073eae url('assets/premium-cover.webp') right center/cover no-repeat;border-radius:0 0 28px 28px;box-shadow:0 10px 25px #175bbe22;color:#fff}
+html[data-theme=premium] .top{padding:0;background:none}
+html[data-theme=premium] .brand strong{font-size:34px;letter-spacing:-1.3px}
+html[data-theme=premium] .brand>img{width:43px;height:47px}
+html[data-theme=premium] .brand span{font-size:12px;color:#d5eaff}
+html[data-theme=premium] .avatar{display:none}
+html[data-theme=premium] .hero{display:block;margin:16px 0 0;min-height:0;background:none;border-radius:0;box-shadow:none;overflow:visible}
+html[data-theme=premium] .mascot{display:none}
+html[data-theme=premium] .hero-copy{padding:0;max-width:62%}
+html[data-theme=premium] .hero h1{font-size:30px;line-height:1.1;letter-spacing:-.8px;margin:0 0 10px}
+html[data-theme=premium] .hero h1 b{color:#60d8ff}
+html[data-theme=premium] .hero p{font-size:14px;line-height:1.45;color:#e5f0ff;margin:0;max-width:320px}
+html[data-theme=premium] .mini{display:none}
+html[data-theme=premium] .panel{background:transparent;box-shadow:none;padding:0;margin-top:24px;border-radius:0}
+html[data-theme=premium] .section-head{margin:0 1px 12px}
+html[data-theme=premium] .section-head h2{font-size:20px;letter-spacing:-.6px}
+html[data-theme=premium] .linkbtn{font-size:12px}
+html[data-theme=premium] .featured{grid-template-columns:1fr;gap:10px}
+html[data-theme=premium] .featured .app-card{display:grid;grid-template-columns:minmax(0,1fr) 98px;align-items:center;gap:0 12px;padding:13px;border-radius:20px;background:#e8f2ff;border:1px solid #d8e6fc;box-shadow:0 5px 12px #174a8a09}
+html[data-theme=premium] .featured .tone-spesa{background:#e9f8ef;border-color:#d4eedc}
+html[data-theme=premium] .featured .tone-vg{background:#f0ebff;border-color:#e0d8fa}
+html[data-theme=premium] .featured .card-top{display:flex;gap:12px;grid-row:1/3;align-items:center}
+html[data-theme=premium] .featured .app-icon{width:66px;height:66px;border-radius:16px}
+html[data-theme=premium] .featured h3{font-size:16px;line-height:1.2;white-space:normal;min-height:0;margin:0 0 5px;letter-spacing:-.45px}
+html[data-theme=premium] .featured p{font-size:12px;line-height:1.3;min-height:0;margin:0 0 6px;-webkit-line-clamp:2}
+html[data-theme=premium] .featured .meta{font-size:10px;gap:5px}
+html[data-theme=premium] .featured .version{padding:2px 7px;background:#ffffffa3}
+html[data-theme=premium] .featured .status{font-size:10px}
+html[data-theme=premium] .featured .actions{padding:0;margin:0;align-self:end}
+html[data-theme=premium] .featured .btn{font-size:13px;border-radius:12px;min-height:38px}
+html[data-theme=premium] .featured .share-app{grid-column:2;min-height:32px;margin-top:5px;font-size:11px;background:#ffffff80;border:0}
+html[data-theme=premium] .categories{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+html[data-theme=premium] .categories button{padding:12px 5px;min-height:98px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#274672;background:#e2ecfc;box-shadow:none;border-radius:18px}
+html[data-theme=premium] .categories button:nth-child(1){background:#fff0d7;color:#854810}
+html[data-theme=premium] .categories button:nth-child(3){background:#dff5e9;color:#247548}
+html[data-theme=premium] .categories button:nth-child(4){background:#ebe4ff;color:#6742ac}
+html[data-theme=premium] .categories img{width:50px;height:44px;margin:0 0 7px;object-fit:contain}
+html[data-theme=premium] .categories b{font-size:12px;letter-spacing:-.35px;overflow-wrap:anywhere}
+html[data-theme=premium] .categories small{display:none}
+html[data-theme=premium] .catalog .app-card{border-radius:20px;border:1px solid #e0e8f3;padding:15px;background:#fff;box-shadow:0 6px 15px #153c7609;min-height:255px}
+html[data-theme=premium] .catalog .app-icon{width:64px;height:64px;border-radius:16px}
+html[data-theme=premium] .catalog h3{font-size:14px;line-height:1.25;letter-spacing:-.4px;margin:12px 0 6px}
+html[data-theme=premium] .catalog p{font-size:12px;line-height:1.4}
+html[data-theme=premium] .catalog .actions{margin-top:auto}
+html[data-theme=premium] .search{border-radius:14px;background:#fff;box-shadow:0 3px 8px #12345a06;min-height:44px}
+html[data-theme=premium] .updates{grid-template-columns:1fr}
+html[data-theme=premium] .update{padding:13px;border-radius:17px;background:white;box-shadow:0 5px 12px #153c7607}
+html[data-theme=premium] nav{max-width:820px;background:#ffffffed;border:1px solid #e3ebf7;border-radius:22px;box-shadow:0 5px 30px #23497520}
+html[data-theme=premium] nav button.active{background:#e5efff}
+html[data-theme=premium] .detail-shell{padding-top:20px}
+html[data-theme=premium] .detail-panel{background:#fff;padding:20px;border-radius:20px}
+html[data-theme=premium] .detail-hero{background:#e4efff}
+html[data-theme=premium] .detail-hero.tone-spesa{background:#e5f6ec}
+html[data-theme=premium] .detail-hero.tone-vg{background:#ede6ff}
+@media(max-width:600px){
+html[data-theme=premium] .cover{padding:16px 14px 18px;min-height:194px;background-position:right center}
+html[data-theme=premium] .brand strong{font-size:29px}
+html[data-theme=premium] .brand>img{width:35px;height:38px}
+html[data-theme=premium] .brand span{font-size:10px}
+html[data-theme=premium] .hero{margin-top:16px}
+html[data-theme=premium] .hero-copy{max-width:63%}
+html[data-theme=premium] .hero h1{font-size:24px;line-height:1.08;margin-bottom:9px}
+html[data-theme=premium] .hero p{font-size:11px;line-height:1.35;max-width:215px}
+html[data-theme=premium] .section-head h2{font-size:18px}
+html[data-theme=premium] .section-head h2 img{width:23px;height:23px}
+html[data-theme=premium] .linkbtn{font-size:11px}
+html[data-theme=premium] .panel{margin-top:23px}
+html[data-theme=premium] .featured .app-card{grid-template-columns:minmax(0,1fr) 78px;padding:11px;gap:0 8px;min-height:102px}
+html[data-theme=premium] .featured .app-icon{width:57px;height:57px;border-radius:14px}
+html[data-theme=premium] .featured .card-top{gap:10px}
+html[data-theme=premium] .featured h3{font-size:14px}
+html[data-theme=premium] .featured p{font-size:11px}
+html[data-theme=premium] .featured .status{font-size:8px}
+html[data-theme=premium] .featured .btn{font-size:12px;min-height:36px}
+html[data-theme=premium] .featured .external{display:none}
+html[data-theme=premium] .categories{gap:7px}
+html[data-theme=premium] .categories button{min-height:90px;padding:10px 4px;border-radius:16px}
+html[data-theme=premium] .categories img{width:44px;height:40px}
+html[data-theme=premium] .categories b{font-size:10.5px}
+html[data-theme=premium] .catalog .app-card{padding:12px;min-height:267px}
+html[data-theme=premium] .catalog h3{font-size:13px}
+html[data-theme=premium] .catalog p{font-size:11px}
+html[data-theme=premium] .catalog .actions{gap:5px}
+html[data-theme=premium] .catalog-head .search{margin-top:6px}
+html[data-theme=premium] .catalog .btn{border-radius:11px}
+}
+
+.premium-search{display:none}html[data-theme=premium] .premium-search{display:block;margin:-34px 4px 0;position:relative}html[data-theme=premium] .premium-search .search{width:100%;height:44px;border-radius:18px;box-shadow:0 8px 18px #20559515;font-size:13px;padding:10px 16px}
+@media(max-width:600px){html[data-theme=premium] .cover{min-height:184px;padding-bottom:16px}html[data-theme=premium] .panel{margin-top:18px}html[data-theme=premium] .featured .app-card{min-height:96px;padding:9px 11px}html[data-theme=premium] .categories button{min-height:78px;padding:8px 4px}html[data-theme=premium] .categories img{height:36px;margin-bottom:5px}}

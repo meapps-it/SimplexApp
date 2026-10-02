@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import vm from 'node:vm';
+const source=readFileSync(new URL('../app.js',import.meta.url),'utf8');const functions=source.slice(source.indexOf('function shareURL('),source.indexOf("$('closeShare').onclick"));
+let opened=0,shared=null;const nodes={shareName:{},shareURL:{},shareDialog:{showModal(){opened++}}};const navigator={share:async d=>{shared=d},canShare:()=>true};const context=vm.createContext({navigator,getApps:()=>[{id:'a b',name:'Test',description:'Description'}],$:id=>nodes[id],encodeURIComponent});vm.runInContext(functions,context);await vm.runInContext("shareApp('a b')",context);assert.equal(shared.url,'https://meapps-it.github.io/SimplexApp/#app/a%20b');assert.equal(opened,0);
+navigator.share=async()=>{throw Object.assign(Error(),{name:'AbortError'})};await vm.runInContext("shareApp('a b')",context);assert.equal(opened,0);
+navigator.share=undefined;await vm.runInContext("shareApp('a b')",context);assert.equal(opened,1);assert.equal(nodes.shareName.textContent,'Test');assert.equal(nodes.shareURL.value,shared.url);
+console.log('PASS: native per-app sharing, canonical encoded link, quiet cancellation and copy-link fallback.');

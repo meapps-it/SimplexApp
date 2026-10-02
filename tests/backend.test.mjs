@@ -34,6 +34,7 @@ mode='invalid';assert.equal((await send('save')).status,401);
 mode='visitor';assert.equal((await send('save')).status,403);
 mode='admin';assert.equal((await send('save',{}, {Origin:'https://evil.test'})).status,403);
 const status=await(await send('status')).json();assert.equal(status.githubConnected,true);assert.ok(!JSON.stringify(status).includes('server-only-test-token'));
+for(const theme of ['classic','premium','invalid']){const site=await(await send('site',{site:{title:'SimplexApp',tagline:'Test',hero:'Test',theme}})).json();assert.equal(site.site.theme,theme==='classic'?'classic':'premium');assert.equal(site.site.title,'SimplexApp')}
 const app={id:'test',name:'Test',category:'Utility',version:'1',icon:'https://example.test/icon.png'};
 assert.equal((await send('save',{app})).status,200);
 const detailApp={...app,fullDescription:'Funzioni e istruzioni\nSeconda riga',screenshots:['https://example.test/screen.png']};

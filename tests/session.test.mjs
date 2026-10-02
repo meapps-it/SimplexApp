@@ -1,0 +1,9 @@
+import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import vm from 'node:vm';
+const source=readFileSync(new URL('../cloud.js',import.meta.url),'utf8');
+const session={access_token:'test-access',refresh_token:'test-refresh',expires_at:Math.floor(Date.now()/1000)+3600};
+function setup(local=new Map(),temporary=new Map(),fetch=async()=>{throw Error('offline')}){const storage=m=>({getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)});const context=vm.createContext({localStorage:storage(local),sessionStorage:storage(temporary),window:{addEventListener(){}},Date,URLSearchParams,fetch});vm.runInContext(source,context);return context}
+const local=new Map(),old=new Map([['simplex_admin_session',JSON.stringify(session)]]);let c=setup(local,old);assert.equal(await vm.runInContext('accessToken()',c),'test-access');assert.equal(old.size,0);c=setup(local);assert.equal(await vm.runInContext('accessToken()',c),'test-access');vm.runInContext('rememberSession(null)',c);assert.equal(local.size,0);
+local.set('simplex_admin_session',JSON.stringify({...session,expires_at:0}));c=setup(local);await assert.rejects(vm.runInContext('accessToken()',c),/Connessione assente/);assert.equal(local.size,1);
+c=setup(local,new Map(),async()=>({ok:false,status:400,json:async()=>({error:'Invalid refresh token'})}));await assert.rejects(vm.runInContext('accessToken()',c),/Sessione scaduta/);assert.equal(local.size,0);
+let requests=0;c=setup(new Map([['simplex_admin_session',JSON.stringify({...session,expires_at:0})]]),new Map(),async()=>{requests++;return {ok:true,json:async()=>({...session,expires_in:3600})}});await Promise.all([vm.runInContext('accessToken()',c),vm.runInContext('accessToken()',c)]);assert.equal(requests,1);
+console.log('PASS: persisted login across reopening, legacy migration, explicit logout, offline recovery, invalid-session cleanup, shared refresh.');
