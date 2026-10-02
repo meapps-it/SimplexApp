@@ -4,7 +4,7 @@
 html[data-theme=premium]{--ink:#172c50;--muted:#647590;--blue:#1769ed;background:#f2f6fc}
 html[data-theme=premium] body{background:#f2f6fc}
 html[data-theme=premium] .app-shell{max-width:850px;padding:0 14px 108px}
-html[data-theme=premium] .cover{margin:0 -14px 20px;padding:18px 18px 20px;background:#073eae url('assets/premium-cover.webp') right center/cover no-repeat;border-radius:0 0 28px 28px;box-shadow:0 10px 25px #175bbe22;color:#fff}
+html[data-theme=premium] .cover{margin:0 -14px 20px;padding:18px 18px 20px;background:#073eae url('assets/premium-cover.webp?v=adult-1') right center/cover no-repeat;border-radius:0 0 28px 28px;box-shadow:0 10px 25px #175bbe22;color:#fff}
 html[data-theme=premium] .top{padding:0;background:none}
 html[data-theme=premium] .brand strong{font-size:34px;letter-spacing:-1.3px}
 html[data-theme=premium] .brand>img{width:43px;height:47px}
