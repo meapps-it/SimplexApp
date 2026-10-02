@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+let handler, mode='admin', connected=true, calls=[];
+globalThis.Deno={env:{get:k=>k==='SUPABASE_URL'?'https://test.supabase.co':'server-only-test-key'},serve:h=>handler=h};
+globalThis.fetch=async(url,opts={})=>{url=String(url);calls.push({url,method:opts.method||'GET'});const json=(x,status=200)=>new Response(JSON.stringify(x),{status});
+ if(url.endsWith('/auth/v1/user'))return mode==='invalid'?json({},401):json({id:mode,email:'test@example.test'});
+ if(url.includes('/rest/v1/simplex_admins?'))return json(mode==='admin'?[{user_id:'admin'}]:[]);
+ if(url.includes('/rest/v1/simplex_private_settings?'))return json(connected?[{id:1,github_token:'server-only-test-token'}]:[]);
+ if(url.includes('/rest/v1/'))return json([]);
+ if(url==='https://api.github.com/user')return json({login:mode==='wrongGithub'?'other':'meapps-it'});
+ if(url==='https://api.github.com/repos/meapps-it/SimplexApp')return json({permissions:{push:true}});
+ if(url.endsWith('/releases')&&opts.method==='POST')return json({id:9,upload_url:'https://uploads.github.com/test{?name}'});
+ if(url.includes('uploads.github.com')){const b=await new Response(opts.body).arrayBuffer();assert.equal(b.byteLength,8);return mode==='uploadFail'?json({},502):json({browser_download_url:'https://github.com/meapps-it/SimplexApp/releases/download/test/app.apk',size:8});}
+ if(url.endsWith('/releases/9'))return json({});
+ throw Error('Unexpected URL '+url);
+};
+await import('../backend/simplex-admin.ts');
+async function send(action,body={},headers={},binary=false){return handler(new Request('https://test/functions/v1/simplex-admin?action='+action,{method:'POST',headers:{Authorization:'Bearer test-user-token',Origin:'https://meapps-it.github.io','Content-Type':binary?'application/vnd.android.package-archive':'application/json',...headers},body:binary?body:JSON.stringify(body)}))}
+mode='invalid';assert.equal((await send('save')).status,401);
+mode='visitor';assert.equal((await send('save')).status,403);
+mode='admin';assert.equal((await send('save',{}, {Origin:'https://evil.test'})).status,403);
+const status=await(await send('status')).json();assert.equal(status.githubConnected,true);assert.ok(!JSON.stringify(status).includes('server-only-test-token'));
+const app={id:'test',name:'Test',category:'Utility',version:'1',icon:'https://example.test/icon.png'};
+assert.equal((await send('save',{app})).status,200);
+assert.equal((await send('save',{app:{...app,icon:'javascript:alert(1)'}})).status,400);
+assert.equal((await send('save',{app:{...app,id:'../bad'}})).status,400);
+assert.equal((await send('import',{apps:[app,app]})).status,400);
+assert.equal((await send('apk&id=test&version=1',new Uint8Array([1,2,3,4]),{'x-file-size':'4'},true)).status,400);
+assert.equal((await send('apk&id=test&version=1',new Uint8Array([80,75,3,4]),{'x-file-size':String(2*1024*1024*1024)},true)).status,400);
+connected=false;assert.equal((await send('apk&id=test&version=1',new Uint8Array([80,75,3,4]),{'x-file-size':'4'},true)).status,409);
+connected=true;calls=[];const apk=new Uint8Array([80,75,3,4,1,2,3,4]);const upload=await(await send('apk&id=test&version=1',apk,{'x-file-size':'8'},true)).json();assert.equal(upload.size,8);assert.ok(calls.find(x=>x.method==='PATCH'&&x.url.endsWith('/releases/9')));
+mode='uploadFail';// preserve admin identity while simulating upstream upload failure
+const original=fetch;globalThis.fetch=async(url,opts)=>String(url).endsWith('/auth/v1/user')?new Response(JSON.stringify({id:'admin'})):String(url).includes('/rest/v1/simplex_admins?')?new Response(JSON.stringify([{user_id:'admin'}])):original(url,opts);
+calls=[];assert.equal((await send('apk&id=test&version=1',apk,{'x-file-size':'8'},true)).status,400);assert.ok(calls.find(x=>x.method==='DELETE'&&x.url.endsWith('/releases/9')));
+console.log('PASS: authentication, admin authorization, CORS, secret isolation, catalogue validation, duplicate import, APK validation, streaming upload, release publication and failed-upload cleanup.');

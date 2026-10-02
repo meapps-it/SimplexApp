@@ -1,0 +1,23 @@
+create table public.simplex_apps(id text primary key, payload jsonb not null, updated_at timestamptz not null default now(), check (payload->>'id'=id), check (length(payload->>'name') between 1 and 160));
+create table public.simplex_site(id integer primary key check(id=1), payload jsonb not null, updated_at timestamptz not null default now());
+create table public.simplex_admins(user_id uuid primary key references auth.users(id));
+create table public.simplex_private_settings(id integer primary key check(id=1), github_token text not null);
+alter table public.simplex_apps enable row level security;
+alter table public.simplex_site enable row level security;
+alter table public.simplex_admins enable row level security;
+alter table public.simplex_private_settings enable row level security;
+revoke all on public.simplex_apps,public.simplex_site,public.simplex_admins,public.simplex_private_settings from anon,authenticated;
+grant select on public.simplex_apps,public.simplex_site to anon,authenticated;
+grant all on public.simplex_apps,public.simplex_site,public.simplex_admins,public.simplex_private_settings to service_role;
+create policy simplex_public_apps on public.simplex_apps for select to anon,authenticated using(true);
+create policy simplex_public_site on public.simplex_site for select to anon,authenticated using(true);
+insert into public.simplex_admins(user_id) values ('eb8dbe07-2a4f-4984-b0c5-ec2c31d8202e');
+insert into public.simplex_apps(id,payload) values ('toi', '{"id": "toi", "name": "Turni Operai Italia", "version": "0.3.0", "description": "Gestisci i tuoi turni di lavoro in modo semplice", "category": "Produttività", "status": "In test", "featured": true, "update": "Nuove personalizzazioni dei turni", "updateKind": "Novità", "icon": "https://meapps-it.github.io/SimplexApp/assets/toi.png", "playUrl": "", "apkUrl": ""}'::jsonb);
+insert into public.simplex_apps(id,payload) values ('spesa', '{"id": "spesa", "name": "SpesaScan", "version": "0.1", "description": "Scansiona, organizza e risparmia sulla spesa", "category": "Utility", "status": "In arrivo", "featured": true, "update": "Riconoscimento prodotti migliorato", "updateKind": "Aggiornamento", "icon": "https://meapps-it.github.io/SimplexApp/assets/spesa.png", "playUrl": "", "apkUrl": ""}'::jsonb);
+insert into public.simplex_apps(id,payload) values ('vg', '{"id": "vg", "name": "Gestionale V&G", "version": "0.7.1", "description": "La soluzione completa per la tua azienda", "category": "Produttività", "status": "Disponibile", "featured": true, "update": "Nuove funzioni e miglioramenti", "updateKind": "Nuova versione", "icon": "https://meapps-it.github.io/SimplexApp/assets/vg.png", "playUrl": "", "apkUrl": ""}'::jsonb);
+insert into public.simplex_site(id,payload) values (1,'{"title": "SimplexApp", "tagline": "Le tue app, in un unico posto", "hero": "Organizza, scopri e utilizza le tue app preferite in un unico posto."}'::jsonb);
+
+insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values ('simplex-icons','simplex-icons',true,8388608,array['image/png']);
+create function public.simplex_replace_catalog(p_apps jsonb,p_site jsonb) returns void language plpgsql security invoker set search_path='' as $$ begin delete from public.simplex_apps; insert into public.simplex_apps(id,payload) select value->>'id',value from jsonb_array_elements(p_apps); if p_site is not null then update public.simplex_site set payload=p_site,updated_at=now() where id=1; end if; end; $$;
+revoke all on function public.simplex_replace_catalog(jsonb,jsonb) from public,anon,authenticated;
+grant execute on function public.simplex_replace_catalog(jsonb,jsonb) to service_role;
