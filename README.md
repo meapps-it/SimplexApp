@@ -51,3 +51,10 @@ Per aprire in locale: `npm run dev`, quindi http://localhost:4173. Per installar
 Le app in evidenza sono affiancate in orizzontale: tre colonne su desktop, fila scorrevole con aggancio delle card sul telefono. Lo scorrimento è confinato alla sezione e non alla pagina.
 
 Il tasto Indietro del browser/Android usa la cronologia delle schermate: torna da dettagli, Admin, Preferiti o Catalogo allo stato precedente, conservando ricerca, categoria e posizione. Alla Home una voce di protezione nella cronologia evita l’uscita involontaria e mostra “Sei già nella Home”. La verifica sul dispositivo Android fisico resta consigliata perché la gestione del tasto appartiene anche al browser/OS.
+
+## Admin v9
+- Apri Accesso Admin in fondo al sito. Dopo il primo accesso la sessione resta su questo browser; viene rinnovata all'apertura, al ritorno online e mentre la PWA è visibile. Non viene salvata la password.
+- Le mie app: cerca la scheda, premi Modifica, cambia i dati e premi Salva modifiche. Nuova app apre una scheda vuota. Annulla torna all'elenco.
+- Il modulo è diviso in informazioni, immagini, download e novità. Non scegliere un nuovo APK se vuoi conservare quello attuale.
+- Impostazioni contiene account/GitHub, grafica, identità sito e backup. Il pulsante Sito torna al catalogo; Disconnetti account termina esplicitamente l'accesso.
+- Browser differenti, navigazione privata o cancellazione dei dati richiedono un nuovo accesso. Sessioni revocate richiedono nuove credenziali.
