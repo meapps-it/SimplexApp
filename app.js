@@ -1,6 +1,6 @@
 'use strict';
 const $=id=>document.getElementById(id);
-const EMB={toi:'assets/toi.png',spesa:'assets/spesa.png',vg:'assets/vg.png',logo:'assets/pwa-192.png?v=11'};
+const EMB={toi:'assets/toi.png',spesa:'assets/spesa.png',vg:'assets/vg.png',logo:'assets/simplexapp-icon.svg'};
 const DEFAULT_APPS=[
 {id:'toi',name:'Turni Operai Italia',version:'0.3.0',description:'Gestisci i tuoi turni di lavoro in modo semplice',category:'Produttività',status:'In test',featured:true,update:'Nuove personalizzazioni dei turni',icon:EMB.toi,updateKind:'Novità',playUrl:'',apkUrl:''},
 {id:'spesa',name:'SpesaScan',version:'0.1',description:'Scansiona, organizza e risparmia sulla spesa',category:'Utility',status:'In arrivo',featured:true,update:'Riconoscimento prodotti migliorato',icon:EMB.spesa,updateKind:'Aggiornamento',playUrl:'',apkUrl:''},
