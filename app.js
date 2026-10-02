@@ -59,11 +59,20 @@ function detailRoute(){
  else{const view=location.hash.slice(1);applyScreen(['home','catalogo','preferiti','admin'].includes(view)?view:'home',history.state||{})}
 }
 function showDetail(id){snapshotScreen();location.hash='app/'+encodeURIComponent(id)}
-document.addEventListener('click',e=>{if(e.target.closest('a[href^="#app/"]')){snapshotScreen();detailReturnScroll=window.scrollY;detailInternal=true;}const b=e.target.closest('[data-screen]');if(b){$('screenImage').src=b.dataset.screen;$('screenDialog').showModal()}});
+let screenGallery=[],screenIndex=0,screenTouchStartX=0;
+function updateScreenViewer(){if(!screenGallery.length)return;$('screenImage').src=screenGallery[screenIndex];$('screenCounter').textContent=(screenIndex+1)+' / '+screenGallery.length;$('prevScreen').disabled=screenGallery.length<2;$('nextScreen').disabled=screenGallery.length<2}
+function moveScreen(delta){if(screenGallery.length<2)return;screenIndex=(screenIndex+delta+screenGallery.length)%screenGallery.length;updateScreenViewer()}
+document.addEventListener('click',e=>{if(e.target.closest('a[href^="#app/"]')){snapshotScreen();detailReturnScroll=window.scrollY;detailInternal=true;}const b=e.target.closest('[data-screen]');if(b){screenGallery=[...$('detailContent').querySelectorAll('[data-screen]')].map(x=>x.dataset.screen);screenIndex=Math.max(0,screenGallery.indexOf(b.dataset.screen));updateScreenViewer();$('screenDialog').showModal()}});
 window.addEventListener('popstate',detailRoute);
 window.addEventListener('hashchange',()=>{if(location.hash.startsWith('#app/')&&!history.state?.simplexInitialized)history.replaceState({simplexInitialized:true,simplexScreen:'detail'},'',location.href);detailRoute()});
 $('backDetail').onclick=()=>history.back();
-$('closeScreen').onclick=()=>$('screenDialog').close();$('screenDialog').onclick=e=>{if(e.target===$('screenDialog'))$('screenDialog').close()};
+$('closeScreen').onclick=()=>$('screenDialog').close();
+$('prevScreen').onclick=e=>{e.stopPropagation();moveScreen(-1)};
+$('nextScreen').onclick=e=>{e.stopPropagation();moveScreen(1)};
+$('screenDialog').onclick=e=>{if(e.target===$('screenDialog'))$('screenDialog').close()};
+$('screenImage').addEventListener('touchstart',e=>{screenTouchStartX=e.changedTouches[0].clientX},{passive:true});
+$('screenImage').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-screenTouchStartX;if(Math.abs(dx)>45)moveScreen(dx<0?1:-1)},{passive:true});
+document.addEventListener('keydown',e=>{if(!$('screenDialog').open)return;if(e.key==='ArrowLeft')moveScreen(-1);if(e.key==='ArrowRight')moveScreen(1)});
 function showAdmin(fromHistory=false){if(!fromHistory){navigate('admin');return}activeScreen='admin';$('detailView').classList.add('hidden');checkAdmin();$('homeView').classList.add('hidden');$('adminView').classList.remove('hidden');loadAdmin();setNav('admin');window.scrollTo(0,0)}
 function hideAdmin(scroll=true){$('adminView').classList.add('hidden');$('homeView').classList.remove('hidden');if(scroll){setNav('home');render();window.scrollTo(0,0)}}
 $('openAdmin').onclick=()=>showAdmin();$('closeAdmin').onclick=()=>history.back();
@@ -71,7 +80,7 @@ function loadAdmin(){const s=getSite();$('siteTheme').value=s.theme==='classic'?
 $('saveSite').onclick=async()=>{try{await adminCall('site',{site:{title:$('sTitle').value.trim()||'SimplexApp',tagline:$('sTag').value.trim(),hero:$('sHero').value.trim(),theme:getSite().theme}});const ok=write(keys.site,{title:$('sTitle').value.trim()||'SimplexApp',tagline:$('sTag').value.trim(),hero:$('sHero').value.trim(),theme:getSite().theme});render();if(ok)toast('Impostazioni pubblicate per tutti')}catch(e){toast(e.message)}};
 
 function shareURL(id){return 'https://meapps-it.github.io/SimplexApp/#app/'+encodeURIComponent(id)}
-async function shareApp(id){const a=getApps().find(x=>x.id===id);if(!a)return;const data={title:a.name,text:a.description||a.name,url:shareURL(id)};if(navigator.share&&(!navigator.canShare||navigator.canShare(data))){try{await navigator.share(data);return}catch(e){if(e.name==='AbortError')return}}$('shareName').textContent=a.name;$('shareURL').value=data.url;$('shareDialog').showModal()}
+async function shareApp(id){const a=getApps().find(x=>x.id===id);if(!a)return;const data={title:a.name+' · SimplexApp',text:'Guarda '+a.name+' su SimplexApp. '+(a.description||'Scopri questa app nel catalogo.'),url:shareURL(id)};if(navigator.share){try{const imageUrl=safeIcon(a.icon);if(imageUrl){const r=await fetch(imageUrl);if(r.ok){const blob=await r.blob();const ext=blob.type==='image/jpeg'?'jpg':blob.type==='image/webp'?'webp':'png';const file=new File([blob],a.id+'-simplexapp.'+ext,{type:blob.type||'image/png'});const withImage={...data,files:[file]};if(!navigator.canShare||navigator.canShare(withImage)){await navigator.share(withImage);return}}}if(!navigator.canShare||navigator.canShare(data)){await navigator.share(data);return}}catch(e){if(e.name==='AbortError')return}}$('shareName').textContent='Condividi '+a.name;$('shareURL').value=data.url;$('shareDialog').showModal()}
 $('closeShare').onclick=()=>$('shareDialog').close();
 $('shareDialog').onclick=e=>{if(e.target===$('shareDialog'))$('shareDialog').close()};
 $('copyShare').onclick=async()=>{try{await navigator.clipboard.writeText($('shareURL').value);toast('Link copiato');$('shareDialog').close()}catch{$('shareURL').focus();$('shareURL').select();toast('Tieni premuto sul link e scegli Copia')}};
