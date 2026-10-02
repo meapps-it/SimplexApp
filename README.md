@@ -47,3 +47,7 @@ Ogni scheda e pagina dettagli ha **Condividi**: su dispositivi compatibili apre 
 L’accesso Admin rimane disponibile dopo la chiusura della PWA nello stesso browser, con rinnovo del token. **Esci dall’Admin** elimina la sessione dal dispositivo. Un errore temporaneo di rete non cancella l’accesso; una sessione revocata richiede un nuovo login. Browser e PWA con archivi separati possono richiedere un accesso ciascuno.
 
 Per aprire in locale: `npm run dev`, quindi http://localhost:4173. Per installare sul telefono usa il sito HTTPS pubblicato e il menu del browser **Installa app / Aggiungi a schermata Home**. Nessun framework o dipendenza di produzione. `npm test` verifica backend, temi, sessioni e condivisione.
+
+Le app in evidenza sono affiancate in orizzontale: tre colonne su desktop, fila scorrevole con aggancio delle card sul telefono. Lo scorrimento è confinato alla sezione e non alla pagina.
+
+Il tasto Indietro del browser/Android usa la cronologia delle schermate: torna da dettagli, Admin, Preferiti o Catalogo allo stato precedente, conservando ricerca, categoria e posizione. Alla Home una voce di protezione nella cronologia evita l’uscita involontaria e mostra “Sei già nella Home”. La verifica sul dispositivo Android fisico resta consigliata perché la gestione del tasto appartiene anche al browser/OS.

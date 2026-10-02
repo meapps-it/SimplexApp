@@ -93,3 +93,23 @@ html[data-theme=premium] .catalog .btn{border-radius:11px}
 
 .premium-search{display:none}html[data-theme=premium] .premium-search{display:block;margin:-34px 4px 0;position:relative}html[data-theme=premium] .premium-search .search{width:100%;height:44px;border-radius:18px;box-shadow:0 8px 18px #20559515;font-size:13px;padding:10px 16px}
 @media(max-width:600px){html[data-theme=premium] .cover{min-height:184px;padding-bottom:16px}html[data-theme=premium] .panel{margin-top:18px}html[data-theme=premium] .featured .app-card{min-height:96px;padding:9px 11px}html[data-theme=premium] .categories button{min-height:78px;padding:8px 4px}html[data-theme=premium] .categories img{height:36px;margin-bottom:5px}}
+/* Featured apps sit side by side; only this strip scrolls on phones. */
+html[data-theme=premium] .featured{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+html[data-theme=premium] .featured .app-card{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:14px;min-height:255px}
+html[data-theme=premium] .featured .card-top{display:block;grid-row:auto}
+html[data-theme=premium] .featured .app-icon{width:64px;height:64px;margin-bottom:10px}
+html[data-theme=premium] .featured h3{min-height:36px;font-size:15px;line-height:1.2}
+html[data-theme=premium] .featured p{min-height:43px;-webkit-line-clamp:3;font-size:12px}
+html[data-theme=premium] .featured .meta{margin:8px 0}
+html[data-theme=premium] .featured .actions{align-self:stretch;margin-top:auto;padding-top:5px}
+html[data-theme=premium] .featured .share-app{grid-column:auto;margin-top:7px;min-height:36px}
+@media(max-width:600px){
+html[data-theme=premium] .featured{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(156px,46%);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 9px;scrollbar-width:thin;scrollbar-color:#abc8ed transparent}
+html[data-theme=premium] .featured .app-card{padding:12px;min-height:265px;scroll-snap-align:start}
+html[data-theme=premium] .featured .app-icon{width:60px;height:60px;border-radius:14px}
+html[data-theme=premium] .featured h3{font-size:14px;min-height:34px}
+html[data-theme=premium] .featured p{font-size:11px;min-height:43px}
+html[data-theme=premium] .featured .status{font-size:9px}
+html[data-theme=premium] .featured .btn{min-height:38px;font-size:13px}
+}
+@media(max-width:600px){html[data-theme=premium] .featured .app-card{min-height:250px}html[data-theme=premium] .featured h3{min-height:30px;margin-bottom:4px}html[data-theme=premium] .featured p{min-height:30px;margin-bottom:4px}html[data-theme=premium] .featured .meta{margin:5px 0}html[data-theme=premium] .featured .app-icon{margin-bottom:8px}}

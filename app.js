@@ -32,8 +32,11 @@ function render(){if(document.activeElement!==$('heroSearch'))$('heroSearch').va
  document.querySelectorAll('img').forEach(img=>img.onerror=()=>{img.onerror=null;img.src=EMB.logo});
 }
 function setNav(view){document.querySelectorAll('nav [data-view]').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
-function navigate(view){if(view==='admin'){showAdmin();return}hideAdmin(false);$('detailView').classList.add('hidden');if(location.hash)history.replaceState(null,'',location.pathname+location.search);setNav(view);onlyFav=view==='preferiti';currentCat='';$('search').value='';render();if(view==='home')window.scrollTo({top:0,behavior:'smooth'});else $('catalogo').scrollIntoView({behavior:'smooth'})}
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.share){shareApp(b.dataset.share);return}if(b.dataset.view){navigate(b.dataset.view);return}if(b.dataset.cat){hideAdmin(false);$('detailView').classList.add('hidden');if(location.hash)history.replaceState(null,'',location.pathname+location.search);currentCat=currentCat===b.dataset.cat?'':b.dataset.cat;onlyFav=false;$('search').value='';setNav('catalogo');render();$('catalogo').scrollIntoView({behavior:'smooth'})}if(b.dataset.fav){const f=getFavs();write(keys.favs,f.includes(b.dataset.fav)?f.filter(x=>x!==b.dataset.fav):[...f,b.dataset.fav]);render();if(location.hash.startsWith('#app/'))renderDetail(detailId())}if(b.dataset.detail)showDetail(b.dataset.detail)});
+let activeScreen='home';
+function snapshotScreen(){if(!history.state?.simplexInitialized)return;history.replaceState({...history.state,cat:currentCat,onlyFav,search:$('search').value,scroll:window.scrollY},'',location.href)}
+function applyScreen(view,state={}){activeScreen=view;if(view==='admin'){showAdmin(true);return}hideAdmin(false);$('detailView').classList.add('hidden');setNav(view);onlyFav=state.onlyFav??view==='preferiti';currentCat=state.cat||'';$('search').value=state.search||'';render();if(typeof state.scroll==='number')window.scrollTo({top:state.scroll,behavior:'instant'});else if(view==='home')window.scrollTo({top:0,behavior:'smooth'});else $('catalogo').scrollIntoView({behavior:'smooth'})}
+function navigate(view,state={}){snapshotScreen();history.pushState({simplexInitialized:true,simplexScreen:view,...state},'',location.pathname+location.search+'#'+view);applyScreen(view,state)}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.share){shareApp(b.dataset.share);return}if(b.dataset.view){if(b.dataset.view!==activeScreen)navigate(b.dataset.view);else applyScreen(b.dataset.view);return}if(b.dataset.cat){navigate('catalogo',{cat:currentCat===b.dataset.cat?'':b.dataset.cat,onlyFav:false,search:''});return}if(b.dataset.fav){const f=getFavs();write(keys.favs,f.includes(b.dataset.fav)?f.filter(x=>x!==b.dataset.fav):[...f,b.dataset.fav]);render();if(location.hash.startsWith('#app/'))renderDetail(detailId())}if(b.dataset.detail)showDetail(b.dataset.detail)});
 $('search').oninput=render;$('heroSearch').oninput=()=>{$('search').value=$('heroSearch').value;render()};$('heroSearch').onkeydown=e=>{if(e.key==='Enter'){$('catalogo').scrollIntoView({behavior:'smooth'});$('heroSearch').blur()}};$('clearFilters').onclick=()=>{currentCat='';onlyFav=false;$('search').value='';setNav('catalogo');render()};$('viewUpdates').onclick=()=>{showAllUpdates=true;render();$('novita').scrollIntoView({behavior:'smooth'})};
 let detailReturnScroll=0,detailInternal=false;
 function renderDetail(id){
@@ -43,15 +46,21 @@ function renderDetail(id){
  $('detailContent').querySelectorAll('img').forEach(img=>img.onerror=()=>{img.onerror=null;img.src=EMB.logo});
 }
 function detailId(){try{return decodeURIComponent(location.hash.slice(5))}catch{return ''}}
-function detailRoute(){if(location.hash.startsWith('#app/')){let id;try{id=detailId()}catch{id=''};$('homeView').classList.add('hidden');$('adminView').classList.add('hidden');$('detailView').classList.remove('hidden');setNav('detail');renderDetail(id);window.scrollTo(0,0);$('detailTitle')?.focus({preventScroll:true})}else if(!$('detailView').classList.contains('hidden')){$('detailView').classList.add('hidden');$('homeView').classList.remove('hidden');setNav(onlyFav?'preferiti':'catalogo');window.scrollTo(0,detailReturnScroll)}}
-function showDetail(id){location.hash='app/'+encodeURIComponent(id)}
-document.addEventListener('click',e=>{if(e.target.closest('a[href^="#app/"]')){detailReturnScroll=window.scrollY;detailInternal=true;}const b=e.target.closest('[data-screen]');if(b){$('screenImage').src=b.dataset.screen;$('screenDialog').showModal()}});
-window.addEventListener('hashchange',detailRoute);
-$('backDetail').onclick=()=>{if(detailInternal)history.back();else{history.replaceState(null,'',location.pathname+location.search);detailRoute()}};
+function detailRoute(){
+ if(history.state?.simplexGuard){history.pushState({simplexInitialized:true,simplexScreen:'home'},'',location.pathname+location.search+'#home');const wasHome=activeScreen==='home';applyScreen('home');if(wasHome)toast('Sei già nella Home');return}
+ $('shareDialog').close();$('screenDialog').close();
+ if(location.hash.startsWith('#app/')){activeScreen='detail';$('homeView').classList.add('hidden');$('adminView').classList.add('hidden');$('detailView').classList.remove('hidden');setNav('detail');renderDetail(detailId());window.scrollTo({top:history.state?.scroll||0,behavior:'instant'});$('detailTitle')?.focus({preventScroll:true})}
+ else{const view=location.hash.slice(1);applyScreen(['home','catalogo','preferiti','admin'].includes(view)?view:'home',history.state||{})}
+}
+function showDetail(id){snapshotScreen();location.hash='app/'+encodeURIComponent(id)}
+document.addEventListener('click',e=>{if(e.target.closest('a[href^="#app/"]')){snapshotScreen();detailReturnScroll=window.scrollY;detailInternal=true;}const b=e.target.closest('[data-screen]');if(b){$('screenImage').src=b.dataset.screen;$('screenDialog').showModal()}});
+window.addEventListener('popstate',detailRoute);
+window.addEventListener('hashchange',()=>{if(location.hash.startsWith('#app/')&&!history.state?.simplexInitialized)history.replaceState({simplexInitialized:true,simplexScreen:'detail'},'',location.href);detailRoute()});
+$('backDetail').onclick=()=>history.back();
 $('closeScreen').onclick=()=>$('screenDialog').close();$('screenDialog').onclick=e=>{if(e.target===$('screenDialog'))$('screenDialog').close()};
-function showAdmin(){if(location.hash)history.replaceState(null,'',location.pathname+location.search);$('detailView').classList.add('hidden');checkAdmin();$('homeView').classList.add('hidden');$('adminView').classList.remove('hidden');loadAdmin();setNav('admin');window.scrollTo(0,0)}
+function showAdmin(fromHistory=false){if(!fromHistory){navigate('admin');return}activeScreen='admin';$('detailView').classList.add('hidden');checkAdmin();$('homeView').classList.add('hidden');$('adminView').classList.remove('hidden');loadAdmin();setNav('admin');window.scrollTo(0,0)}
 function hideAdmin(scroll=true){$('adminView').classList.add('hidden');$('homeView').classList.remove('hidden');if(scroll){setNav('home');render();window.scrollTo(0,0)}}
-$('openAdmin').onclick=showAdmin;$('closeAdmin').onclick=()=>hideAdmin();
+$('openAdmin').onclick=()=>showAdmin();$('closeAdmin').onclick=()=>history.back();
 function loadAdmin(){const s=getSite();$('siteTheme').value=s.theme==='classic'?'classic':'premium';$('sTitle').value=s.title;$('sTag').value=s.tagline;$('sHero').value=s.hero;renderAdminList()}
 $('saveSite').onclick=async()=>{try{await adminCall('site',{site:{title:$('sTitle').value.trim()||'SimplexApp',tagline:$('sTag').value.trim(),hero:$('sHero').value.trim(),theme:getSite().theme}});const ok=write(keys.site,{title:$('sTitle').value.trim()||'SimplexApp',tagline:$('sTag').value.trim(),hero:$('sHero').value.trim(),theme:getSite().theme});render();if(ok)toast('Impostazioni pubblicate per tutti')}catch(e){toast(e.message)}};
 
@@ -85,4 +94,6 @@ window.addEventListener('beforeunload',e=>{if(publishing){e.preventDefault();e.r
 async function boot(){try{await refreshCloud()}catch{toast('Catalogo offline: mostro l’ultima copia disponibile.')}if('serviceWorker'in navigator&&['https:','http:'].includes(location.protocol))navigator.serviceWorker.register('./sw.js').catch(()=>toast('Modalità offline non disponibile su questo indirizzo'))}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&$('adminView').classList.contains('hidden'))refreshCloud().catch(()=>{})});
 setInterval(()=>{if(!document.hidden&&$('adminView').classList.contains('hidden'))refreshCloud().catch(()=>{})},60000);
+// A Home sentinel keeps Android Back inside the PWA at the root screen.
+if(!history.state?.simplexInitialized){const start=location.hash||'#home';history.replaceState({simplexGuard:true},'',location.pathname+location.search+'#home');history.pushState({simplexInitialized:true,simplexScreen:start.startsWith('#app/')?'detail':start.slice(1)},'',location.pathname+location.search+start)}
 render();detailRoute();boot();

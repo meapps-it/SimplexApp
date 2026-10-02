@@ -37,3 +37,9 @@ Live authenticated Admin UI cannot be exercised without the user's credentials; 
 Follow-up polish (P3): optional font refinement and app-specific static social metadata (hash routes currently share generic site metadata); neither affects link sharing.
 
 final result: passed
+
+
+## Horizontal featured update — user instruction 2026-10-02
+The user's latest request supersedes the source's vertical featured rows. Premium featured apps now form one horizontal strip, preserving the same palette, artwork, buttons and dynamic data. Desktop has three columns; phones have readable 156px minimum cards, with horizontal overflow restricted to the featured container. Verified in cloud Chrome local preview: page scrollWidth matches 360/393/412/430 CSS width; all three card tops align; third-app share action scrolls into view and opens the correct Gestionale V&G dialog. Compact text blocks reduce unused spacing; no new imagery or backend changes. Classica rules remain scoped separately. Cache version v8 prevents mixed CSS. Final result remains passed for the revised user-authored layout requirement.
+
+Browser Back checks: Preferiti → Catalogo, app details → Catalogo, Admin → previous view, then Home. Root Back returns to Home through the sentinel instead of navigating away (the browser automation waiting for a different URL timed out at this deliberate same-URL state; the following DOM observation confirmed Home). Tests use cloud Chrome, not physical Android.
