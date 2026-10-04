@@ -63,3 +63,23 @@ nav{grid-template-columns:repeat(3,1fr)}
 .home-intro p{margin:0;font-size:17px;line-height:1.35;font-weight:700;color:var(--ink)}
 .home-intro .hero-contact-cta{margin:0;flex-shrink:0}
 @media(max-width:600px){.home-intro{align-items:flex-start;gap:10px;padding:12px 14px;margin:10px 0 0}.home-intro p{font-size:13px;line-height:1.35}.home-intro .hero-contact-cta{min-height:36px;font-size:11px;padding:8px 11px}}
+
+
+/* SimplexApp B2B: mantiene il linguaggio visivo esistente e rende più chiara l'offerta per aziende */
+.business-panel{padding:18px}
+.business-lead{margin:0 6px 14px;color:var(--muted);font-size:15px;line-height:1.45}
+.business-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.business-grid article{border:1px solid #e7edf6;border-radius:18px;padding:16px;background:linear-gradient(145deg,#fff,#f7fbff);min-height:126px}
+.business-grid strong{display:block;font-size:17px;margin-bottom:7px;letter-spacing:-.25px}
+.business-grid span{display:block;color:#657087;font-size:13px;line-height:1.4}
+.business-cta{display:inline-flex;align-items:center;justify-content:center;margin:15px 6px 2px;padding:11px 16px;border-radius:14px;background:linear-gradient(110deg,#1684ff,#2672f0);color:#fff;text-decoration:none;font-weight:750;box-shadow:0 5px 10px #2581ed20}
+.business-cta:focus-visible{outline:3px solid #fbbd3a;outline-offset:3px}
+@media(max-width:600px){
+  .business-panel{padding:12px}
+  .business-lead{font-size:12px;margin:0 2px 10px}
+  .business-grid{grid-template-columns:1fr;gap:7px}
+  .business-grid article{min-height:0;padding:12px 13px;border-radius:14px}
+  .business-grid strong{font-size:14px;margin-bottom:4px}
+  .business-grid span{font-size:11px;line-height:1.32}
+  .business-cta{display:flex;margin:10px 2px 1px;font-size:12px;min-height:40px}
+}
