@@ -56,3 +56,10 @@ nav{grid-template-columns:repeat(3,1fr)}
 .hero-contact-cta:hover{filter:brightness(.98)}
 .hero-contact-cta:focus-visible{outline:3px solid #fbbd3a;outline-offset:3px}
 @media(max-width:600px){.hero-contact-cta{min-height:38px;padding:8px 12px;font-size:12px;margin-bottom:10px}}
+
+
+/* v12: short presentation below the cover */
+.home-intro{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:14px 0 4px;padding:16px 18px;border-radius:18px;background:#ffffffd9;box-shadow:0 6px 18px #1b5f9c0d}
+.home-intro p{margin:0;font-size:17px;line-height:1.35;font-weight:700;color:var(--ink)}
+.home-intro .hero-contact-cta{margin:0;flex-shrink:0}
+@media(max-width:600px){.home-intro{align-items:flex-start;gap:10px;padding:12px 14px;margin:10px 0 0}.home-intro p{font-size:13px;line-height:1.35}.home-intro .hero-contact-cta{min-height:36px;font-size:11px;padding:8px 11px}}
