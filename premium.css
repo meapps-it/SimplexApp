@@ -113,3 +113,34 @@ html[data-theme=premium] .featured .status{font-size:9px}
 html[data-theme=premium] .featured .btn{min-height:38px;font-size:13px}
 }
 @media(max-width:600px){html[data-theme=premium] .featured .app-card{min-height:250px}html[data-theme=premium] .featured h3{min-height:30px;margin-bottom:4px}html[data-theme=premium] .featured p{min-height:30px;margin-bottom:4px}html[data-theme=premium] .featured .meta{margin:5px 0}html[data-theme=premium] .featured .app-icon{margin-bottom:8px}}
+
+
+/* v10: desktop layout refinement without changing the mobile visual language */
+html[data-theme=premium] .hero-contact-cta{background:#fff;color:#0c58c8;box-shadow:0 8px 18px #052b7526}
+@media(min-width:900px){
+  html[data-theme=premium] .app-shell{max-width:1180px;padding-left:24px;padding-right:24px}
+  html[data-theme=premium] .cover{margin-left:-24px;margin-right:-24px;padding:24px 34px 30px;border-radius:0 0 34px 34px}
+  html[data-theme=premium] .brand strong{font-size:38px}
+  html[data-theme=premium] .brand span{font-size:14px}
+  html[data-theme=premium] .hero{margin-top:24px}
+  html[data-theme=premium] .hero-copy{max-width:56%}
+  html[data-theme=premium] .hero h1{font-size:44px;line-height:1.04;margin-bottom:14px}
+  html[data-theme=premium] .hero p{font-size:17px;line-height:1.5;max-width:540px;margin-bottom:14px}
+  html[data-theme=premium] .premium-search{margin:-28px 14px 0}
+  html[data-theme=premium] .panel{margin-top:30px}
+  html[data-theme=premium] .section-head h2{font-size:23px}
+  html[data-theme=premium] .featured{gap:16px}
+  html[data-theme=premium] .featured .app-card{min-height:278px;padding:18px}
+  html[data-theme=premium] .featured .app-icon{width:76px;height:76px}
+  html[data-theme=premium] .featured h3{font-size:17px;min-height:40px}
+  html[data-theme=premium] .featured p{font-size:13px;min-height:50px}
+  html[data-theme=premium] .categories{gap:14px}
+  html[data-theme=premium] .categories button{min-height:118px}
+  html[data-theme=premium] .categories img{width:58px;height:52px}
+  html[data-theme=premium] .categories b{font-size:14px}
+  html[data-theme=premium] .catalog{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  html[data-theme=premium] .catalog .app-card{min-height:280px;padding:18px}
+  html[data-theme=premium] .updates{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  html[data-theme=premium] .contact-panel{max-width:880px;margin-left:auto;margin-right:auto;padding:26px;border-radius:22px;background:#fff;box-shadow:0 8px 24px #153c760c}
+  html[data-theme=premium] nav{max-width:1080px}
+}
