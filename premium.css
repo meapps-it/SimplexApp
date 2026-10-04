@@ -15,7 +15,6 @@ html[data-theme=premium] .mascot{display:none}
 html[data-theme=premium] .hero-copy{padding:0;max-width:62%}
 html[data-theme=premium] .hero h1{font-size:30px;line-height:1.1;letter-spacing:-.8px;margin:0 0 10px}
 html[data-theme=premium] .hero h1 b{color:#60d8ff}
-html[data-theme=premium] .hero p{font-size:14px;line-height:1.45;color:#e5f0ff;margin:0;max-width:320px}
 html[data-theme=premium] .mini{display:none}
 html[data-theme=premium] .panel{background:transparent;box-shadow:none;padding:0;margin-top:24px;border-radius:0}
 html[data-theme=premium] .section-head{margin:0 1px 12px}
@@ -66,7 +65,6 @@ html[data-theme=premium] .brand span{font-size:10px}
 html[data-theme=premium] .hero{margin-top:16px}
 html[data-theme=premium] .hero-copy{max-width:63%}
 html[data-theme=premium] .hero h1{font-size:24px;line-height:1.08;margin-bottom:9px}
-html[data-theme=premium] .hero p{font-size:11px;line-height:1.35;max-width:215px}
 html[data-theme=premium] .section-head h2{font-size:18px}
 html[data-theme=premium] .section-head h2 img{width:23px;height:23px}
 html[data-theme=premium] .linkbtn{font-size:11px}
@@ -91,7 +89,6 @@ html[data-theme=premium] .catalog-head .search{margin-top:6px}
 html[data-theme=premium] .catalog .btn{border-radius:11px}
 }
 
-.premium-search{display:none}html[data-theme=premium] .premium-search{display:block;margin:-34px 4px 0;position:relative}html[data-theme=premium] .premium-search .search{width:100%;height:44px;border-radius:18px;box-shadow:0 8px 18px #20559515;font-size:13px;padding:10px 16px}
 @media(max-width:600px){html[data-theme=premium] .cover{min-height:184px;padding-bottom:16px}html[data-theme=premium] .panel{margin-top:18px}html[data-theme=premium] .featured .app-card{min-height:96px;padding:9px 11px}html[data-theme=premium] .categories button{min-height:78px;padding:8px 4px}html[data-theme=premium] .categories img{height:36px;margin-bottom:5px}}
 /* Featured apps sit side by side; only this strip scrolls on phones. */
 html[data-theme=premium] .featured{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -116,7 +113,7 @@ html[data-theme=premium] .featured .btn{min-height:38px;font-size:13px}
 
 
 /* v10: desktop layout refinement without changing the mobile visual language */
-html[data-theme=premium] .hero-contact-cta{background:#fff;color:#0c58c8;box-shadow:0 8px 18px #052b7526}
+html[data-theme=premium] .home-intro .hero-contact-cta{background:#176ff0;color:#fff;box-shadow:0 8px 18px #176ff026}
 @media(min-width:900px){
   html[data-theme=premium] .app-shell{max-width:1180px;padding-left:24px;padding-right:24px}
   html[data-theme=premium] .cover{margin-left:-24px;margin-right:-24px;padding:24px 34px 30px;border-radius:0 0 34px 34px}
@@ -125,8 +122,6 @@ html[data-theme=premium] .hero-contact-cta{background:#fff;color:#0c58c8;box-sha
   html[data-theme=premium] .hero{margin-top:24px}
   html[data-theme=premium] .hero-copy{max-width:56%}
   html[data-theme=premium] .hero h1{font-size:44px;line-height:1.04;margin-bottom:14px}
-  html[data-theme=premium] .hero p{font-size:17px;line-height:1.5;max-width:540px;margin-bottom:14px}
-  html[data-theme=premium] .premium-search{margin:-28px 14px 0}
   html[data-theme=premium] .panel{margin-top:30px}
   html[data-theme=premium] .section-head h2{font-size:23px}
   html[data-theme=premium] .featured{gap:16px}
@@ -144,3 +139,8 @@ html[data-theme=premium] .hero-contact-cta{background:#fff;color:#0c58c8;box-sha
   html[data-theme=premium] .contact-panel{max-width:880px;margin-left:auto;margin-right:auto;padding:26px;border-radius:22px;background:#fff;box-shadow:0 8px 24px #153c760c}
   html[data-theme=premium] nav{max-width:1080px}
 }
+
+
+/* v11: keep premium cover clean; presentation lives below it */
+html[data-theme=premium] .home-intro{background:#fff;margin:14px 0 0;border:1px solid #e2eaf5;box-shadow:0 6px 16px #153c7608}
+@media(min-width:900px){html[data-theme=premium] .home-intro{margin-top:18px;padding:18px 22px}}
