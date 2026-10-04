@@ -68,3 +68,11 @@ La condivisione dei file richiede un browser compatibile con Web Share; il socia
 Il download Google Play usa il badge ufficiale italiano nelle proporzioni originali e il link Play della scheda. Senza un link Play non viene mostrato il badge.
 
 Verifica: `node --test tests/*.test.mjs`.
+
+## Modulo contatti
+
+La Home contiene “Scrivi a Maurizio”: email del mittente, argomento e messaggio. La funzione `simplex-contact`, già distribuita, usa un destinatario fisso e credenziali custoditi nei Secrets. Il frontend non espone numero né email del destinatario. Cloudflare Turnstile è obbligatorio e viene verificato sul server insieme a hostname e action; un honeypot e limiti ai campi/corpo rifiutano richieste non valide.
+
+Il widget si carica soltanto quando il modulo è visibile. L’invio usa Supabase e Resend. Il testo rimane nei campi in caso di errore. La conferma compare dopo l’accettazione di Resend, non garantisce il recapito in posta in arrivo. La ricezione reale va controllata con un invio dal sito; i test automatici usano servizi simulati e non inviano email.
+
+Secrets richiesti: `SIMPLEX_CONTACT_TO`, `SIMPLEX_CONTACT_FROM`, `SIMPLEX_CONTACT_RESEND_KEY`, `SIMPLEX_CONTACT_TURNSTILE_SITEKEY`, `SIMPLEX_CONTACT_TURNSTILE_SECRET`. Il GET pubblico restituisce soltanto disponibilità e sitekey. Non cambia la gestione Admin o il catalogo.
