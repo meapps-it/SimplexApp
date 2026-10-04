@@ -10,3 +10,15 @@ progress{width:100%;height:18px;accent-color:#1777f2}details{margin-top:16px}sum
 #adminView .admin-head{color:#173456}#adminView .admin-head>div>div{color:#627087;margin-top:4px}
 
 .category-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.category-actions .secondary{padding:9px 11px;font-size:12px;min-height:38px}
+
+/* Clienti e licenze */
+#clientsStatus:empty{display:none}
+#clientsStatus{background:#eef6ff;color:#24527a;border-radius:12px;padding:11px;margin:10px 0}
+.client-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px;border:1px solid #e5ebf3;border-radius:14px;margin:10px 0;background:#fff}
+.client-row .client-main{min-width:0}.client-row .client-main strong{display:block;font-size:15px;overflow-wrap:anywhere}.client-row .client-main small{display:block;color:#66758b;margin-top:4px}
+.client-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.client-badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;background:#eef2f7;color:#41506a}.client-badge.green{background:#def7e7;color:#176b38}.client-badge.yellow{background:#fff1c9;color:#855d00}.client-badge.red{background:#ffe4e4;color:#9f2525}
+.client-row .secondary{white-space:nowrap}
+.client-paid-label{display:flex!important;align-items:center;gap:9px;padding-top:29px}.client-paid-label input{margin:0!important;width:20px!important;height:20px}
+.module-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.module-grid label{display:flex;align-items:center;gap:8px;background:#f7f9fc;border:1px solid #e3e9f1;border-radius:12px;padding:10px 11px;font-weight:700}.module-grid input{width:19px!important;height:19px;margin:0!important}
+.license-box{margin-top:14px;padding:13px;border:1px solid #d7e6fb;border-radius:13px;background:#f6faff}.license-box input{width:100%;margin-top:8px;padding:10px;border:1px solid #cfdced;border-radius:10px;background:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+@media(max-width:600px){.client-row{grid-template-columns:1fr}.client-row .secondary{width:100%}.module-grid{grid-template-columns:1fr}.client-paid-label{padding-top:0}}
