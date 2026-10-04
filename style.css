@@ -83,3 +83,10 @@ nav{grid-template-columns:repeat(3,1fr)}
   .business-grid span{font-size:11px;line-height:1.32}
   .business-cta{display:flex;margin:10px 2px 1px;font-size:12px;min-height:40px}
 }
+.business-grid article{display:flex;align-items:center;gap:14px}
+.business-grid article>div{min-width:0}
+.business-icon{width:64px;height:64px;object-fit:contain;flex:0 0 64px;border-radius:16px}
+@media(max-width:600px){
+  .business-grid article{gap:11px}
+  .business-icon{width:52px;height:52px;flex-basis:52px;border-radius:13px}
+}
