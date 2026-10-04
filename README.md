@@ -76,3 +76,8 @@ La Home contiene “Scrivi a Maurizio”: email del mittente, argomento e messag
 Il widget si carica soltanto quando il modulo è visibile. L’invio usa Supabase e Resend. Il testo rimane nei campi in caso di errore. La conferma compare dopo l’accettazione di Resend, non garantisce il recapito in posta in arrivo. La ricezione reale va controllata con un invio dal sito; i test automatici usano servizi simulati e non inviano email.
 
 Secrets richiesti: `SIMPLEX_CONTACT_TO`, `SIMPLEX_CONTACT_FROM`, `SIMPLEX_CONTACT_RESEND_KEY`, `SIMPLEX_CONTACT_TURNSTILE_SITEKEY`, `SIMPLEX_CONTACT_TURNSTILE_SECRET`. Il GET pubblico restituisce soltanto disponibilità e sitekey. Non cambia la gestione Admin o il catalogo.
+
+## Vetrina aziendale
+Le schede possono offrire Android, una versione online o entrambe. Nell’Admin inserire `webUrl` (pulsante **Apri**), `demoUrl` (**Prova demo**) e `customizable` (**Richiedi personalizzazione**). Sono facoltativi e preservati da salvataggio/esportazione/importazione. Le versioni online restano ospitate sul proprio sito: il catalogo conserva il link. Nessuna demo fittizia viene aggiunta.
+
+Richiedi personalizzazione porta alla Home, al modulo contatti, con argomento e prodotto compilati; il messaggio già scritto non viene sovrascritto. Il server include il prodotto nell’email, conserva il destinatario fisso e richiede la verifica antispam. Grafica, CSS, mascotte, menu e categorie restano quelli esistenti.

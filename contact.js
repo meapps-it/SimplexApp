@@ -29,7 +29,7 @@
     sending = true; button.disabled = true; status.textContent = 'Invio in corso…';
     const data = new FormData(form);
     try {
-      const r = await fetch(endpoint, {method: 'POST', headers: {'Content-Type': 'application/json', apikey: CLOUD.key}, body: JSON.stringify({email: data.get('email'), topic: data.get('topic'), message: data.get('message'), website: data.get('website'), acknowledged: data.get('acknowledged') === 'on', token}), signal: AbortSignal.timeout(30000)});
+      const r = await fetch(endpoint, {method: 'POST', headers: {'Content-Type': 'application/json', apikey: CLOUD.key}, body: JSON.stringify({email: data.get('email'), topic: data.get('topic'), product: data.get('product'), message: data.get('message'), website: data.get('website'), acknowledged: data.get('acknowledged') === 'on', token}), signal: AbortSignal.timeout(30000)});
       const result = await r.json();
       if (!r.ok || result.sent !== true) throw Error(result.error || 'Invio non confermato. Riprova.');
       form.reset(); status.textContent = 'Messaggio inviato. Maurizio potrà risponderti all’email indicata.';

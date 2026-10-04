@@ -37,6 +37,9 @@ const status=await(await send('status')).json();assert.equal(status.githubConnec
 for(const theme of ['classic','premium','invalid']){const site=await(await send('site',{site:{title:'SimplexApp',tagline:'Test',hero:'Test',theme}})).json();assert.equal(site.site.theme,theme==='classic'?'classic':'premium');assert.equal(site.site.title,'SimplexApp')}
 const app={id:'test',name:'Test',category:'Utility',version:'1',icon:'https://example.test/icon.png'};
 assert.equal((await send('save',{app})).status,200);
+const business={...app,webUrl:'https://example.test/app',demoUrl:'https://example.test/demo',customizable:true};
+const businessSaved=await(await send('save',{app:business})).json();assert.equal(businessSaved.app.webUrl,business.webUrl);assert.equal(businessSaved.app.demoUrl,business.demoUrl);assert.equal(businessSaved.app.customizable,true);
+for(const webUrl of ['http://example.test','javascript:alert(1)','https://user:password@example.test'])assert.equal((await send('save',{app:{...business,webUrl}})).status,400);
 const detailApp={...app,fullDescription:'Funzioni e istruzioni\nSeconda riga',screenshots:['https://example.test/screen.png']};
 const detailSaved=await(await send('save',{app:detailApp})).json();assert.equal(detailSaved.app.fullDescription,detailApp.fullDescription);assert.deepEqual(detailSaved.app.screenshots,detailApp.screenshots);
 assert.equal((await send('save',{app:{...detailApp,screenshots:['javascript:alert(1)']}})).status,400);
