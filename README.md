@@ -58,3 +58,9 @@ Il tasto Indietro del browser/Android usa la cronologia delle schermate: torna d
 - Il modulo è diviso in informazioni, immagini, download e novità. Non scegliere un nuovo APK se vuoi conservare quello attuale.
 - Impostazioni contiene account/GitHub, grafica, identità sito e backup. Il pulsante Sito torna al catalogo; Disconnetti account termina esplicitamente l'accesso.
 - Browser differenti, navigazione privata o cancellazione dei dati richiedono un nuovo accesso. Sessioni revocate richiedono nuove credenziali.
+
+### Immagini promozionali
+
+La scheda app mostra le immagini promozionali separate dagli screenshot, con download e condivisione del file quando supportata dal browser. Nell’Admin puoi caricare fino a 6 immagini (8 MB ciascuna) oppure usare URL HTTPS. L’elenco `promoImages` è preservato da salvataggio, esportazione e importazione. Un elenco vuoto rimuove anche il materiale iniziale. Turni Operai Italia e NoiDue usano le immagini originali in `assets/promotional`. Nessun post viene pubblicato automaticamente.
+
+Verifica: `node --test tests/*.test.mjs`.

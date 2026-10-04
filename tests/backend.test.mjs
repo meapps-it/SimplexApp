@@ -49,6 +49,10 @@ assert.equal((await send('apk&id=test&version=1',new Uint8Array([1,2,3,4]),{'x-f
 assert.equal((await send('apk&id=test&version=1',new Uint8Array([80,75,3,4]),{'x-file-size':String(2*1024*1024*1024)},true)).status,400);
 connected=false;assert.equal((await send('apk&id=test&version=1',new Uint8Array([80,75,3,4]),{'x-file-size':'4'},true)).status,409);
 connected=true;calls=[];const apk=new Uint8Array([80,75,3,4,1,2,3,4]);const upload=await(await send('apk&id=test&version=1',apk,{'x-file-size':'8'},true)).json();assert.equal(upload.size,8);assert.equal(upload.url,'https://github.com/meapps-it/SimplexApp/releases/download/test/app.apk');assert.ok(calls.find(x=>x.method==='PATCH'&&x.url.endsWith('/releases/9')));
+const promo={...app,promoImages:['https://example.test/post.png']};
+const savedPromo=await(await send('save',{app:promo})).json();assert.deepEqual(savedPromo.app.promoImages,promo.promoImages);
+for(const bad of ['javascript:alert(1)','http://example.test/a','https://user:password@example.test/a'])assert.equal((await send('save',{app:{...promo,promoImages:[bad]}})).status,400);
+assert.equal((await send('save',{app:{...promo,promoImages:Array(7).fill('https://example.test/a.png')}})).status,400);
 mode='uploadFail';// preserve admin identity while simulating upstream upload failure
 const original=fetch;globalThis.fetch=async(url,opts)=>String(url).endsWith('/auth/v1/user')?new Response(JSON.stringify({id:'admin'})):String(url).includes('/rest/v1/simplex_admins?')?new Response(JSON.stringify([{user_id:'admin'}])):original(url,opts);
 calls=[];assert.equal((await send('apk&id=test&version=1',apk,{'x-file-size':'8'},true)).status,400);assert.ok(calls.find(x=>x.method==='DELETE'&&x.url.endsWith('/releases/9')));
