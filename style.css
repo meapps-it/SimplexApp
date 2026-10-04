@@ -49,3 +49,10 @@ nav{grid-template-columns:repeat(3,1fr)}
 .google-play-download span{line-height:1.4}
 
 .contact-panel{padding:20px}.contact-panel h2{margin:0 0 8px;font-size:21px}.contact-panel p{line-height:1.5}.contact-panel fieldset{border:0;margin:0;padding:0;display:grid;gap:14px;min-width:0}.contact-panel label{display:grid;gap:6px;font-weight:600}.contact-panel input:not([type=checkbox]),.contact-panel select,.contact-panel textarea{width:100%;min-width:0;border:1px solid #a9b9cc;border-radius:12px;padding:12px;background:#fff;color:var(--ink);font-size:16px;min-height:48px}.contact-panel textarea{resize:vertical}.contact-panel .contact-ack{display:flex;align-items:center;font-size:14px;font-weight:400;min-height:48px;gap:10px}.contact-ack input{width:22px;height:22px;flex-shrink:0}.contact-note{font-size:14px;color:var(--muted);margin:0}.contact-panel button{min-height:48px}.contact-panel button:disabled{opacity:.6;cursor:default}.contact-trap,.contact-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}#contactCaptcha{max-width:100%;overflow:hidden}
+
+
+/* v11: direct contact CTA */
+.hero-contact-cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:12px;background:#176ff0;color:#fff;text-decoration:none;font-weight:800;box-shadow:0 6px 16px #176ff02b;margin:0 0 16px}
+.hero-contact-cta:hover{filter:brightness(.98)}
+.hero-contact-cta:focus-visible{outline:3px solid #fbbd3a;outline-offset:3px}
+@media(max-width:600px){.hero-contact-cta{min-height:38px;padding:8px 12px;font-size:12px;margin-bottom:10px}}
