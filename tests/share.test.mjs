@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import vm from 'node:vm';
 const source=readFileSync(new URL('../app.js',import.meta.url),'utf8');const functions=source.slice(source.indexOf('function shareURL('),source.indexOf("$('closeShare').onclick"));
-let opened=0,shared=null;const nodes={shareName:{},shareURL:{},shareDialog:{showModal(){opened++}}};const navigator={share:async d=>{shared=d},canShare:()=>true};const context=vm.createContext({navigator,getApps:()=>[{id:'a b',name:'Test',description:'Description'}],$:id=>nodes[id],encodeURIComponent,safeIcon:()=>''});vm.runInContext(functions,context);await vm.runInContext("shareApp('a b')",context);assert.equal(shared.url,'https://meapps-it.github.io/SimplexApp/#app/a%20b');assert.equal(opened,0);
+let opened=0,shared=null,calls=[];const nodes={shareName:{},shareURL:{},shareDialog:{showModal(){opened++}}};
+const navigator={share:async d=>{shared=d;calls.push(d)},canShare:()=>true};
+const context=vm.createContext({navigator,getApps:()=>[{id:'a b',name:'Test',description:'Description',promoImages:['https://example.test/old.png','https://example.test/latest.png']}],$:id=>nodes[id],encodeURIComponent,location:{href:'https://meapps-it.github.io/SimplexApp/'},URL,Map,File,safeIcon:()=>'',fetch:async url=>{assert.equal(url,'https://example.test/latest.png');return new Response('image',{headers:{'Content-Type':'image/png'}})}});
+vm.runInContext(readFileSync(new URL('../media.js',import.meta.url),'utf8'),context);vm.runInContext(functions,context);
+await vm.runInContext("shareApp('a b')",context);assert.equal(shared.url,'https://meapps-it.github.io/SimplexApp/#app/a%20b');assert.equal(shared.files[0].type,'image/png');assert.ok(shared.text.includes('Description'));assert.equal(opened,0);
 navigator.share=async()=>{throw Object.assign(Error(),{name:'AbortError'})};await vm.runInContext("shareApp('a b')",context);assert.equal(opened,0);
+navigator.canShare=data=>!data.files;navigator.share=async d=>shared=d;await vm.runInContext("shareApp('a b')",context);assert.equal(shared.files,undefined);assert.equal(opened,0);
+navigator.canShare=()=>true;calls=[];navigator.share=async d=>{calls.push(d);if(d.files)throw Error('file rejected');shared=d};await vm.runInContext("shareApp('a b')",context);assert.equal(calls.length,2);assert.equal(shared.files,undefined);
 navigator.share=undefined;await vm.runInContext("shareApp('a b')",context);assert.equal(opened,1);assert.equal(nodes.shareName.textContent,'Condividi Test');assert.equal(nodes.shareURL.value,shared.url);
-console.log('PASS: native per-app sharing, canonical encoded link, quiet cancellation and copy-link fallback.');
+console.log('PASS: latest advertising image plus text/link, quiet cancellation, unsupported/rejected file fallback and copy-link fallback.');

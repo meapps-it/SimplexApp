@@ -43,4 +43,7 @@ nav{grid-template-columns:repeat(3,1fr)}
 .screen-swipe-note{text-align:center;color:#66768b;font-size:12px;margin:8px 0 0}
 @media(max-width:600px){#screenDialog{width:calc(100% - 18px);padding:10px}.screen-nav{width:40px;height:54px;font-size:30px}.screen-nav.prev{left:4px}.screen-nav.next{right:4px}}
 
-.promo-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.promo-card{min-width:0;padding:12px;border:1px solid var(--line,#d8e2ef);border-radius:18px}.promo-card img{display:block;width:100%;height:360px;object-fit:contain;background:#10233e;border-radius:12px}.promo-card p{font-weight:600}.promo-actions{display:flex;flex-wrap:wrap;gap:8px}.promo-actions button{min-height:48px;flex:1}.promo-card a:focus-visible{outline:3px solid #3e8cff;outline-offset:4px}@media(max-width:520px){.promo-gallery{grid-template-columns:1fr}.promo-card img{height:auto;max-height:480px;min-height:160px}}
+/* Official Italian Google Play badge, kept at its original aspect ratio. */
+.detail-actions .google-play-download{display:flex;flex:0 1 194px;flex-direction:column;align-items:center;justify-content:center;align-self:center;gap:2px;max-width:100%;min-height:48px;text-decoration:none;color:var(--ink);font-size:14px;font-weight:650;text-align:center}
+.google-play-download img{display:block;width:194px;max-width:100%;height:auto}
+.google-play-download span{line-height:1.4}

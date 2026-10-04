@@ -59,8 +59,12 @@ Il tasto Indietro del browser/Android usa la cronologia delle schermate: torna d
 - Impostazioni contiene account/GitHub, grafica, identità sito e backup. Il pulsante Sito torna al catalogo; Disconnetti account termina esplicitamente l'accesso.
 - Browser differenti, navigazione privata o cancellazione dei dati richiedono un nuovo accesso. Sessioni revocate richiedono nuove credenziali.
 
-### Immagini promozionali
+### Immagini pubblicitarie e condivisione app
 
-La scheda app mostra le immagini promozionali separate dagli screenshot, con download e condivisione del file quando supportata dal browser. Nell’Admin puoi caricare fino a 6 immagini (8 MB ciascuna) oppure usare URL HTTPS. L’elenco `promoImages` è preservato da salvataggio, esportazione e importazione. Un elenco vuoto rimuove anche il materiale iniziale. Turni Operai Italia e NoiDue usano le immagini originali in `assets/promotional`. Nessun post viene pubblicato automaticamente.
+Nell’Admin puoi caricare fino a 6 immagini PNG/JPEG/WebP (8 MB ciascuna). L’ultima immagine dell’elenco viene allegata a **Condividi app**, insieme a testo e link della scheda. Viene preparata all’apertura della scheda per mantenere veloce la condivisione. Turni Operai Italia e NoiDue usano le immagini originali fornite dall’utente in `assets/promotional`. Non appare una galleria pubblica e non ci sono pulsanti per scaricare o condividere l’immagine separatamente.
+
+La condivisione dei file richiede un browser compatibile con Web Share; il social scelto decide come utilizzare immagine, testo e link. Se i file non sono supportati o l’immagine non si carica, resta disponibile la condivisione del link. Copiare il link non allega un file. Un elenco `promoImages` vuoto rimuove il materiale iniziale. Salvataggio, esportazione e importazione conservano l’elenco.
+
+Il download Google Play usa il badge ufficiale italiano nelle proporzioni originali e il link Play della scheda. Senza un link Play non viene mostrato il badge.
 
 Verifica: `node --test tests/*.test.mjs`.
