@@ -3,6 +3,8 @@ import { uploadAsset } from './github-upload.ts';
 const ORIGIN='https://meapps-it.github.io';
 const REPO='meapps-it/SimplexApp';
 const MAX_APK=2*1024*1024*1024-1;
+const DEMO_BUCKET='simplex-demo';
+const DEMO_ARTICLE_RE=/^demo-art-(00[1-9]|010)$/;
 const cors={'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Headers':'authorization, apikey, content-type, x-file-size','Access-Control-Allow-Methods':'POST, OPTIONS','Vary':'Origin'};
 const base=Deno.env.get('SUPABASE_URL')!;
 const service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -12,23 +14,103 @@ async function db(path:string,method='GET',body?:unknown){const r=await fetch(ba
 async function github(token:string,path:string,method='GET',body?:unknown){const r=await fetch('https://api.github.com/'+path,{method,headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok)throw Error(r.status===401||r.status===403?'Accesso GitHub rifiutato: verifica permessi e scadenza della connessione.':'GitHub non ha completato l’operazione ('+r.status+').');return r.status===204?null:r.json()}
 const str=(v:unknown,max:number)=>typeof v==='string'?v.trim().slice(0,max):'';
 function cleanCategories(v:unknown){if(!Array.isArray(v))return ['Produttività','Comunicazione','Utility','Giochi'];const out=[...new Set(v.map(x=>str(x,80)).filter(Boolean))];return out.length?out.slice(0,100):['Produttività','Comunicazione','Utility','Giochi']}
+function cleanModules(v:unknown){
+ if(!v||typeof v!=='object'||Array.isArray(v))return {};
+ const out:Record<string,boolean>={};
+ for(const [k,val] of Object.entries(v as Record<string,unknown>)){
+  const key=str(k,60).replace(/[^a-zA-Z0-9_-]/g,'');
+  if(key&&Object.keys(out).length<60)out[key]=val===true;
+ }
+ return out;
+}
+function demoStoragePath(path:string){return path.split('/').map(encodeURIComponent).join('/')}
+async function validDemoLicense(key:string){
+ if(!/^[a-f0-9]{48}$/.test(key))return false;
+ const rows=await db('simplex_clients?license_key=eq.'+encodeURIComponent(key)+'&select=status,expires_at');
+ if(!rows.length)return false;
+ const c=rows[0];
+ if(c.status!=='demo')return false;
+ return !(c.expires_at&&new Date(c.expires_at).getTime()<Date.now());
+}
+function cleanClient(x:any){
+ if(!x||!str(x.name,160))throw Error('Inserisci il nome del cliente');
+ const status=['demo','active','suspended','expired'].includes(x.status)?x.status:'demo';
+ const amount=Number(x.amount||0);if(!Number.isFinite(amount)||amount<0||amount>999999999)throw Error('Importo non valido');
+ const demoDays=Math.max(1,Math.min(365,Math.trunc(Number(x.demo_days)||7)));
+ const date=(v:unknown)=>{if(!v)return null;const d=new Date(String(v));if(Number.isNaN(d.getTime()))throw Error('Data non valida');return d.toISOString()};
+ return {name:str(x.name,160),product_id:str(x.product_id,100)||null,status,paid:x.paid===true,amount:Math.round(amount*100)/100,paid_at:date(x.paid_at),expires_at:date(x.expires_at),demo_days:demoDays,modules:cleanModules(x.modules),notes:str(x.notes,4000),updated_at:new Date().toISOString()};
+}
 function validateApp(x:any){if(!x||!/^[a-zA-Z0-9_-]{1,100}$/.test(x.id)||!str(x.name,160))throw Error('Nome o identificativo app non valido');const y:any={id:x.id,name:str(x.name,160),customizable:x.customizable===true,featured:!!x.featured,visiblePublic:x.visiblePublic!==false,fullDescription:str(x.fullDescription,12000),screenshots:[]};if(x.screenshots!==undefined&&(!Array.isArray(x.screenshots)||x.screenshots.length>12))throw Error('Inserisci al massimo 12 screenshot');for(const image of x.screenshots||[]){if(typeof image!=='string'||image.length>3000||!/^https:\/\//.test(image))throw Error('Usa link HTTPS per gli screenshot');y.screenshots.push(image.trim())}for(const k of ['promoImages']){if(x[k]===undefined)continue;if(!Array.isArray(x[k])||x[k].length>6)throw Error('Inserisci al massimo 6 contenuti per tipo');y[k]=x[k].map((u:unknown)=>{if(typeof u!=='string'||u.length>3000||!/^https:\/\//.test(u))throw Error('Usa link HTTPS per i contenuti promozionali');const parsed=new URL(u);if(parsed.username||parsed.password)throw Error('Link promozionale non valido');return parsed.href})}for(const k of ['description','version','status','update','updateKind','category'])y[k]=str(x[k],k==='description'||k==='update'?2000:120);if(!y.category)y.category='Utility';for(const k of ['playUrl','apkUrl','icon','webUrl','demoUrl']){y[k]=str(x[k],3000);if(y[k]&&!/^https:\/\//.test(y[k]))throw Error('Usa indirizzi HTTPS per link e icone');}for(const k of ['webUrl','demoUrl'])if(y[k]){const u=new URL(y[k]);if(u.protocol!=='https:'||u.username||u.password)throw Error('Link online non valido')}return y}
 Deno.serve(async(req:Request)=>{
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers:cors});
  if(req.method!=='POST')return reply({error:'Metodo non consentito'},405);
  if(req.headers.get('Origin')&&req.headers.get('Origin')!==ORIGIN)return reply({error:'Origine non consentita'},403);
  try{
+  const url=new URL(req.url),action=url.searchParams.get('action');
+  if(action==='client-config'){
+   const {licenseKey}=await req.json().catch(()=>({}));
+   const key=str(licenseKey,120);
+   if(!/^[a-f0-9]{48}$/.test(key))return reply({error:'Licenza non valida'},400);
+   const rows=await db('simplex_clients?license_key=eq.'+encodeURIComponent(key)+'&select=name,product_id,status,paid,expires_at,demo_days,modules,updated_at');
+   if(!rows.length)return reply({error:'Licenza non trovata'},404);
+   const c=rows[0];const expired=c.expires_at&&new Date(c.expires_at).getTime()<Date.now();
+   return reply({client:{name:c.name,productId:c.product_id,status:expired?'expired':c.status,paid:c.paid===true,expiresAt:c.expires_at,demoDays:c.demo_days,modules:c.modules||{},updatedAt:c.updated_at}});
+  }
   const auth=req.headers.get('Authorization')||'';
   if(!auth.startsWith('Bearer '))return reply({error:'Accedi all’Admin'},401);
   const ur=await fetch(base+'/auth/v1/user',{headers:{apikey:service,Authorization:auth}});
   if(!ur.ok)return reply({error:'Sessione scaduta: accedi di nuovo'},401);
   const user=await ur.json();const allowed=await db('simplex_admins?user_id=eq.'+encodeURIComponent(user.id)+'&select=user_id');
   if(!allowed.length)return reply({error:'Questo account non è autorizzato a pubblicare'},403);
-  const url=new URL(req.url),action=url.searchParams.get('action');
+  if(action==='demo-photo-upload'){
+   const article=str(url.searchParams.get('article'),40),license=str(url.searchParams.get('license'),120);
+   if(!DEMO_ARTICLE_RE.test(article))return reply({error:'Articolo demo non valido'},400);
+   if(!(await validDemoLicense(license)))return reply({error:'Licenza demo non valida'},403);
+   const type=(req.headers.get('content-type')||'').split(';')[0].trim().toLowerCase();
+   if(!['image/jpeg','image/png','image/webp'].includes(type))return reply({error:'Usa una foto JPG, PNG o WebP'},400);
+   const body=await req.arrayBuffer();
+   if(body.byteLength<16||body.byteLength>8*1024*1024)return reply({error:'Foto non valida o troppo grande (massimo 8 MB)'},400);
+   const bytes=new Uint8Array(body);
+   const jpg=bytes[0]===0xff&&bytes[1]===0xd8&&bytes[2]===0xff;
+   const png=bytes[0]===137&&bytes[1]===80&&bytes[2]===78&&bytes[3]===71;
+   const webp=bytes[0]===82&&bytes[1]===73&&bytes[2]===70&&bytes[3]===70&&bytes[8]===87&&bytes[9]===69&&bytes[10]===66&&bytes[11]===80;
+   if((type==='image/jpeg'&&!jpg)||(type==='image/png'&&!png)||(type==='image/webp'&&!webp))return reply({error:'Il contenuto della foto non corrisponde al formato dichiarato'},400);
+   const path='products/'+article+'/main';
+   const up=await fetch(base+'/storage/v1/object/'+DEMO_BUCKET+'/'+demoStoragePath(path),{method:'POST',headers:{apikey:service,Authorization:`Bearer ${service}`,'Content-Type':type,'x-upsert':'true','cache-control':'3600'},body});
+   if(!up.ok){const msg=await up.text().catch(()=> '');throw Error('Caricamento foto demo non riuscito'+(msg?' ('+up.status+')':''));}
+   return reply({url:base+'/storage/v1/object/public/'+DEMO_BUCKET+'/'+demoStoragePath(path)+'?v='+Date.now()});
+  }
+  if(action==='product-links'){
+   const rows=await db('simplex_product_private?select=product_id,full_url');
+   return reply({links:rows});
+  }
+  if(action==='product-link-save'){
+   const {id,fullUrl}=await req.json();
+   if(!/^[a-zA-Z0-9_-]{1,100}$/.test(id))throw Error('Prodotto non valido');
+   if(!fullUrl){await db('simplex_product_private?product_id=eq.'+encodeURIComponent(id),'DELETE');return reply({saved:true})}
+   if(typeof fullUrl!=='string'||fullUrl.length>3000)throw Error('Link non valido');
+   const parsed=new URL(fullUrl);if(parsed.protocol!=='https:'||parsed.username||parsed.password)throw Error('Usa HTTPS senza credenziali');
+   await db('simplex_product_private','POST',{product_id:id,full_url:parsed.href,updated_at:new Date().toISOString()});return reply({saved:true});
+  }
   if(action==='status'){const saved=await db('simplex_private_settings?id=eq.1&select=id');return reply({admin:true,email:user.email,githubConnected:!!saved.length})}
   if(action==='list'){const rows=await db('simplex_apps?select=payload&order=id');return reply({apps:rows.map((x:any)=>x.payload)})}
   if(action==='connect'){const {token}=await req.json();if(typeof token!=='string'||token.length<20||token.length>300)return reply({error:'Credenziale GitHub non valida'},400);const owner=await github(token,'user');if(owner.login.toLowerCase()!=='meapps-it')return reply({error:'Collega l’account GitHub meapps-it'},403);const repo=await github(token,'repos/'+REPO);if(!repo.permissions?.push)return reply({error:'Il collegamento deve consentire scrittura sul repository SimplexApp'},403);await db('simplex_private_settings','POST',{id:1,github_token:token});return reply({connected:true})}
   if(action==='disconnect'){await db('simplex_private_settings?id=eq.1','DELETE');return reply({connected:false})}
+  if(action==='clients-list'){
+   const rows=await db('simplex_clients?select=id,name,product_id,status,paid,amount,paid_at,expires_at,demo_days,modules,notes,license_key,created_at,updated_at&order=name.asc');
+   return reply({clients:rows});
+  }
+  if(action==='client-save'){
+   const body=await req.json();const client=cleanClient(body?.client);const id=str(body?.client?.id,80);
+   let rows;
+   if(id){if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');rows=await db('simplex_clients?id=eq.'+encodeURIComponent(id),'PATCH',client)}
+   else rows=await db('simplex_clients','POST',client);
+   return reply({client:rows?.[0]||null});
+  }
+  if(action==='client-delete'){
+   const body=await req.json();const id=str(body?.id,80);if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');
+   await db('simplex_clients?id=eq.'+encodeURIComponent(id),'DELETE');return reply({deleted:true});
+  }
   if(action==='save'){const {app}=await req.json();const a=validateApp(app);await db('simplex_apps','POST',{id:a.id,payload:a,updated_at:new Date().toISOString()});return reply({app:a})}
   if(action==='import'){const {apps,site}=await req.json();if(!Array.isArray(apps)||apps.length>1000)throw Error('Catalogo non valido');const a=apps.map(validateApp);if(new Set(a.map(x=>x.id)).size!==a.length)throw Error('ID duplicati');const s=site?{title:str(site.title,160)||'SimplexApp',tagline:str(site.tagline,300),hero:str(site.hero,2000),theme:site.theme==='classic'?'classic':'premium',categories:cleanCategories(site.categories)}:null;await db('rpc/simplex_replace_catalog','POST',{p_apps:a,p_site:s});return reply({published:true})}
   if(action==='delete'){const {id}=await req.json();if(!/^[a-zA-Z0-9_-]{1,100}$/.test(id))throw Error('ID non valido');await db('simplex_apps?id=eq.'+encodeURIComponent(id),'DELETE');return reply({deleted:true})}
@@ -51,3 +133,4 @@ Deno.serve(async(req:Request)=>{
   return reply({error:'Operazione non riconosciuta'},400);
  }catch(e){return reply({error:e instanceof Error?e.message:'Operazione non riuscita'},400)}
 });
+
