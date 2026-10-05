@@ -16,3 +16,5 @@ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');const i
 for(const id of ['adminDemosTab','adminDemosPanel','adminModulesTab','adminModulesPanel','workspaceStats','moduleSelectionCount','configureClientModules'])assert.ok(ids.includes(id));
 const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');assert.ok(sw.includes('workspace.css?v=1'));assert.ok(sw.includes('app.js?v=16'));
 console.log('PASS: combined client filters, expired demos, compatible module count, section wiring and offline asset versioning.');
+
+const offlineFiles=JSON.parse(sw.match(/const FILES=(\[[^;]+\]);/)[1]);assert.equal(new Set(offlineFiles).size,offlineFiles.length,'Offline requests must be unique for Cache.addAll');
