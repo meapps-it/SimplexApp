@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const source=readFileSync(new URL('../app.js',import.meta.url),'utf8');
+const start=source.lastIndexOf("let workspaceSection='apps';");
+const end=source.indexOf("$('adminDemosTab').onclick",start);
+const nodes={clientSearch:{value:''},clientFilter:{value:''},paymentFilter:{value:''},moduleSelectionCount:{textContent:''}};
+const inputs=[{checked:true,closest:()=>({style:{display:'flex'}})},{checked:false,closest:()=>({style:{display:'flex'}})},{checked:true,closest:()=>({style:{display:'none'}})}];
+const clients=[{id:'1',name:'Officina Sole',product_id:'vg',status:'active',paid:true},{id:'2',name:'Mercato Luna',product_id:'vg',status:'demo',paid:false,expires_at:'2000-01-01'},{id:'3',name:'Turni Alba',product_id:'toi',status:'demo',paid:false}];
+const context=vm.createContext({Date,URL,$:id=>nodes[id],adminClients:clients,getApps:()=>[{id:'vg',name:'Gestionale V&G'},{id:'toi',name:'Turni Operai Italia'}],document:{querySelectorAll:()=>inputs}});
+vm.runInContext(source.slice(start,end),context);
+const filtered=()=>Array.from(vm.runInContext('filteredClients().map(c=>c.id)',context));
+assert.deepEqual(filtered(),['1','2','3']);nodes.clientSearch.value='gestionale';assert.deepEqual(filtered(),['1','2']);nodes.paymentFilter.value='unpaid';assert.deepEqual(filtered(),['2']);nodes.clientFilter.value='demo';assert.deepEqual(filtered(),[]);nodes.clientSearch.value='';assert.deepEqual(filtered(),['3']);nodes.clientFilter.value='expired';assert.deepEqual(filtered(),['2']);
+vm.runInContext('updateModuleCount()',context);assert.equal(nodes.moduleSelectionCount.textContent,'· 1 di 2');
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'No duplicate element IDs');
+for(const id of ['adminDemosTab','adminDemosPanel','adminModulesTab','adminModulesPanel','workspaceStats','moduleSelectionCount','configureClientModules'])assert.ok(ids.includes(id));
+const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');assert.ok(sw.includes('workspace.css?v=1'));assert.ok(sw.includes('app.js?v=16'));
+console.log('PASS: combined client filters, expired demos, compatible module count, section wiring and offline asset versioning.');
