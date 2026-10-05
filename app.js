@@ -91,11 +91,27 @@ $('saveTheme').onclick=()=>publishTheme($('siteTheme').value);
 $('restoreClassic').onclick=()=>publishTheme('classic');
 
 
+const PRODUCT_MODULES={
+  vg:['clienti','ordini','magazzino','scanner','statistiche','export','backup_cloud','premium'],
+  toi:['turni','ferie','backup_cloud','premium'],
+  spesa:['scanner','statistiche','backup_cloud','premium'],
+  app_1790955596835:['premium','backup_cloud']
+};
+function updateClientModuleVisibility(){
+  const product=$('clientProduct')?.value||'';
+  const allowed=PRODUCT_MODULES[product]||null;
+  document.querySelectorAll('.client-module').forEach(input=>{
+    const label=input.closest('label');
+    const show=!allowed||allowed.includes(input.dataset.module);
+    if(label)label.style.display=show?'flex':'none';
+    if(!show)input.checked=false;
+  });
+}
 let adminClients=[];
 function clientDate(v){if(!v)return '';const d=new Date(v);if(Number.isNaN(d.getTime()))return '';return d.toISOString().slice(0,10)}
 function clientStatusLabel(s){return ({demo:'Demo',active:'Attivo',suspended:'Sospeso',expired:'Scaduto'})[s]||'Demo'}
 function clientStatusTone(c){const expired=c.expires_at&&new Date(c.expires_at).getTime()<Date.now();if(expired||c.status==='expired'||c.status==='suspended')return 'red';if(c.status==='active'&&c.paid)return 'green';return 'yellow'}
-function syncClientProducts(selected=''){const sel=$('clientProduct');if(!sel)return;sel.innerHTML='<option value="">Nessun prodotto specifico</option>'+getApps().map(a=>`<option value="${esc(a.id)}">${esc(a.name)}</option>`).join('');sel.value=selected||''}
+function syncClientProducts(selected=''){const sel=$('clientProduct');if(!sel)return;sel.innerHTML='<option value="">Nessun prodotto specifico</option>'+getApps().map(a=>`<option value="${esc(a.id)}">${esc(a.name)}</option>`).join('');sel.value=selected||'';updateClientModuleVisibility()}
 function renderClients(){const box=$('clientsList');if(!box)return;$('clientCount').textContent=adminClients.length?'('+adminClients.length+')':'';box.innerHTML=adminClients.length?adminClients.map(c=>{const product=getApps().find(a=>a.id===c.product_id)?.name||c.product_id||'Nessun prodotto';const enabled=Object.entries(c.modules||{}).filter(([,v])=>v===true).length;const tone=clientStatusTone(c);const state=c.expires_at&&new Date(c.expires_at).getTime()<Date.now()?'Scaduto':clientStatusLabel(c.status);return `<article class="client-row"><div class="client-main"><strong>${esc(c.name)}</strong><small>${esc(product)} · ${enabled} moduli attivi</small></div><div class="client-meta"><span class="client-badge ${tone}">${esc(state)}</span><span class="client-badge ${c.paid?'green':'red'}">${c.paid?'Pagato':'Non pagato'}</span>${c.amount?'<span class="client-badge">€ '+Number(c.amount).toFixed(2).replace('.',',')+'</span>':''}</div><button class="secondary" data-client-edit="${esc(c.id)}">Modifica</button></article>`}).join(''):'<p class="note">Nessun cliente ancora. Aggiungine uno quando vuoi iniziare a gestire licenze e moduli.</p>'}
 async function loadClients(){if(!$('adminClientsPanel'))return;$('clientsStatus').textContent='Caricamento clienti…';try{const r=await adminCall('clients-list',{});adminClients=Array.isArray(r.clients)?r.clients:[];renderClients();$('clientsStatus').textContent=''}catch(e){$('clientsStatus').textContent=e.message}}
 function resetClientForm(){['clientId','clientName','clientAmount','clientPaidAt','clientExpiresAt','clientNotes','clientLicense'].forEach(id=>$(id).value='');$('clientStatus').value='demo';$('clientPaid').checked=false;$('clientDemoDays').value='7';document.querySelectorAll('.client-module').forEach(x=>x.checked=false);syncClientProducts('');$('clientLicenseBox').classList.add('hidden')}
@@ -106,6 +122,7 @@ $('addClient').onclick=()=>openClientEditor();
 $('cancelClient').onclick=closeClientEditor;
 $('cancelClientBottom').onclick=closeClientEditor;
 document.addEventListener('click',e=>{const b=e.target.closest('[data-client-edit]');if(!b)return;const c=adminClients.find(x=>x.id===b.dataset.clientEdit);if(c)openClientEditor(c)});
+$('clientProduct').onchange=updateClientModuleVisibility;
 $('clientPaid').onchange=()=>{if($('clientPaid').checked&&!$('clientPaidAt').value)$('clientPaidAt').value=new Date().toISOString().slice(0,10)};
 $('saveClient').onclick=async()=>{const name=$('clientName').value.trim();if(!name)return toast('Inserisci il nome del cliente');const client={id:$('clientId').value||undefined,name,product_id:$('clientProduct').value||null,status:$('clientStatus').value,paid:$('clientPaid').checked,amount:Number($('clientAmount').value||0),paid_at:$('clientPaidAt').value||null,expires_at:$('clientExpiresAt').value||null,demo_days:Number($('clientDemoDays').value||7),modules:readClientModules(),notes:$('clientNotes').value.trim()};try{$('saveClient').disabled=true;$('saveClient').textContent='Salvataggio…';const r=await adminCall('client-save',{client});if(r.client){const i=adminClients.findIndex(x=>x.id===r.client.id);if(i>=0)adminClients[i]=r.client;else adminClients.push(r.client);adminClients.sort((a,b)=>a.name.localeCompare(b.name,'it'));renderClients();toast('Cliente salvato');closeClientEditor();}else throw Error('Salvataggio non confermato')}catch(e){toast(e.message)}finally{$('saveClient').disabled=false;$('saveClient').textContent='Salva cliente'}};
 
