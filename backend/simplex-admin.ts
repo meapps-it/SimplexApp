@@ -38,6 +38,22 @@ function supportedModules(values:unknown,definitions:any[],strict=false){
 async function definitionsFor(product:string|null){
  if(!product)return [];const rows=await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(product)+'&select=modules');return rows[0]?.modules||[];
 }
+async function managerFor(product:string|null){
+ if(!product)return null;
+ const rows=await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(product)+'&select=management_url');
+ const endpoint=rows[0]?.management_url;if(!endpoint)return null;
+ const target=new URL(endpoint);
+ const allowedPath=target.pathname==='/functions/v1/simplex-modules'||target.pathname==='/functions/v1/simplex-control';
+ if(target.protocol!=='https:'||!target.hostname.endsWith('.supabase.co')||!allowedPath||target.username||target.password||target.port)throw Error('Destinazione gestione non valida');
+ return target.href;
+}
+async function callManager(product:string|null,auth:string,payload:unknown){
+ const endpoint=await managerFor(product);if(!endpoint)return null;
+ const response=await fetch(endpoint,{method:'POST',headers:{Authorization:auth,'Content-Type':'application/json'},body:JSON.stringify(payload)});
+ const result=await response.json().catch(()=>({error:'Risposta prodotto non valida'}));
+ if(!response.ok)throw Error(result?.error||'Sincronizzazione prodotto non riuscita');
+ return result;
+}
 function demoStoragePath(path:string){return path.split('/').map(encodeURIComponent).join('/')}
 async function validDemoLicense(key:string){
  if(!/^[a-f0-9]{48}$/.test(key))return false;
@@ -81,13 +97,10 @@ Deno.serve(async(req:Request)=>{
   if(action==='product-modules'){
    const rows=await db('simplex_product_modules?select=product_id,modules,management_url');return reply({products:rows.map((p:any)=>({product_id:p.product_id,modules:p.modules,managed:!!p.management_url}))});
   }
-  if(action==='product-customers'||action==='product-customer-modules'){
+  if(action==='product-customers'||action==='product-customer-modules'||action==='product-customer-status'){
    const body=await req.json();if(typeof body.id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(body.id))throw Error('Applicazione non valida');
-   const products=await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(body.id)+'&select=management_url');const endpoint=products[0]?.management_url;
-   if(!endpoint)throw Error('Gestione server non configurata per questa applicazione');
-   const target=new URL(endpoint);if(target.protocol!=='https:'||!target.hostname.endsWith('.supabase.co')||target.pathname!=='/functions/v1/simplex-modules'||target.username||target.password||target.port)throw Error('Destinazione gestione non valida');
-   const response=await fetch(target.href,{method:'POST',headers:{Authorization:auth,'Content-Type':'application/json'},body:JSON.stringify(action==='product-customers'?{action:'list'}:{action:'save',customerId:body.customerId,modules:body.modules})});
-   const result=await response.json();return reply(result,response.status);
+   const payload=action==='product-customers'?{action:'list'}:action==='product-customer-status'?{action:'status',customerId:body.customerId,status:body.status}:{action:'save',customerId:body.customerId,modules:body.modules};
+   const result=await callManager(body.id,auth,payload);if(!result)throw Error('Gestione server non configurata per questa applicazione');return reply(result);
   }
   if(action==='product-modules-save'){
    const {id,modules}=await req.json();if(typeof id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(id))throw Error('Prodotto non valido');
@@ -129,7 +142,7 @@ Deno.serve(async(req:Request)=>{
   if(action==='connect'){const {token}=await req.json();if(typeof token!=='string'||token.length<20||token.length>300)return reply({error:'Credenziale GitHub non valida'},400);const owner=await github(token,'user');if(owner.login.toLowerCase()!=='meapps-it')return reply({error:'Collega l’account GitHub meapps-it'},403);const repo=await github(token,'repos/'+REPO);if(!repo.permissions?.push)return reply({error:'Il collegamento deve consentire scrittura sul repository SimplexApp'},403);await db('simplex_private_settings','POST',{id:1,github_token:token});return reply({connected:true})}
   if(action==='disconnect'){await db('simplex_private_settings?id=eq.1','DELETE');return reply({connected:false})}
   if(action==='clients-list'){
-   const rows=await db('simplex_clients?select=id,name,product_id,status,paid,amount,paid_at,expires_at,demo_days,modules,notes,license_key,created_at,updated_at&order=name.asc');
+   const rows=await db('simplex_clients?select=id,name,product_id,status,paid,amount,paid_at,expires_at,demo_days,modules,notes,license_key,remote_customer_id,created_at,updated_at&order=name.asc');
    const products=await db('simplex_product_modules?select=product_id,modules');const definitions=new Map(products.map((p:any)=>[p.product_id,p.modules]));
    for(const c of rows)c.modules=supportedModules(c.modules,definitions.get(c.product_id) as any[]||[]);
    return reply({clients:rows});
@@ -140,7 +153,19 @@ Deno.serve(async(req:Request)=>{
    let rows;
    if(id){if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');rows=await db('simplex_clients?id=eq.'+encodeURIComponent(id),'PATCH',client)}
    else rows=await db('simplex_clients','POST',client);
-   return reply({client:rows?.[0]||null});
+   let saved=rows?.[0]||null;
+   if(saved&&client.product_id&&client.status!=='demo'&&await managerFor(client.product_id)){
+    const provision=await callManager(client.product_id,auth,{action:'provision',externalId:saved.id,name:saved.name,status:saved.status});
+    const remoteId=provision?.customerId;
+    if(typeof remoteId==='string'&&/^[0-9a-f-]{36}$/i.test(remoteId)){
+     const linked=await db('simplex_clients?id=eq.'+encodeURIComponent(saved.id),'PATCH',{remote_customer_id:remoteId,updated_at:new Date().toISOString()});
+     saved=linked?.[0]||{...saved,remote_customer_id:remoteId};
+     const remoteStatus=saved.status==='active'?'active':saved.status==='expired'?'expired':'suspended';
+     await callManager(client.product_id,auth,{action:'status',customerId:remoteId,status:remoteStatus});
+     await callManager(client.product_id,auth,{action:'save',customerId:remoteId,modules:saved.modules||{}});
+    }
+   }
+   return reply({client:saved});
   }
   if(action==='client-delete'){
    const body=await req.json();const id=str(body?.id,80);if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');
