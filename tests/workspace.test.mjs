@@ -14,7 +14,7 @@ assert.deepEqual(filtered(),['1','2','3']);nodes.clientSearch.value='gestionale'
 vm.runInContext('updateModuleCount()',context);assert.equal(nodes.moduleSelectionCount.textContent,'· 1 di 2');
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'No duplicate element IDs');
 for(const id of ['adminDemosTab','adminDemosPanel','adminModulesTab','adminModulesPanel','workspaceStats','moduleSelectionCount','configureClientModules','moduleProductSelect','productModulesList','clientModuleGrid'])assert.ok(ids.includes(id));
-const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');assert.ok(sw.includes('workspace.css?v=3'));assert.ok(sw.includes('app.js?v=18'));
+const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');assert.ok(sw.includes('workspace.css?v=3'));assert.ok(sw.includes('app.js?v=19'));
 console.log('PASS: combined client filters, expired demos, compatible module count, section wiring and offline asset versioning.');
 
 const offlineFiles=JSON.parse(sw.match(/const FILES=(\[[^;]+\]);/)[1]);assert.equal(new Set(offlineFiles).size,offlineFiles.length,'Offline requests must be unique for Cache.addAll');
