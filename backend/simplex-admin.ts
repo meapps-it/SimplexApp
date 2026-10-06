@@ -23,6 +23,21 @@ function cleanModules(v:unknown){
  }
  return out;
 }
+function moduleDefinitions(value:unknown){
+ if(!Array.isArray(value)||value.length>60)throw Error('Elenco moduli non valido');
+ const seen=new Set();return value.map((m:any)=>{
+  if(!m||typeof m.key!=='string'||!/^[a-zA-Z0-9_-]{1,60}$/.test(m.key)||!str(m.label,120)||seen.has(m.key))throw Error('Modulo non valido o duplicato');
+  seen.add(m.key);return {key:m.key,label:str(m.label,120),ready:m.ready!==false};
+ });
+}
+function supportedModules(values:unknown,definitions:any[],strict=false){
+ const valuesClean=cleanModules(values),allowed=new Set(definitions.filter(m=>m.ready!==false).map(m=>m.key));
+ if(strict&&Object.entries(valuesClean).some(([key,on])=>on&&!allowed.has(key)))throw Error('Modulo non disponibile per questa applicazione');
+ return Object.fromEntries([...allowed].map(key=>[key,valuesClean[key]===true]));
+}
+async function definitionsFor(product:string|null){
+ if(!product)return [];const rows=await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(product)+'&select=modules');return rows[0]?.modules||[];
+}
 function demoStoragePath(path:string){return path.split('/').map(encodeURIComponent).join('/')}
 async function validDemoLicense(key:string){
  if(!/^[a-f0-9]{48}$/.test(key))return false;
@@ -54,6 +69,7 @@ Deno.serve(async(req:Request)=>{
    const rows=await db('simplex_clients?license_key=eq.'+encodeURIComponent(key)+'&select=name,product_id,status,paid,expires_at,demo_days,modules,updated_at');
    if(!rows.length)return reply({error:'Licenza non trovata'},404);
    const c=rows[0];const expired=c.expires_at&&new Date(c.expires_at).getTime()<Date.now();
+   c.modules=supportedModules(c.modules,await definitionsFor(c.product_id));
    return reply({client:{name:c.name,productId:c.product_id,status:expired?'expired':c.status,paid:c.paid===true,expiresAt:c.expires_at,demoDays:c.demo_days,modules:c.modules||{},updatedAt:c.updated_at}});
   }
   const auth=req.headers.get('Authorization')||'';
@@ -62,6 +78,22 @@ Deno.serve(async(req:Request)=>{
   if(!ur.ok)return reply({error:'Sessione scaduta: accedi di nuovo'},401);
   const user=await ur.json();const allowed=await db('simplex_admins?user_id=eq.'+encodeURIComponent(user.id)+'&select=user_id');
   if(!allowed.length)return reply({error:'Questo account non è autorizzato a pubblicare'},403);
+  if(action==='product-modules'){
+   const rows=await db('simplex_product_modules?select=product_id,modules,management_url');return reply({products:rows.map((p:any)=>({product_id:p.product_id,modules:p.modules,managed:!!p.management_url}))});
+  }
+  if(action==='product-customers'||action==='product-customer-modules'){
+   const body=await req.json();if(typeof body.id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(body.id))throw Error('Applicazione non valida');
+   const products=await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(body.id)+'&select=management_url');const endpoint=products[0]?.management_url;
+   if(!endpoint)throw Error('Gestione server non configurata per questa applicazione');
+   const target=new URL(endpoint);if(target.protocol!=='https:'||!target.hostname.endsWith('.supabase.co')||target.pathname!=='/functions/v1/simplex-modules'||target.username||target.password||target.port)throw Error('Destinazione gestione non valida');
+   const response=await fetch(target.href,{method:'POST',headers:{Authorization:auth,'Content-Type':'application/json'},body:JSON.stringify(action==='product-customers'?{action:'list'}:{action:'save',customerId:body.customerId,modules:body.modules})});
+   const result=await response.json();return reply(result,response.status);
+  }
+  if(action==='product-modules-save'){
+   const {id,modules}=await req.json();if(typeof id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(id))throw Error('Prodotto non valido');
+   const apps=await db('simplex_apps?id=eq.'+encodeURIComponent(id)+'&select=id');if(!apps.length)throw Error('Applicazione non trovata');
+   const definitions=moduleDefinitions(modules);await db('simplex_product_modules','POST',{product_id:id,modules:definitions,updated_at:new Date().toISOString()});return reply({saved:true});
+  }
   if(action==='demo-photo-upload'){
    const article=str(url.searchParams.get('article'),40),license=str(url.searchParams.get('license'),120);
    if(!DEMO_ARTICLE_RE.test(article))return reply({error:'Articolo demo non valido'},400);
@@ -98,10 +130,13 @@ Deno.serve(async(req:Request)=>{
   if(action==='disconnect'){await db('simplex_private_settings?id=eq.1','DELETE');return reply({connected:false})}
   if(action==='clients-list'){
    const rows=await db('simplex_clients?select=id,name,product_id,status,paid,amount,paid_at,expires_at,demo_days,modules,notes,license_key,created_at,updated_at&order=name.asc');
+   const products=await db('simplex_product_modules?select=product_id,modules');const definitions=new Map(products.map((p:any)=>[p.product_id,p.modules]));
+   for(const c of rows)c.modules=supportedModules(c.modules,definitions.get(c.product_id) as any[]||[]);
    return reply({clients:rows});
   }
   if(action==='client-save'){
    const body=await req.json();const client=cleanClient(body?.client);const id=str(body?.client?.id,80);
+   client.modules=supportedModules(client.modules,await definitionsFor(client.product_id),true);
    let rows;
    if(id){if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');rows=await db('simplex_clients?id=eq.'+encodeURIComponent(id),'PATCH',client)}
    else rows=await db('simplex_clients','POST',client);
@@ -133,4 +168,3 @@ Deno.serve(async(req:Request)=>{
   return reply({error:'Operazione non riconosciuta'},400);
  }catch(e){return reply({error:e instanceof Error?e.message:'Operazione non riuscita'},400)}
 });
-

@@ -86,3 +86,14 @@ Richiedi personalizzazione porta alla Home, al modulo contatti, con argomento e 
 Accesso **Area gestione** nell’intestazione e nel footer. Le sezioni **App**, **Clienti**, **Demo**, **Moduli** e **Impostazioni** separano le operazioni. Clienti offre ricerca per nome/prodotto, filtri per stato effettivo (scadenza inclusa) e pagamento. Demo raccoglie i link delle app e i clienti in prova; Configura apre la scheda corrispondente. Moduli permette di scegliere un cliente e aprire direttamente la configurazione, con conteggio e selezione di tutti i moduli compatibili. Le modifiche sono applicate soltanto con Salva cliente, attraverso l’autorizzazione server esistente. I moduli rimangono quelli supportati dal backend: non vengono inventate funzioni aggiuntive nei prodotti.
 
 Il nuovo CSS mantiene font di sistema, identità blu e immagini originali della mascotte. Navigazione admin aderente allo scorrimento, riepilogo cliccabile e azioni di salvataggio visibili. Classica conserva l’impostazione del catalogo; l’organizzazione admin è condivisa.
+
+
+### Apertura privata e moduli per applicazione
+
+L’elenco App e la scheda pubblica, dopo verifica dell’amministratore, mostrano Apri versione completa. Il collegamento arriva esclusivamente da `simplex_product_private`, tramite API autenticata; non viene esportato nel catalogo pubblico. Il pulsante Link completo nell’elenco Admin consente di configurarlo.
+
+Moduli richiede prima la scelta dell’applicazione, poi mostra soltanto i moduli e i clienti del prodotto. Le definizioni sono in `simplex_product_modules`, accessibile solo al server. Il backend rifiuta funzioni non supportate o in sviluppo. Per nuove app registrare le definizioni dopo aver verificato il loro sorgente, con l’azione amministrativa `product-modules-save`; non usare un elenco universale.
+
+Gestionale & Inventario usa il collegamento server `management_url`: SimplexApp invia la sessione amministrativa al gateway `simplex-modules` del progetto Gestionale. Il gateway verifica di nuovo il ruolo attraverso SimplexApp e aggiorna `sg_modules` mediante una RPC atomica riservata al server. Il modulo seleziona i clienti reali della versione completa, distinti dalle schede dimostrative del catalogo. Dopo il salvataggio premere Sincronizza nel Gestionale per aggiornare la schermata; i permessi sul server cambiano immediatamente.
+
+Le altre app mantengono la configurazione dei clienti SimplexApp: questo non modifica automaticamente le funzioni o il billing delle app Android. Un nuovo backend deve implementare il gateway del proprio prodotto, validare il ruolo e registrare la destinazione soltanto lato server. Nessuna service role key attraversa il frontend.

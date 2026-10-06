@@ -1,0 +1,192 @@
+{
+  "vg": [
+    {
+      "key": "clienti",
+      "label": "Clienti",
+      "ready": true
+    },
+    {
+      "key": "ordini",
+      "label": "Ordini",
+      "ready": true
+    },
+    {
+      "key": "magazzino",
+      "label": "Magazzino",
+      "ready": true
+    },
+    {
+      "key": "scanner",
+      "label": "Scanner",
+      "ready": true
+    },
+    {
+      "key": "statistiche",
+      "label": "Statistiche",
+      "ready": true
+    },
+    {
+      "key": "export",
+      "label": "Esportazioni",
+      "ready": true
+    },
+    {
+      "key": "backup_cloud",
+      "label": "Backup cloud",
+      "ready": true
+    },
+    {
+      "key": "premium",
+      "label": "Premium",
+      "ready": true
+    }
+  ],
+  "app_1791161781530": [
+    {
+      "key": "clienti",
+      "label": "Clienti",
+      "ready": true
+    },
+    {
+      "key": "ordini",
+      "label": "Ordini",
+      "ready": true
+    },
+    {
+      "key": "magazzino",
+      "label": "Magazzino",
+      "ready": true
+    },
+    {
+      "key": "scanner",
+      "label": "Scanner",
+      "ready": true
+    },
+    {
+      "key": "statistiche",
+      "label": "Statistiche",
+      "ready": true
+    },
+    {
+      "key": "export",
+      "label": "Esportazioni",
+      "ready": true
+    },
+    {
+      "key": "backup_cloud",
+      "label": "Backup cloud",
+      "ready": true
+    },
+    {
+      "key": "premium",
+      "label": "Premium",
+      "ready": true
+    }
+  ],
+  "toi": [
+    {
+      "key": "turni",
+      "label": "Turni",
+      "ready": true
+    },
+    {
+      "key": "ferie",
+      "label": "Ferie / ROL",
+      "ready": true
+    },
+    {
+      "key": "backup_cloud",
+      "label": "Backup cloud",
+      "ready": true
+    },
+    {
+      "key": "premium",
+      "label": "Premium",
+      "ready": true
+    }
+  ],
+  "spesa": [
+    {
+      "key": "scanner",
+      "label": "Scanner",
+      "ready": true
+    },
+    {
+      "key": "statistiche",
+      "label": "Statistiche",
+      "ready": true
+    },
+    {
+      "key": "backup_cloud",
+      "label": "Backup cloud",
+      "ready": true
+    },
+    {
+      "key": "premium",
+      "label": "Premium",
+      "ready": true
+    }
+  ],
+  "app_1791209955436": [
+    {
+      "key": "dashboard",
+      "label": "Panoramica",
+      "ready": true
+    },
+    {
+      "key": "products",
+      "label": "Articoli",
+      "ready": true
+    },
+    {
+      "key": "categories",
+      "label": "Categorie",
+      "ready": true
+    },
+    {
+      "key": "inventory",
+      "label": "Magazzino",
+      "ready": true
+    },
+    {
+      "key": "clients",
+      "label": "Clienti",
+      "ready": true
+    },
+    {
+      "key": "suppliers",
+      "label": "Fornitori",
+      "ready": true
+    },
+    {
+      "key": "orders",
+      "label": "Ordini",
+      "ready": true
+    },
+    {
+      "key": "quotes",
+      "label": "Preventivi",
+      "ready": false
+    },
+    {
+      "key": "statistics",
+      "label": "Statistiche",
+      "ready": false
+    },
+    {
+      "key": "documents",
+      "label": "Documenti",
+      "ready": false
+    },
+    {
+      "key": "backup",
+      "label": "Backup",
+      "ready": true
+    },
+    {
+      "key": "settings",
+      "label": "Impostazioni",
+      "ready": true
+    }
+  ]
+}
