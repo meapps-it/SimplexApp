@@ -140,3 +140,6 @@ html[data-theme] #adminView .admin-card{padding:18px}
 html[data-theme] #adminView .admin-item{padding:14px}
 }
 @media(prefers-reduced-motion:reduce){html[data-theme] .app-card{transition:none}}
+/* Match the inherited CTA selector specificity. */
+html[data-theme] .home-intro .hero-contact-cta{background:#b34833;color:#fff;box-shadow:none;min-height:44px;font-size:14px}
+html[data-theme] .home-intro .hero-contact-cta:hover{background:#993a28}
