@@ -167,6 +167,17 @@ Deno.serve(async(req:Request)=>{
    }
    return reply({client:saved});
   }
+  if(action==='client-issue-license'){
+   const body=await req.json();const id=str(body.id,80);if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');
+   const clients=await db('simplex_clients?id=eq.'+encodeURIComponent(id)+'&select=id,name,product_id,status,modules,remote_customer_id');const client=clients[0];
+   if(!client||client.status!=='active')throw Error('Salva prima il cliente con stato Attivo e i moduli autorizzati');
+   let customerId=client.remote_customer_id;
+   if(!customerId){const created=await callManager(client.product_id,auth,{action:'provision',externalId:client.id,name:client.name,status:'active'});customerId=created?.customerId;if(!customerId)throw Error('Gestione prodotto non configurata');await db('simplex_clients?id=eq.'+encodeURIComponent(id),'PATCH',{remote_customer_id:customerId});}
+   const expiresAt=new Date(body.expiresAt);if(!body.expiresAt||!Number.isFinite(expiresAt.getTime())||expiresAt.getTime()<=Date.now())throw Error('Scegli una scadenza futura');
+   const modules=supportedModules(client.modules,await definitionsFor(client.product_id),true);
+   const result=await callManager(client.product_id,auth,{action:'issue-license',customerId,email:str(body.email,254),plan:str(body.plan,80),expiresAt:expiresAt.toISOString(),modules});
+   if(!result?.key)throw Error('Codice non generato');return reply(result);
+  }
   if(action==='client-delete'){
    const body=await req.json();const id=str(body?.id,80);if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');
    await db('simplex_clients?id=eq.'+encodeURIComponent(id),'DELETE');return reply({deleted:true});

@@ -97,3 +97,7 @@ Moduli richiede prima la scelta dell’applicazione, poi mostra soltanto i modul
 Gestionale & Inventario usa il collegamento server `management_url`: SimplexApp invia la sessione amministrativa al gateway `simplex-modules` del progetto Gestionale. Il gateway verifica di nuovo il ruolo attraverso SimplexApp e aggiorna `sg_modules` mediante una RPC atomica riservata al server. Il modulo seleziona i clienti reali della versione completa, distinti dalle schede dimostrative del catalogo. Dopo il salvataggio premere Sincronizza nel Gestionale per aggiornare la schermata; i permessi sul server cambiano immediatamente.
 
 Le altre app mantengono la configurazione dei clienti SimplexApp: questo non modifica automaticamente le funzioni o il billing delle app Android. Un nuovo backend deve implementare il gateway del proprio prodotto, validare il ruolo e registrare la destinazione soltanto lato server. Nessuna service role key attraversa il frontend.
+
+
+## Attivazione PWA unica
+Nella scheda Cliente è disponibile «Attivazione app unica»: salva il cliente Attivo e i suoi moduli, indica email del proprietario, piano e scadenza, genera e copia il codice monouso. Non viene salvato in chiaro. Il cliente accede con email verificata alla PWA e inserisce il codice. Per utenti già attivati continua a usare la gestione moduli e sospensione. Il vecchio codice configurazione non è il nuovo codice di attivazione.
