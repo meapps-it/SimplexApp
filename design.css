@@ -1,110 +1,110 @@
 /* SimplexApp — colourful, calm and accessible. Shared public/admin skin. */
-html[data-theme]{--ink:#242d30;--muted:#647171;--blue:#174c50;--workspace-border:#dce6df;--workspace-navy:#242d30;background:#faf8f1}
-html[data-theme] body{background:#faf8f1;color:var(--ink)}
+html[data-theme]{--ink:#20355e;--muted:#52617c;--blue:#1954d1;--workspace-border:#20355e;--workspace-navy:#20355e;background:#f2f5ff}
+html[data-theme] body{background:#f2f5ff;color:var(--ink)}
 html[data-theme] .app-shell{max-width:1200px;padding:28px 28px 118px}
-html[data-theme] .cover{margin:0 0 24px;padding:26px 32px 30px;border:1px solid #d8e6df;border-radius:28px;background:linear-gradient(125deg,#edf7f1,#fff9ec);box-shadow:none;color:var(--ink)}
+html[data-theme] .cover{margin:0 0 24px;padding:26px 32px 30px;border:3px solid #20355e;border-radius:28px;background:linear-gradient(125deg,#eaf1ff,#fff3be);box-shadow:none;color:var(--ink)}
 html[data-theme] .top{color:var(--ink)}
 html[data-theme] .brand strong{font-size:32px;letter-spacing:-1px}
-html[data-theme] .brand strong em{color:#174c50}
-html[data-theme] .brand span{font-size:13px;color:#647171;line-height:1.5;margin-top:4px}
+html[data-theme] .brand strong em{color:#1954d1}
+html[data-theme] .brand span{font-size:13px;color:#52617c;line-height:1.5;margin-top:4px}
 html[data-theme] .brand>img{width:46px;height:46px;border-radius:14px}
-html[data-theme] .top-admin{background:#ffffffa8;color:#174c50;border:1px solid #c8ded4;border-radius:12px;font-size:13px;padding:12px 16px}
+html[data-theme] .top-admin{background:#ffffffa8;color:#1954d1;border:3px solid #20355e;border-radius:12px;font-size:13px;padding:12px 16px}
 html[data-theme] .hero{display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:center;margin:30px 0 0;min-height:0;background:none;box-shadow:none;overflow:visible}
 html[data-theme] .hero-copy{grid-column:1;grid-row:1;padding:0;max-width:none}
 html[data-theme] .hero h1{font-size:clamp(30px,3.6vw,48px);line-height:1.12;letter-spacing:-1.5px;margin:0 0 20px;max-width:560px}
-html[data-theme] .hero h1 b{color:#174c50}
-html[data-theme] .mascot{display:block;grid-column:2;grid-row:1;width:100%;height:auto;max-height:280px;object-fit:contain;object-position:center;border-radius:24px;background:#e6f5fa;border:6px solid #ffffffb3;transform:rotate(2deg);box-shadow:0 12px 24px #173c4012}
-html[data-theme] .mini{display:flex;gap:22px;color:#647171}
+html[data-theme] .hero h1 b{color:#1954d1}
+html[data-theme] .mascot{display:block;grid-column:2;grid-row:1;width:100%;height:auto;max-height:280px;object-fit:contain;object-position:center;border-radius:24px;background:#eaf1ff;border:6px solid #ffffffb3;transform:rotate(2deg);box-shadow:0 12px 24px #173c4012}
+html[data-theme] .mini{display:flex;gap:22px;color:#52617c}
 html[data-theme] .mini div{font-size:12px;line-height:1.4}
 html[data-theme] .mini img{width:32px;height:32px;margin-bottom:5px}
-html[data-theme] .panel{background:#fff;border:1px solid #dce6df;border-radius:22px;padding:24px;margin-top:24px;box-shadow:none}
+html[data-theme] .panel{background:#fff;border:3px solid #20355e;border-radius:22px;padding:24px;margin-top:24px;box-shadow:none}
 html[data-theme] .section-head{margin:0 0 20px;gap:12px}
 html[data-theme] .section-head h2{font-size:23px;letter-spacing:-.6px;line-height:1.3}
-html[data-theme] .linkbtn,html[data-theme] .detail-category{color:#174c50}
-html[data-theme] .home-intro{background:#fff;border:1px solid #dce6df;border-radius:18px;margin:0;padding:22px 24px;box-shadow:none;gap:24px}
-html[data-theme] .home-intro p{color:#566666;font-size:16px;line-height:1.6}
-html[data-theme] .btn,html[data-theme] .primary{background:#174c50;color:#fff;border:1px solid transparent;border-radius:12px;box-shadow:none;min-height:44px;font-weight:700;line-height:1.4}
-html[data-theme] .btn:hover,html[data-theme] .primary:hover{background:#103b3e}
-html[data-theme] .hero-contact-cta,html[data-theme] .business-cta{background:#174c50;color:#fff;border-radius:12px;box-shadow:none;font-weight:700;min-height:44px}
-html[data-theme] .hero-contact-cta:hover,html[data-theme] .business-cta:hover{background:#103b3e}
-html[data-theme] .secondary,html[data-theme] .backbtn,html[data-theme] .admin-entry{background:#eaf4ee;color:#174c50;border:1px solid #cfe2d8;border-radius:12px;min-height:44px}
+html[data-theme] .linkbtn,html[data-theme] .detail-category{color:#1954d1}
+html[data-theme] .home-intro{background:#fff;border:3px solid #20355e;border-radius:18px;margin:0;padding:22px 24px;box-shadow:none;gap:24px}
+html[data-theme] .home-intro p{color:#52617c;font-size:16px;line-height:1.6}
+html[data-theme] .btn,html[data-theme] .primary{background:#1954d1;color:#fff;border:3px solid transparent;border-radius:12px;box-shadow:none;min-height:44px;font-weight:700;line-height:1.4}
+html[data-theme] .btn:hover,html[data-theme] .primary:hover{background:#123c9a}
+html[data-theme] .hero-contact-cta,html[data-theme] .business-cta{background:#1954d1;color:#fff;border-radius:12px;box-shadow:none;font-weight:700;min-height:44px}
+html[data-theme] .hero-contact-cta:hover,html[data-theme] .business-cta:hover{background:#123c9a}
+html[data-theme] .secondary,html[data-theme] .backbtn,html[data-theme] .admin-entry{background:#eaf1ff;color:#1954d1;border:3px solid #20355e;border-radius:12px;min-height:44px}
 html[data-theme] .danger{background:#fff0ed;color:#a3372a}
 html[data-theme] .business-grid{gap:14px}
-html[data-theme] .business-grid article{background:#faf4ea;border:1px solid #f0e1ca;box-shadow:none;border-radius:18px;padding:20px}
-html[data-theme] .business-grid article:nth-child(2){background:#f7f1e2;border-color:#e5dec8}
-html[data-theme] .business-grid article:nth-child(3){background:#eef6ef;border-color:#dcebdd}
-html[data-theme] .business-grid h3{color:#242d30}
-html[data-theme] .business-grid p,html[data-theme] .business-lead{color:#647171;line-height:1.6}
+html[data-theme] .business-grid article{background:#fff3be;border:3px solid #20355e;box-shadow:none;border-radius:18px;padding:20px}
+html[data-theme] .business-grid article:nth-child(2){background:#fff3be;border-color:#20355e}
+html[data-theme] .business-grid article:nth-child(3){background:#eaf1ff;border-color:#20355e}
+html[data-theme] .business-grid h3{color:#20355e}
+html[data-theme] .business-grid p,html[data-theme] .business-lead{color:#52617c;line-height:1.6}
 html[data-theme] .featured,html[data-theme] .catalog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row;grid-auto-columns:auto;gap:16px;overflow:visible}
-html[data-theme] .app-card,html[data-theme] .featured .app-card,html[data-theme] .catalog .app-card{display:flex;flex-direction:column;align-items:stretch;padding:20px;border:1px solid #dce6df;border-radius:18px;background:#fff!important;box-shadow:none;min-height:0;gap:0;transition:border-color .18s,box-shadow .18s}
-html[data-theme] .app-card:hover{border-color:#80b3a5;box-shadow:0 8px 24px #173c400a}
-html[data-theme] .featured .app-card{background:#eef7f1!important;border-color:#d5e7dd}
-html[data-theme] .featured .app-card:nth-child(2){background:#eff7f1!important;border-color:#dbeadd}
-html[data-theme] .featured .app-card:nth-child(3){background:#fff8e9!important;border-color:#eee2c8}
+html[data-theme] .app-card,html[data-theme] .featured .app-card,html[data-theme] .catalog .app-card{display:flex;flex-direction:column;align-items:stretch;padding:20px;border:3px solid #20355e;border-radius:18px;background:#fff!important;box-shadow:none;min-height:0;gap:0;transition:border-color .18s,box-shadow .18s}
+html[data-theme] .app-card:hover{border-color:#1954d1;box-shadow:0 8px 24px #173c400a}
+html[data-theme] .featured .app-card{background:#eaf1ff!important;border-color:#20355e}
+html[data-theme] .featured .app-card:nth-child(2){background:#eaf1ff!important;border-color:#20355e}
+html[data-theme] .featured .app-card:nth-child(3){background:#fff3be!important;border-color:#20355e}
 html[data-theme] .card-top,html[data-theme] .featured .card-top{display:flex;align-items:flex-start;gap:14px;grid-row:auto;margin-bottom:14px}
 html[data-theme] .app-card .app-icon,html[data-theme] .featured .app-icon,html[data-theme] .catalog .app-icon{width:64px;height:64px;flex:0 0 64px;border-radius:16px;object-fit:contain;margin:0;box-shadow:none;background:#fff}
 html[data-theme] .app-card h3,html[data-theme] .featured h3,html[data-theme] .catalog h3{font-size:17px;line-height:1.35;letter-spacing:-.3px;white-space:normal;min-height:0;margin:2px 24px 8px 0}
 html[data-theme] .featured h3{margin-right:0}
-html[data-theme] .app-card p,html[data-theme] .featured p,html[data-theme] .catalog p{font-size:13px;line-height:1.55;color:#647171;min-height:0;margin:0 0 8px;-webkit-line-clamp:3}
+html[data-theme] .app-card p,html[data-theme] .featured p,html[data-theme] .catalog p{font-size:13px;line-height:1.55;color:#52617c;min-height:0;margin:0 0 8px;-webkit-line-clamp:3}
 html[data-theme] .app-card .meta{font-size:11px;gap:6px;margin:4px 0 10px}
 html[data-theme] .status,html[data-theme] .featured .status{font-size:11px}
 html[data-theme] .app-card .actions,html[data-theme] .featured .actions{align-self:stretch;margin-top:auto;padding-top:12px;gap:8px}
 html[data-theme] .app-card .btn,html[data-theme] .featured .btn,html[data-theme] .catalog .btn{font-size:14px;min-height:44px;border-radius:12px}
-html[data-theme] .share-app,html[data-theme] .featured .share-app{grid-column:auto;margin-top:8px;min-height:40px;border:1px solid #dce6df;background:#ffffffb3;color:#466366;border-radius:12px;font-size:12px;position:relative;z-index:3}
-html[data-theme] .version{background:#f0f4ef;border-color:#dce5db;color:#647171}
+html[data-theme] .share-app,html[data-theme] .featured .share-app{grid-column:auto;margin-top:8px;min-height:40px;border:3px solid #20355e;background:#ffffffb3;color:#52617c;border-radius:12px;font-size:12px;position:relative;z-index:3}
+html[data-theme] .version{background:#eaf1ff;border-color:#20355e;color:#52617c}
 html[data-theme] .categories{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-html[data-theme] .categories button{background:#faf1df!important;border:1px solid #f0dfbb;color:#74520f;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:18px 12px;border-radius:18px;min-height:120px;box-shadow:none}
-html[data-theme] .categories button:nth-child(2){background:#edf5f0!important;border-color:#d6e5da;color:#174c50}
-html[data-theme] .categories button:nth-child(3){background:#eaf5ee!important;border-color:#d6eade;color:#23634a}
-html[data-theme] .categories button:nth-child(4){background:#fbf2df!important;border-color:#ebdfbc;color:#74520f}
+html[data-theme] .categories button{background:#fff3be!important;border:3px solid #20355e;color:#15264b;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:18px 12px;border-radius:18px;min-height:120px;box-shadow:none}
+html[data-theme] .categories button:nth-child(2){background:#eaf1ff!important;border-color:#20355e;color:#1954d1}
+html[data-theme] .categories button:nth-child(3){background:#eaf1ff!important;border-color:#20355e;color:#1954d1}
+html[data-theme] .categories button:nth-child(4){background:#fff3be!important;border-color:#20355e;color:#15264b}
 html[data-theme] .categories img{width:52px;height:48px;object-fit:contain;margin-bottom:10px}
 html[data-theme] .categories b{font-size:14px;letter-spacing:0}
 html[data-theme] .categories small{display:none}
-html[data-theme] .categories button[aria-pressed=true]{outline:3px solid #174c50}
-html[data-theme] .search,html[data-theme] #adminSearch{background:#fafbf8;border:1px solid #d8e2d8;border-radius:12px;min-height:46px;font-size:14px;box-shadow:none}
-html[data-theme] .update{background:#fafbf8;border:1px solid #dce6df;border-radius:16px;padding:16px;box-shadow:none}
+html[data-theme] .categories button[aria-pressed=true]{outline:3px solid #1954d1}
+html[data-theme] .search,html[data-theme] #adminSearch{background:#fafbf8;border:3px solid #20355e;border-radius:12px;min-height:46px;font-size:14px;box-shadow:none}
+html[data-theme] .update{background:#fafbf8;border:3px solid #20355e;border-radius:16px;padding:16px;box-shadow:none}
 html[data-theme] .update b{font-size:14px}
-html[data-theme] .update p{font-size:13px;line-height:1.5;color:#647171}
-html[data-theme] .badge{background:#e8f3ec;color:#174c50;font-size:9px}
-html[data-theme] #clearFilters{background:#e8f3ec;color:#174c50}
-html[data-theme] nav{max-width:600px;background:#ffffffef;border:1px solid #dce6df;border-radius:22px;padding:6px;box-shadow:0 8px 28px #173c4018}
-html[data-theme] nav button{border-radius:16px;color:#647171}
-html[data-theme] nav button.active{background:#e3f3eb;color:#174c50}
+html[data-theme] .update p{font-size:13px;line-height:1.5;color:#52617c}
+html[data-theme] .badge{background:#eaf1ff;color:#1954d1;font-size:9px}
+html[data-theme] #clearFilters{background:#eaf1ff;color:#1954d1}
+html[data-theme] nav{max-width:600px;background:#ffffffef;border:3px solid #20355e;border-radius:22px;padding:6px;box-shadow:0 8px 28px #173c4018}
+html[data-theme] nav button{border-radius:16px;color:#52617c}
+html[data-theme] nav button.active{background:#eaf1ff;color:#1954d1}
 html[data-theme] nav button.active img{filter:grayscale(1) brightness(.5) sepia(1) saturate(2) hue-rotate(120deg)}
-html[data-theme] .detail-hero{background:linear-gradient(120deg,#edf7f1,#fff8e9);box-shadow:none;border:1px solid #d8e6df}
-html[data-theme] .detail-panel{background:#fff;border:1px solid #dce6df;border-radius:22px}
-html[data-theme] .detail-hero h1{color:#242d30}
-html[data-theme] .site-footer{border-color:#dce6df;color:#647171}
-html[data-theme] #toast{background:#173c40}
-html[data-theme] dialog{background:#fffcf8;color:#242d30;border:1px solid #dce6df}
+html[data-theme] .detail-hero{background:linear-gradient(120deg,#eaf1ff,#fff3be);box-shadow:none;border:3px solid #20355e}
+html[data-theme] .detail-panel{background:#fff;border:3px solid #20355e;border-radius:22px}
+html[data-theme] .detail-hero h1{color:#20355e}
+html[data-theme] .site-footer{border-color:#20355e;color:#52617c}
+html[data-theme] #toast{background:#20355e}
+html[data-theme] dialog{background:#fffcf8;color:#20355e;border:3px solid #20355e}
 html[data-theme] dialog::backdrop{background:#173c4066}
-html[data-theme] dialog .close-dialog{background:#eaf4ee;color:#174c50}
-html[data-theme] button:focus-visible,html[data-theme] a:focus-visible,html[data-theme] input:focus-visible,html[data-theme] select:focus-visible,html[data-theme] textarea:focus-visible{outline:3px solid #c28a17;outline-offset:3px}
-html[data-theme] input,html[data-theme] textarea,html[data-theme] select{accent-color:#174c50}
-html[data-theme] #adminView .admin-head{color:#242d30;padding:24px;border:1px solid #d8e6df;border-radius:22px;background:linear-gradient(120deg,#edf7f1,#fff8e9)}
-html[data-theme] #adminView .eyebrow{color:#487875}
-html[data-theme] #adminView .admin-head>div>div{color:#647171}
-html[data-theme] #adminView .admin-card{border-color:#dce6df;border-radius:20px;background:#fff;box-shadow:none}
-html[data-theme] #adminView .admin-tabs{background:#fff;border-color:#dce6df;border-radius:16px}
-html[data-theme] #adminView .admin-tabs .active{background:#e3f3eb;color:#174c50}
-html[data-theme] #adminView label,html[data-theme] #adminView .note{color:#566666}
-html[data-theme] #adminView .editor-group legend{color:#174c50}
-html[data-theme] #adminView .admin-item{background:#fcfdf9;border:1px solid #dce6df;border-radius:16px;padding:18px}
-html[data-theme] #adminView .admin-app-icon{background:#eaf4ee}
-html[data-theme] #adminView .admin-launch-demo{background:#e5f2ea;color:#174c50;border-color:#cce2d5}
-html[data-theme] #adminView .admin-launch-full,html[data-theme] #adminView .admin-launch-web{background:#17755d;color:#fff;border-color:#17755d}
-html[data-theme] #adminView .admin-manage-actions button{background:#fff;color:#466366;border-color:#d8e2d8}
-html[data-theme] #adminView .admin-more{border-color:#dce6df}
-html[data-theme] .workspace-stats button{border-color:#dce6df;background:#f7f1e2}
-html[data-theme] .workspace-stats button:nth-child(2){background:#eef6ef}
+html[data-theme] dialog .close-dialog{background:#eaf1ff;color:#1954d1}
+html[data-theme] button:focus-visible,html[data-theme] a:focus-visible,html[data-theme] input:focus-visible,html[data-theme] select:focus-visible,html[data-theme] textarea:focus-visible{outline:3px solid #1954d1;outline-offset:3px}
+html[data-theme] input,html[data-theme] textarea,html[data-theme] select{accent-color:#1954d1}
+html[data-theme] #adminView .admin-head{color:#20355e;padding:24px;border:3px solid #20355e;border-radius:22px;background:linear-gradient(120deg,#eaf1ff,#fff3be)}
+html[data-theme] #adminView .eyebrow{color:#1954d1}
+html[data-theme] #adminView .admin-head>div>div{color:#52617c}
+html[data-theme] #adminView .admin-card{border-color:#20355e;border-radius:20px;background:#fff;box-shadow:none}
+html[data-theme] #adminView .admin-tabs{background:#fff;border-color:#20355e;border-radius:16px}
+html[data-theme] #adminView .admin-tabs .active{background:#eaf1ff;color:#1954d1}
+html[data-theme] #adminView label,html[data-theme] #adminView .note{color:#52617c}
+html[data-theme] #adminView .editor-group legend{color:#1954d1}
+html[data-theme] #adminView .admin-item{background:#fcfdf9;border:3px solid #20355e;border-radius:16px;padding:18px}
+html[data-theme] #adminView .admin-app-icon{background:#eaf1ff}
+html[data-theme] #adminView .admin-launch-demo{background:#eaf1ff;color:#1954d1;border-color:#20355e}
+html[data-theme] #adminView .admin-launch-full,html[data-theme] #adminView .admin-launch-web{background:#1954d1;color:#fff;border-color:#1954d1}
+html[data-theme] #adminView .admin-manage-actions button{background:#fff;color:#52617c;border-color:#20355e}
+html[data-theme] #adminView .admin-more{border-color:#20355e}
+html[data-theme] .workspace-stats button{border-color:#20355e;background:#fff3be}
+html[data-theme] .workspace-stats button:nth-child(2){background:#eaf1ff}
 html[data-theme] .workspace-stats button:nth-child(3){background:#fff1e9}
-html[data-theme] .workspace-stats button:nth-child(4){background:#fbf2df}
-html[data-theme] .workspace-stats strong{color:#242d30}
-html[data-theme] #adminView .module-grid label{background:#fafbf8;border-color:#dce6df}
-html[data-theme] #adminView .module-grid label:has(input:checked){background:#e3f3eb;border-color:#80b3a5;color:#174c50}
-html[data-theme] #adminView .module-grid input{accent-color:#174c50}
-html[data-theme] .license-box,html[data-theme] #clientsStatus{background:#eff6ef;border-color:#d8e6df;color:#466366}
-html[data-theme] progress{accent-color:#174c50}
+html[data-theme] .workspace-stats button:nth-child(4){background:#fff3be}
+html[data-theme] .workspace-stats strong{color:#20355e}
+html[data-theme] #adminView .module-grid label{background:#fafbf8;border-color:#20355e}
+html[data-theme] #adminView .module-grid label:has(input:checked){background:#eaf1ff;border-color:#1954d1;color:#1954d1}
+html[data-theme] #adminView .module-grid input{accent-color:#1954d1}
+html[data-theme] .license-box,html[data-theme] #clientsStatus{background:#eaf1ff;border-color:#20355e;color:#52617c}
+html[data-theme] progress{accent-color:#1954d1}
 @media(max-width:900px){html[data-theme] .catalog{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-theme] .featured{grid-template-columns:1fr}html[data-theme] .featured .card-top{align-items:center}html[data-theme] .featured .app-card{padding:18px}}
 @media(max-width:700px){
 html[data-theme] .app-shell{padding:14px 14px 112px}
@@ -141,8 +141,8 @@ html[data-theme] #adminView .admin-item{padding:14px}
 }
 @media(prefers-reduced-motion:reduce){html[data-theme] .app-card{transition:none}}
 /* Match the inherited CTA selector specificity. */
-html[data-theme] .home-intro .hero-contact-cta{background:#174c50;color:#fff;box-shadow:none;min-height:44px;font-size:14px}
-html[data-theme] .home-intro .hero-contact-cta:hover{background:#103b3e}
+html[data-theme] .home-intro .hero-contact-cta{background:#1954d1;color:#fff;box-shadow:none;min-height:44px;font-size:14px}
+html[data-theme] .home-intro .hero-contact-cta:hover{background:#123c9a}
 
 /* Approved smartphone catalogue: three complete cards per row. */
 @media(max-width:700px){
@@ -158,8 +158,61 @@ html[data-theme] .app-card .external{display:none}
 html[data-theme] .featured .share-app,html[data-theme] .catalog .share-app{font-size:10px;min-height:40px;padding:5px 0;border-radius:10px}
 html[data-theme] .catalog .fav{right:1px;top:1px;padding:5px;min-width:30px;min-height:30px;background:#ffffffc9;border-radius:10px}
 html[data-theme] .catalog .fav img{width:16px;height:16px}
-html[data-theme] .categories button:nth-child(2){background:#fff7e4!important;border-color:#eee1bd;color:#74520f}
+html[data-theme] .categories button:nth-child(2){background:#fff3be!important;border-color:#20355e;color:#15264b}
 html[data-theme] .section-head h2{font-size:19px}
 }
-html[data-theme] .mini div:first-child img{background:#fff2ce}
-html[data-theme] .categories button[aria-pressed=true]{outline-color:#c28a17}
+html[data-theme] .mini div:first-child img{background:#fff3be}
+html[data-theme] .categories button[aria-pressed=true]{outline-color:#1954d1}
+
+/* Red, yellow and blue brand, with bold outlines and decorative mascot accents. */
+html[data-theme]{--ink:#15264b;--muted:#52617c;--blue:#1954d1;--red:#c32d32;--yellow:#ffd447;--edge:#20355e}
+html[data-theme] .cover{border:4px solid var(--edge);background:linear-gradient(120deg,#fff3be,#fffaf0 48%,#eaf1ff);box-shadow:6px 6px 0 var(--edge)}
+html[data-theme] .brand strong em,html[data-theme] .hero h1 b{color:var(--red)}
+html[data-theme] .mascot{border:4px solid var(--edge);box-shadow:5px 5px 0 var(--yellow);transform:none;object-fit:contain;background:#eaf1ff}
+html[data-theme] .panel,html[data-theme] .home-intro,html[data-theme] .detail-hero,html[data-theme] #adminView .admin-card{border:3px solid var(--edge);box-shadow:4px 4px 0 #20355e15}
+html[data-theme] .business-panel,html[data-theme] .contact-panel{border-top:8px solid var(--red)}
+html[data-theme] #catalogo{border-top:8px solid var(--blue)}
+html[data-theme] #novita{border-top:8px solid var(--yellow)}
+html[data-theme] .btn,html[data-theme] .primary,html[data-theme] .business-cta,html[data-theme] .home-intro .hero-contact-cta{border:3px solid var(--edge);box-shadow:2px 3px 0 var(--edge);background:var(--blue);color:#fff}
+html[data-theme] .home-intro .hero-contact-cta,html[data-theme] .business-cta{background:var(--red)}
+html[data-theme] .home-intro .hero-contact-cta:hover,html[data-theme] .business-cta:hover{background:#a72328}
+html[data-theme] .btn:hover,html[data-theme] .primary:hover{background:#123c9a}
+html[data-theme] .business-grid article:nth-child(2){background:#eaf1ff}
+html[data-theme] .business-grid article:nth-child(3){background:#fff0ee}
+html[data-theme] .categories button{background:var(--yellow)!important;border:3px solid var(--edge);color:var(--ink)}
+html[data-theme] .categories button:nth-child(2){background:var(--blue)!important;color:#fff;border-color:var(--edge)}
+html[data-theme] .categories button:nth-child(3){background:var(--red)!important;color:#fff;border-color:var(--edge)}
+html[data-theme] .categories button:nth-child(4){background:var(--yellow)!important;color:var(--ink)}
+html[data-theme] .categories button[aria-pressed=true]{outline:3px solid var(--blue);outline-offset:4px}
+html[data-theme] .featured .app-card:nth-child(3){background:#fff0ee!important}
+html[data-theme] .app-card{border-width:3px}
+html[data-theme] .app-card:hover{border-color:var(--blue)}
+html[data-theme] .top-admin{background:var(--yellow);color:var(--ink);border:3px solid var(--edge)}
+html[data-theme] nav{border:3px solid var(--edge);box-shadow:0 6px 0 #20355e20}
+html[data-theme] nav button.active{background:var(--yellow);color:var(--ink)}
+html[data-theme] nav button.active img{filter:none}
+html[data-theme] .section-head h2{min-width:0;overflow-wrap:break-word}
+html[data-theme] .section-mascot{display:block;width:88px;height:64px;object-fit:contain;border:3px solid var(--edge);border-radius:14px;background:#eaf1ff;flex-shrink:0}
+html[data-theme] .mascot-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+html[data-theme] .mascot-heading h2{margin:0;min-width:0}
+html[data-theme] #adminView .admin-head{border:4px solid var(--edge);background:linear-gradient(120deg,#eaf1ff,#fff3be)}
+html[data-theme] #adminView .admin-tabs{border:3px solid var(--edge)}
+html[data-theme] #adminView .admin-tabs .active{background:var(--yellow);color:var(--ink)}
+html[data-theme] #adminView .workspace-stats button,html[data-theme] #adminView .module-grid label,html[data-theme] #adminView .editor-group,html[data-theme] #adminView .editor-actions{border:3px solid var(--edge)}
+html[data-theme] #adminView .admin-manage-actions button,html[data-theme] #adminView .admin-launch-actions .btn{border:2px solid var(--edge)}
+html[data-theme] #adminView .admin-launch-full,html[data-theme] #adminView .admin-launch-web{background:var(--blue)}
+html[data-theme] .contact-panel input:not([type=checkbox]),html[data-theme] .contact-panel select,html[data-theme] .contact-panel textarea,html[data-theme] #adminView input:not([type=checkbox]):not([type=file]),html[data-theme] #adminView textarea,html[data-theme] #adminView select{border:2px solid #52617c;background:#fff;color:var(--ink)}
+html[data-theme] .danger{border:2px solid #ac2727;background:#fff0ee;color:#ac2727}
+html[data-theme] .site-footer{border-top:3px solid var(--edge)}
+html[data-theme] .footer-mascot{width:64px;height:48px;object-fit:contain;border-radius:12px;flex-shrink:0}
+@media(max-width:700px){
+html[data-theme] .cover{box-shadow:4px 4px 0 var(--edge)}
+html[data-theme] .mascot{max-height:none;height:auto;object-fit:contain}
+html[data-theme] .section-mascot{width:64px;height:48px;border-radius:10px}
+html[data-theme] .mascot-heading{gap:10px}
+html[data-theme] .business-panel .section-head h2{font-size:18px}
+html[data-theme] .catalog-head{flex-wrap:wrap}
+html[data-theme] .catalog-head .section-mascot{margin-left:auto}
+html[data-theme] .featured .btn,html[data-theme] .catalog .btn{border-width:2px;box-shadow:none}
+html[data-theme] .site-footer{flex-wrap:wrap;gap:12px}
+}
