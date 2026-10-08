@@ -1,0 +1,14 @@
+begin;
+alter table public.simplex_product_modules add column if not exists capabilities jsonb not null default '{}'::jsonb check(jsonb_typeof(capabilities)='object');
+alter table public.simplex_clients add column if not exists business_name text not null default '';
+alter table public.simplex_clients add column if not exists email text not null default '';
+alter table public.simplex_clients add column if not exists plan text not null default 'demo' check(plan in ('demo','base','premium','custom'));
+alter table public.simplex_clients add column if not exists branding jsonb not null default '{}'::jsonb check(jsonb_typeof(branding)='object');
+alter table public.simplex_clients add column if not exists sync_state text not null default 'legacy' check(sync_state in ('legacy','pending','synced','error'));
+alter table public.simplex_clients add column if not exists sync_error text;
+update public.simplex_clients set business_name=name where business_name='';
+update public.simplex_clients set plan='base' where status='active' and plan='demo';
+alter table public.simplex_clients enable row level security;
+revoke all on public.simplex_clients,public.simplex_product_modules from public,anon,authenticated;
+grant all on public.simplex_clients,public.simplex_product_modules to service_role;
+commit;

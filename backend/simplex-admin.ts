@@ -1,3 +1,5 @@
+import '../tenant-config.js';
+const tenantTools=(globalThis as any).SimplexTenants;
 import { uploadAsset } from './github-upload.ts';
 // GitHub credential is confined to a service-role-only table; never returned to clients.
 const ORIGIN='https://meapps-it.github.io';
@@ -27,13 +29,16 @@ function moduleDefinitions(value:unknown){
  if(!Array.isArray(value)||value.length>60)throw Error('Elenco moduli non valido');
  const seen=new Set();return value.map((m:any)=>{
   if(!m||typeof m.key!=='string'||!/^[a-zA-Z0-9_-]{1,60}$/.test(m.key)||!str(m.label,120)||seen.has(m.key))throw Error('Modulo non valido o duplicato');
-  seen.add(m.key);return {key:m.key,label:str(m.label,120),ready:m.ready!==false};
+  seen.add(m.key);return {key:m.key,label:str(m.label,120),ready:m.ready!==false,default_enabled:m.default_enabled!==false,requires:Array.isArray(m.requires)?m.requires.filter((k:any)=>typeof k==='string'&&/^[a-zA-Z0-9_-]{1,60}$/.test(k)):[],feature_requires:Array.isArray(m.feature_requires)?m.feature_requires.filter((k:any)=>typeof k==='string'&&/^[a-zA-Z0-9_-]{1,60}$/.test(k)):[]};
  });
 }
 function supportedModules(values:unknown,definitions:any[],strict=false){
  const valuesClean=cleanModules(values),allowed=new Set(definitions.filter(m=>m.ready!==false).map(m=>m.key));
  if(strict&&Object.entries(valuesClean).some(([key,on])=>on&&!allowed.has(key)))throw Error('Modulo non disponibile per questa applicazione');
- return Object.fromEntries([...allowed].map(key=>[key,valuesClean[key]===true]));
+ return tenantTools.modules(valuesClean,definitions,strict);
+}
+async function profileFor(product:string|null){
+ if(!product)return {modules:[],capabilities:{}};const rows=await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(product)+'&select=modules,capabilities');return rows[0]||{modules:[],capabilities:{}};
 }
 async function definitionsFor(product:string|null){
  if(!product)return [];const rows=await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(product)+'&select=modules');return rows[0]?.modules||[];
@@ -94,13 +99,27 @@ Deno.serve(async(req:Request)=>{
   if(!ur.ok)return reply({error:'Sessione scaduta: accedi di nuovo'},401);
   const user=await ur.json();const allowed=await db('simplex_admins?user_id=eq.'+encodeURIComponent(user.id)+'&select=user_id');
   if(!allowed.length)return reply({error:'Questo account non è autorizzato a pubblicare'},403);
+  if(action==='tenant-asset'){
+   const kind=url.searchParams.get('kind');if(!['logo','icon'].includes(kind||''))throw Error('Tipo immagine non valido');
+   const blob=await req.arrayBuffer(),bytes=new Uint8Array(blob);if(blob.byteLength<32||blob.byteLength>2*1024*1024||bytes[0]!==137||bytes[1]!==80||bytes[2]!==78||bytes[3]!==71)throw Error('Usa PNG fino a 2 MB');
+   const width=new DataView(blob).getUint32(16),height=new DataView(blob).getUint32(20);if(width<1||height<1||width>4096||height>4096||(kind==='icon'&&(width!==512||height!==512)))throw Error('Icona 512×512 richiesta; logo massimo 4096×4096');
+   const path='tenants/'+crypto.randomUUID()+'.png';const upload=await fetch(base+'/storage/v1/object/simplex-icons/'+path,{method:'POST',headers:{apikey:service,Authorization:'Bearer '+service,'Content-Type':'image/png'},body:blob});if(!upload.ok)throw Error('Caricamento immagine non riuscito');return reply({url:base+'/storage/v1/object/public/simplex-icons/'+path});
+  }
   if(action==='product-modules'){
-   const rows=await db('simplex_product_modules?select=product_id,modules,management_url');return reply({products:rows.map((p:any)=>({product_id:p.product_id,modules:p.modules,managed:!!p.management_url}))});
+   const rows=await db('simplex_product_modules?select=product_id,modules,management_url,capabilities');return reply({products:rows.map((p:any)=>({product_id:p.product_id,modules:p.modules,managed:!!p.management_url,capabilities:tenantTools.capabilities(p.capabilities)}))});
   }
   if(action==='product-customers'||action==='product-customer-modules'||action==='product-customer-status'){
    const body=await req.json();if(typeof body.id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(body.id))throw Error('Applicazione non valida');
    const payload=action==='product-customers'?{action:'list'}:action==='product-customer-status'?{action:'status',customerId:body.customerId,status:body.status}:{action:'save',customerId:body.customerId,modules:body.modules};
-   const result=await callManager(body.id,auth,payload);if(!result)throw Error('Gestione server non configurata per questa applicazione');return reply(result);
+   const result=await callManager(body.id,auth,payload);if(!result)throw Error('Gestione server non configurata per questa applicazione');
+   if(result.saved&&action==='product-customer-modules'&&result.modules){await db('simplex_clients?product_id=eq.'+encodeURIComponent(body.id)+'&remote_customer_id=eq.'+encodeURIComponent(body.customerId),'PATCH',{modules:result.modules,updated_at:new Date().toISOString()});}
+   return reply(result);
+  }
+  if(action==='product-profile-refresh'){
+   const {id}=await req.json();if(typeof id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(id))throw Error('Prodotto non valido');
+   const result=await callManager(id,auth,{action:'capabilities'});if(!result||result.capabilities?.version!==2)throw Error('Questa PWA non dichiara il protocollo di personalizzazione');
+   const definitions=moduleDefinitions(result.modules),capabilities=tenantTools.capabilities(result.capabilities);const keys=new Set(definitions.map((m:any)=>m.key));if(definitions.some((m:any)=>[...m.requires,...m.feature_requires].some((key:string)=>!keys.has(key)||key===m.key)))throw Error('Dipendenze moduli non valide');
+   await db('simplex_product_modules?product_id=eq.'+encodeURIComponent(id),'PATCH',{modules:definitions,capabilities,updated_at:new Date().toISOString()});return reply({saved:true});
   }
   if(action==='product-modules-save'){
    const {id,modules}=await req.json();if(typeof id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(id))throw Error('Prodotto non valido');
@@ -142,19 +161,38 @@ Deno.serve(async(req:Request)=>{
   if(action==='connect'){const {token}=await req.json();if(typeof token!=='string'||token.length<20||token.length>300)return reply({error:'Credenziale GitHub non valida'},400);const owner=await github(token,'user');if(owner.login.toLowerCase()!=='meapps-it')return reply({error:'Collega l’account GitHub meapps-it'},403);const repo=await github(token,'repos/'+REPO);if(!repo.permissions?.push)return reply({error:'Il collegamento deve consentire scrittura sul repository SimplexApp'},403);await db('simplex_private_settings','POST',{id:1,github_token:token});return reply({connected:true})}
   if(action==='disconnect'){await db('simplex_private_settings?id=eq.1','DELETE');return reply({connected:false})}
   if(action==='clients-list'){
-   const rows=await db('simplex_clients?select=id,name,product_id,status,paid,amount,paid_at,expires_at,demo_days,modules,notes,license_key,remote_customer_id,created_at,updated_at&order=name.asc');
+   const rows=await db('simplex_clients?select=id,name,product_id,status,paid,amount,paid_at,expires_at,demo_days,modules,notes,license_key,remote_customer_id,business_name,email,plan,branding,sync_state,sync_error,created_at,updated_at&order=name.asc');
    const products=await db('simplex_product_modules?select=product_id,modules');const definitions=new Map(products.map((p:any)=>[p.product_id,p.modules]));
    for(const c of rows)c.modules=supportedModules(c.modules,definitions.get(c.product_id) as any[]||[]);
    return reply({clients:rows});
   }
   if(action==='client-save'){
-   const body=await req.json();const client=cleanClient(body?.client);const id=str(body?.client?.id,80);
+   const body=await req.json();const client:any=cleanClient(body?.client);const id=str(body?.client?.id,80);
+   const previous=id?(await db('simplex_clients?id=eq.'+encodeURIComponent(id)+'&select=*'))[0]:null;
+   if(id&&!previous)throw Error('Cliente non trovato');
+   if(previous?.remote_customer_id&&previous.product_id!==client.product_id)throw Error('Questa installazione è già collegata: crea una nuova installazione per cambiare PWA');
+   const profile=await profileFor(client.product_id);
+   for(const field of ['business_name','email','plan','branding']){
+    if(!Object.hasOwn(body.client,field))continue;
+    if(field==='branding')client.branding=tenantTools.branding(body.client.branding,profile.capabilities);
+    else if(field==='plan'){if(!['demo','base','premium','custom'].includes(body.client.plan))throw Error('Piano non valido');client.plan=body.client.plan;}
+    else {client[field]=str(body.client[field],field==='email'?254:160);if(field==='email'&&client.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(client.email))throw Error('Email non valida');}
+   }
+   const v2=profile.capabilities?.version===2;
+   if(!id&&Object.hasOwn(body.client,'email')&&(!client.product_id||!client.email||!client.business_name))throw Error('PWA, email e nome attività richiesti');
+   if(v2&&!id&&(!client.product_id||!client.email||!client.business_name))throw Error('PWA, email e nome attività richiesti');
+   if(v2)client.sync_state='pending';
    client.modules=supportedModules(client.modules,await definitionsFor(client.product_id),true);
    let rows;
    if(id){if(!/^[0-9a-f-]{36}$/i.test(id))throw Error('Cliente non valido');rows=await db('simplex_clients?id=eq.'+encodeURIComponent(id),'PATCH',client)}
    else rows=await db('simplex_clients','POST',client);
    let saved=rows?.[0]||null;
-   if(saved&&client.product_id&&client.status!=='demo'&&await managerFor(client.product_id)){
+   if(saved&&v2){
+    try{const result=await callManager(client.product_id,auth,{action:'configure',externalId:saved.id,customerId:saved.remote_customer_id||null,name:saved.business_name||saved.name,email:saved.email,plan:saved.plan,status:saved.status,expiresAt:saved.expires_at,branding:saved.branding||{},modules:saved.modules||{}});
+     if(!result?.saved||!result?.customerId)throw Error('Sincronizzazione non confermata');
+     saved=(await db('simplex_clients?id=eq.'+encodeURIComponent(saved.id),'PATCH',{remote_customer_id:result.customerId,sync_state:'synced',sync_error:null}))[0];
+    }catch(e){const warning=e instanceof Error?e.message:'Sincronizzazione non riuscita';saved=(await db('simplex_clients?id=eq.'+encodeURIComponent(saved.id),'PATCH',{sync_state:'error',sync_error:warning}))[0];return reply({client:saved,warning:'Configurazione salvata in SimplexApp, ma non applicata alla PWA: '+warning});}
+   }else if(saved&&client.product_id&&client.status!=='demo'&&await managerFor(client.product_id)){
     const provision=await callManager(client.product_id,auth,{action:'provision',externalId:saved.id,name:saved.name,status:saved.status});
     const remoteId=provision?.customerId;
     if(typeof remoteId==='string'&&/^[0-9a-f-]{36}$/i.test(remoteId)){
