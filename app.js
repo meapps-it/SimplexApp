@@ -25,6 +25,49 @@ function renderServerCustomerOverview(){
  box.innerHTML=[...customerRows,...registrationRows].join('')||'<p class="note">Nessuna registrazione ancora presente.</p>';
  box.querySelectorAll('[data-live-customer]').forEach(row=>{const open=()=>{const select=$('serverModuleCustomerSelect');select.value=row.dataset.liveCustomer;renderServerModuleSelection();$('serverSelectedCustomerMeta')?.scrollIntoView({block:'nearest'});};row.onclick=open;row.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}};});
 }
+
+function liveProductId(){
+ const ids=[...managedProducts];
+ return ids.find(id=>getApps().some(a=>a.id===id))||ids[0]||'';
+}
+function liveModuleNames(customer,product=liveManagedProduct){
+ return modulesForProduct(product).filter(m=>m.ready!==false&&customer?.modules?.[m.key]===true).map(m=>m.label);
+}
+function renderLiveClients(){
+ const box=$('liveClientsList'),status=$('liveClientsStatus');if(!box)return;
+ const customers=serverModuleCustomers||[],registrations=serverModuleRegistrations||[];
+ if(status)status.textContent=(customers.length+registrations.length)?customers.length+' account configurati'+(registrations.length?' · '+registrations.length+' registrazioni in attesa':''):'Nessun iscritto trovato.';
+ const rows=customers.map(customer=>{
+  const modules=liveModuleNames(customer);
+  const expiry=customer.state==='trial'&&customer.trial_expires_at?'Prova fino al '+liveDate(customer.trial_expires_at):customer.license_expires_at&&(customer.state==='subscribed'||customer.state==='licensed')?'Scadenza '+liveDate(customer.license_expires_at):'';
+  return `<article class="live-client-card"><div class="live-client-head"><div><strong>${esc(customer.name||'La tua attività')}</strong><small>${esc(customer.email||'Email non disponibile')}${liveActivity(customer)?' · '+esc(liveActivity(customer)):''}</small></div><span class="client-badge ${liveStateTone(customer.state)}">${esc(liveStateLabel(customer.state))}</span></div>${expiry?`<p class="live-client-expiry">${esc(expiry)}</p>`:''}<div class="live-client-modules"><b>Moduli attivi</b><div>${modules.length?modules.map(label=>`<span>${esc(label)}</span>`).join(''):'<span class="empty">Nessun modulo attivo</span>'}</div></div><button class="secondary live-manage-modules" type="button" data-live-manage="${esc(customer.id)}">Gestisci moduli</button></article>`;
+ });
+ const pending=registrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')} · prova non ancora avviata</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div><p class="live-client-expiry">I moduli compariranno appena l’account completa l’accesso e avvia la prova.</p></article>`);
+ box.innerHTML=[...rows,...pending].join('')||'<p class="note">Nessuna registrazione presente.</p>';
+ box.querySelectorAll('[data-live-manage]').forEach(button=>button.onclick=()=>openLiveCustomerModules(button.dataset.liveManage));
+}
+async function loadLiveClients(force=false){
+ const product=liveProductId();liveManagedProduct=product;
+ const box=$('liveClientsList'),status=$('liveClientsStatus');
+ if(!product){if(status)status.textContent='Nessuna PWA con gestione utenti collegata.';if(box)box.innerHTML='';return;}
+ if(!force&&serverModulesProduct===product&&(serverModuleCustomers.length||serverModuleRegistrations.length)){renderLiveClients();return;}
+ if(status)status.textContent='Caricamento iscritti…';
+ try{
+  const response=await adminCall('product-customers',{id:product});
+  liveManagedProduct=product;
+  serverModuleCustomers=Array.isArray(response.customers)?response.customers:[];
+  serverModuleRegistrations=Array.isArray(response.registrations)?response.registrations:[];
+  renderLiveClients();
+ }catch(e){if(status)status.textContent=e.message;if(box)box.innerHTML='<p class="note">Impossibile caricare gli iscritti.</p>';}
+}
+async function openLiveCustomerModules(customerId){
+ const product=liveManagedProduct||liveProductId();if(!product)return toast('Gestione moduli non collegata.');
+ adminSection('modules');$('moduleProductSelect').value=product;renderProductModules();
+ await loadServerModules(product,true);
+ $('serverModuleCustomerSelect').value=customerId;renderServerModuleSelection();
+ $('serverModuleCustomerSelect').scrollIntoView({block:'center',behavior:'smooth'});
+}
+
 async function loadServerModules(product,force=false){
  if(serverModulesProduct===product&&!force)return;
  const request=++serverModulesRequest;serverModulesProduct=product;serverModuleCustomers=[];serverModuleRegistrations=[];$('serverModuleGrid').innerHTML='';if($('serverCustomerOverview'))$('serverCustomerOverview').innerHTML='<p class="note">Caricamento registrazioni…</p>';$('saveProductModules').disabled=true;$('serverModuleStatus').textContent='Caricamento clienti della versione completa…';
