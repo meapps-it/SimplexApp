@@ -31,3 +31,13 @@ progress{width:100%;height:18px;accent-color:#1777f2}details{margin-top:16px}sum
 
 /* Client customization stays inside the existing Admin editor. */
 #tenantCustomization .tenant-asset-preview{width:90px;height:90px;object-fit:contain;background:white;border:1px solid #ccd2db;border-radius:12px;margin:8px 0}#tenantCustomization input[type=color]{width:100%;height:44px}#tenantCustomization input[type=checkbox]{width:auto}#tenantCustomization input[type=file]{max-width:100%}.tenant-preview{border:1px solid #c8cdd5;border-radius:14px;overflow:hidden;padding:16px;background:var(--preview-bg);color:var(--preview-ink);display:grid;grid-template-columns:130px minmax(0,1fr);gap:12px;min-width:0}.tenant-preview header{grid-column:1/-1;background:var(--preview-primary);color:var(--preview-on-primary);padding:12px;border-radius:8px;display:flex;gap:12px;align-items:center;overflow-wrap:anywhere}.tenant-preview img{width:44px;height:44px;object-fit:contain;background:white;border-radius:8px}.tenant-preview p{grid-column:1/-1}.tenant-preview nav{position:static!important;display:flex!important;flex-direction:column!important;background:var(--preview-secondary)!important;color:var(--preview-on-secondary);padding:8px;border-radius:8px;box-shadow:none!important;width:auto!important;min-width:0}.tenant-preview nav span{padding:6px;overflow-wrap:anywhere}.tenant-preview .preview-content{padding:20px 8px;background:var(--preview-accent);color:var(--preview-on-accent);border-radius:8px}.tenant-preview[data-layout=right] nav{grid-column:2;grid-row:3}.tenant-preview[data-layout=right] .preview-content{grid-column:1;grid-row:3}.tenant-preview[data-layout=bottom] nav{grid-column:1/-1;grid-row:4;flex-direction:row!important;flex-wrap:wrap}.tenant-preview[data-layout=bottom] .preview-content{grid-column:1/-1}@media(max-width:500px){.tenant-preview{grid-template-columns:95px minmax(0,1fr);padding:10px}}
+
+
+/* Live PWA registrations, trials and subscriptions */
+.live-customer-overview{display:grid;gap:10px;margin:14px 0 24px}
+.live-client-row{cursor:pointer}
+.live-client-row.pending{cursor:default;opacity:.92}
+.live-customer-selected{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:12px 0 14px;padding:12px 14px;border:1px solid #dfe7ef;border-radius:14px;background:#f7f9fc;font-size:.9rem}
+.live-customer-selected:empty{display:none}
+.live-customer-selected strong{color:#17253a}
+.live-customer-selected span{color:#64748b}
