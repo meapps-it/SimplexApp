@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 // Module administration is bundled so cached HTML cannot omit its functions.
 {
 let productModuleCatalog=new Map();
-let managedProducts=new Set(),serverModuleCustomers=[],serverModuleRegistrations=[],serverModulesProduct='',serverModulesRequest=0;
+let managedProducts=new Set(),serverModuleCustomers=[],serverModuleRegistrations=[],serverModulesProduct='',serverModulesRequest=0,liveManagedProduct='';
 function hasServerModules(id){return managedProducts.has(id)}
 function modulesForProduct(id){return productModuleCatalog.get(id)||[]}
 function activeProductModules(product,values){return modulesForProduct(product).filter(m=>m.ready!==false&&values?.[m.key]===true)}
