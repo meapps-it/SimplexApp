@@ -8,7 +8,7 @@ function hasServerModules(id){return managedProducts.has(id)}
 function modulesForProduct(id){return productModuleCatalog.get(id)||[]}
 function activeProductModules(product,values){return modulesForProduct(product).filter(m=>m.ready!==false&&values?.[m.key]===true)}
 async function loadProductModules(){productModuleCatalog.clear();managedProducts.clear();const r=await adminCall('product-modules');window.tenantCustomization?.setProfiles(r.products||[]);for(const row of r.products||[]){productModuleCatalog.set(row.product_id,row.modules||[]);if(row.managed)managedProducts.add(row.product_id)}}
-function clearProductModules(){if($('issuedLicenseKey'))$('issuedLicenseKey').value='';productModuleCatalog.clear();managedProducts.clear();serverModuleCustomers=[];serverModuleRegistrations=[];serverModulesProduct='';serverModulesRequest++;document.querySelectorAll('[data-server-module]').forEach(x=>x.remove());if($('serverCustomerOverview'))$('serverCustomerOverview').innerHTML=''}
+function clearProductModules(){if($('issuedLicenseKey'))$('issuedLicenseKey').value='';productModuleCatalog.clear();managedProducts.clear();serverModuleCustomers=[];serverModuleRegistrations=[];window.__simplexLiveCustomers=[];window.__simplexLiveRegistrations=[];serverModulesProduct='';serverModulesRequest++;document.querySelectorAll('[data-server-module]').forEach(x=>x.remove());if($('serverCustomerOverview'))$('serverCustomerOverview').innerHTML=''}
 function productModuleInputs(product,values={}){const modules=modulesForProduct(product);return modules.length?modules.map(m=>`<label><input class="client-module" data-module="${esc(m.key)}" type="checkbox" ${m.ready===false?'disabled':values[m.key]===true?'checked':''}> ${esc(m.label)}${m.ready===false?' · In sviluppo':''}</label>`).join(''):'<p class="note">'+(product?'Moduli non ancora configurati per questa applicazione.':'Scegli prima un’applicazione.')+'</p>'}
 function productModuleBadges(product,values){return activeProductModules(product,values).map(m=>`<span>${esc(m.label)}</span>`).join('')}
 const liveStateLabels={subscribed:'Abbonato',licensed:'Licenza attiva',trial:'Prova attiva',trial_expired:'Prova scaduta',trial_cleared:'Prova cancellata',suspended:'Sospeso',registered:'Registrato',email_unconfirmed:'Email da confermare'};
@@ -36,6 +36,7 @@ function liveModuleNames(customer,product=liveManagedProduct){
 function renderLiveClients(){
  const box=$('liveClientsList'),status=$('liveClientsStatus');if(!box)return;
  const customers=serverModuleCustomers||[],registrations=serverModuleRegistrations||[],product=liveManagedProduct||liveProductId(),defs=modulesForProduct(product);
+ window.__simplexLiveCustomers=customers;window.__simplexLiveRegistrations=registrations;
  if(status)status.textContent=(customers.length+registrations.length)?customers.length+' clienti configurati'+(registrations.length?' · '+registrations.length+' registrazioni in attesa':''):'Nessun cliente trovato.';
  const rows=customers.map(customer=>{
   const expiry=customer.state==='trial'&&customer.trial_expires_at?'Prova fino al '+liveDate(customer.trial_expires_at):customer.license_expires_at?'Scadenza '+liveDate(customer.license_expires_at):'';
@@ -327,8 +328,8 @@ function livePaymentState(customer){
  return {label:'Da attivare',tone:'yellow',due:false};
 }
 function renderWorkspaceStats(){
- const live=Array.isArray(serverModuleCustomers)?serverModuleCustomers:[];
- const regs=Array.isArray(serverModuleRegistrations)?serverModuleRegistrations:[];
+ const live=Array.isArray(window.__simplexLiveCustomers)?window.__simplexLiveCustomers:[];
+ const regs=Array.isArray(window.__simplexLiveRegistrations)?window.__simplexLiveRegistrations:[];
  const hasLive=live.length||regs.length;
  const active=hasLive?live.filter(c=>!['suspended','trial_expired','trial_cleared'].includes(c.state)).length:adminClients.filter(c=>effectiveClientStatus(c)==='active').length;
  const trials=hasLive?live.filter(c=>c.state==='trial').length:adminClients.filter(c=>effectiveClientStatus(c)==='demo').length;
@@ -346,8 +347,8 @@ function renderWorkspace(){
  renderWorkspaceStats();
  $('demoAppsList').innerHTML=apps.map(a=>`<article class="workspace-row"><div><strong>${esc(a.name)}</strong><small>${onlineURL(a.demoUrl)?'Demo disponibile':'Link demo da configurare'}</small></div><div class="workspace-row-actions">${onlineURL(a.demoUrl)?`<a class="secondary btn" href="${esc(onlineURL(a.demoUrl))}" target="_blank" rel="noopener noreferrer">Apri demo</a>`:''}${privateProductAction(a.id)}<button class="secondary" data-private-link-edit="${esc(a.id)}">Link completo</button><button class="secondary" data-demo-app="${esc(a.id)}">Configura</button></div></article>`).join('')||'<p class="note">Aggiungi un’app per configurare il link demo.</p>';
  $('demoClientsList').innerHTML=demoClients.map(c=>`<article class="workspace-row"><div><strong>${esc(c.name)}</strong><small>${c.demo_days||7} giorni · Scadenza ${esc(formatClientDate(c.expires_at))}</small></div><div class="workspace-row-actions"><span class="client-badge ${clientStatusTone(c)}">${clientStatusLabel(effectiveClientStatus(c))}</span><button class="secondary" data-configure-client="${esc(c.id)}">Configura demo</button></div></article>`).join('')||'<p class="note">Nessun cliente in demo.</p>';
- renderProductModules();
- if(managedProducts.size)Promise.resolve().then(()=>loadLiveClients(false)).catch(()=>{});
+ window.renderProductModules?.();
+ Promise.resolve().then(()=>window.loadLiveClients?.(false)).catch(()=>{});
 }
 function renderProductModules(){
  const select=$('moduleProductSelect'),selected=select.value;
