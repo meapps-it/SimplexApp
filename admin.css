@@ -64,3 +64,36 @@ progress{width:100%;height:18px;accent-color:#1777f2}details{margin-top:16px}sum
 
 .live-client-actions{display:flex;flex-wrap:wrap;gap:8px}
 .live-client-actions .danger,.live-client-actions .secondary{min-height:40px}
+
+
+/* SaaS Factory dashboard: blue, yellow and red at a glance */
+.workspace-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0 18px}
+.workspace-stats .workspace-stat{border:3px solid #18345f;border-radius:20px;padding:16px;text-align:left;box-shadow:0 5px 0 #18345f;background:#fff;min-height:112px;display:flex;flex-direction:column;justify-content:space-between}
+.workspace-stats .workspace-stat span{font-size:.9rem;font-weight:800;color:#253651}
+.workspace-stats .workspace-stat strong{font-size:2rem;line-height:1;color:#12284a}
+.workspace-stats .workspace-stat.blue{background:#dcebff}
+.workspace-stats .workspace-stat.yellow{background:#fff0a8}
+.workspace-stats .workspace-stat.red{background:#ffd9d7}
+.workspace-stats .workspace-stat.yellow-red{background:linear-gradient(135deg,#fff0a8 0 58%,#ffd9d7 58% 100%)}
+.workspace-stats .workspace-stat:active{transform:translateY(2px);box-shadow:0 3px 0 #18345f}
+@media(max-width:720px){.workspace-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-stats .workspace-stat{min-height:102px}}
+@media(max-width:390px){.workspace-stats{gap:9px}.workspace-stats .workspace-stat{padding:13px}.workspace-stats .workspace-stat strong{font-size:1.7rem}}
+
+/* Unified customer management: all essential controls in one place */
+.unified-clients-card{border:3px solid #18345f}
+.live-clients-list{grid-template-columns:1fr}
+.live-client-card.unified{border:2px solid #d8e2ef;border-radius:20px;padding:18px;box-shadow:0 5px 14px rgba(24,52,95,.07)}
+.live-client-badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.live-client-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;padding:10px 12px;border-radius:13px;background:#f7f9fc;color:#55657d;font-size:.85rem}
+.live-client-info b{color:#223451}
+.live-client-modules-editor{display:grid;gap:9px}
+.live-client-section-title{display:flex;justify-content:space-between;gap:10px;align-items:end}
+.live-client-section-title small{color:#6c7a8f}
+.live-module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.live-module-toggle{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #dce5f0;border-radius:12px;background:#f8fbff;font-weight:700;color:#2f405e;min-width:0}
+.live-module-toggle input{width:20px!important;height:20px!important;margin:0!important;accent-color:#1c76f2;flex:0 0 auto}
+.live-module-toggle span{overflow-wrap:anywhere}
+.live-module-toggle.disabled{opacity:.5}
+.live-client-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:3px}
+.live-client-actions .primary,.live-client-actions .secondary,.live-client-actions .danger{min-height:44px}
+@media(max-width:700px){.live-module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.live-client-info{grid-template-columns:1fr}.live-client-actions>*{flex:1}.live-client-badges{justify-content:flex-start}}
