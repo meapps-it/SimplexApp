@@ -40,12 +40,23 @@ function renderLiveClients(){
  const rows=customers.map(customer=>{
   const modules=liveModuleNames(customer);
   const expiry=customer.state==='trial'&&customer.trial_expires_at?'Prova fino al '+liveDate(customer.trial_expires_at):customer.license_expires_at&&(customer.state==='subscribed'||customer.state==='licensed')?'Scadenza '+liveDate(customer.license_expires_at):'';
-  return `<article class="live-client-card"><div class="live-client-head"><div><strong>${esc(customer.name||'La tua attività')}</strong><small>${esc(customer.email||'Email non disponibile')}${liveActivity(customer)?' · '+esc(liveActivity(customer)):''}</small></div><span class="client-badge ${liveStateTone(customer.state)}">${esc(liveStateLabel(customer.state))}</span></div>${expiry?`<p class="live-client-expiry">${esc(expiry)}</p>`:''}<div class="live-client-modules"><b>Moduli attivi</b><div>${modules.length?modules.map(label=>`<span>${esc(label)}</span>`).join(''):'<span class="empty">Nessun modulo attivo</span>'}</div></div><div class="live-client-actions"><button class="secondary live-manage-modules" type="button" data-live-manage="${esc(customer.id)}">Modifica</button><button class="danger live-delete-customer" type="button" data-live-delete="${esc(customer.id)}">Elimina</button></div></article>`;
+  return `<article class="live-client-card"><div class="live-client-head"><div><strong>${esc(customer.name||'La tua attività')}</strong><small>${esc(customer.email||'Email non disponibile')}${liveActivity(customer)?' · '+esc(liveActivity(customer)):''}</small></div><span class="client-badge ${liveStateTone(customer.state)}">${esc(liveStateLabel(customer.state))}</span></div>${expiry?`<p class="live-client-expiry">${esc(expiry)}</p>`:''}<div class="live-client-modules"><b>Moduli attivi</b><div>${modules.length?modules.map(label=>`<span>${esc(label)}</span>`).join(''):'<span class="empty">Nessun modulo attivo</span>'}</div></div><div class="live-client-actions"><button class="secondary live-manage-modules" type="button" data-live-manage="${esc(customer.id)}">Modifica</button>${customer.state==='suspended'?`<button class="primary live-reactivate-customer" type="button" data-live-reactivate="${esc(customer.id)}">Riattiva</button>`:''}<button class="danger live-delete-customer" type="button" data-live-delete="${esc(customer.id)}">Elimina</button></div></article>`;
  });
  const pending=registrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')} · prova non ancora avviata</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div><p class="live-client-expiry">I moduli compariranno appena l’account completa l’accesso e avvia la prova.</p></article>`);
  box.innerHTML=[...rows,...pending].join('')||'<p class="note">Nessuna registrazione presente.</p>';
  box.querySelectorAll('[data-live-manage]').forEach(button=>button.onclick=()=>openLiveCustomerModules(button.dataset.liveManage));
+ box.querySelectorAll('[data-live-reactivate]').forEach(button=>button.onclick=()=>reactivateLiveCustomer(button.dataset.liveReactivate));
  box.querySelectorAll('[data-live-delete]').forEach(button=>button.onclick=()=>deleteLiveCustomer(button.dataset.liveDelete));
+}
+async function reactivateLiveCustomer(customerId){
+ const customer=serverModuleCustomers.find(c=>c.id===customerId);if(!customer)return;
+ const product=liveManagedProduct||liveProductId();if(!product)return toast('Gestione cliente non collegata.');
+ try{
+  await adminCall('product-customer-status',{id:product,customerId,status:'active'});
+  toast('Cliente riattivato');
+  await loadLiveClients(true);
+  if(workspaceSection==='modules'&&$('moduleProductSelect')?.value===product)await loadServerModules(product,true);
+ }catch(e){toast(e.message);}
 }
 async function deleteLiveCustomer(customerId){
  const customer=serverModuleCustomers.find(c=>c.id===customerId);if(!customer)return;
