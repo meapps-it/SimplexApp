@@ -35,18 +35,39 @@ function liveModuleNames(customer,product=liveManagedProduct){
 }
 function renderLiveClients(){
  const box=$('liveClientsList'),status=$('liveClientsStatus');if(!box)return;
- const customers=serverModuleCustomers||[],registrations=serverModuleRegistrations||[];
- if(status)status.textContent=(customers.length+registrations.length)?customers.length+' account configurati'+(registrations.length?' · '+registrations.length+' registrazioni in attesa':''):'Nessun iscritto trovato.';
+ const customers=serverModuleCustomers||[],registrations=serverModuleRegistrations||[],product=liveManagedProduct||liveProductId(),defs=modulesForProduct(product);
+ if(status)status.textContent=(customers.length+registrations.length)?customers.length+' clienti configurati'+(registrations.length?' · '+registrations.length+' registrazioni in attesa':''):'Nessun cliente trovato.';
  const rows=customers.map(customer=>{
-  const modules=liveModuleNames(customer);
-  const expiry=customer.state==='trial'&&customer.trial_expires_at?'Prova fino al '+liveDate(customer.trial_expires_at):customer.license_expires_at&&(customer.state==='subscribed'||customer.state==='licensed')?'Scadenza '+liveDate(customer.license_expires_at):'';
-  return `<article class="live-client-card"><div class="live-client-head"><div><strong>${esc(customer.name||'La tua attività')}</strong><small>${esc(customer.email||'Email non disponibile')}${liveActivity(customer)?' · '+esc(liveActivity(customer)):''}</small></div><span class="client-badge ${liveStateTone(customer.state)}">${esc(liveStateLabel(customer.state))}</span></div>${expiry?`<p class="live-client-expiry">${esc(expiry)}</p>`:''}<div class="live-client-modules"><b>Moduli attivi</b><div>${modules.length?modules.map(label=>`<span>${esc(label)}</span>`).join(''):'<span class="empty">Nessun modulo attivo</span>'}</div></div><div class="live-client-actions"><button class="secondary live-manage-modules" type="button" data-live-manage="${esc(customer.id)}">Modifica</button>${customer.state==='suspended'?`<button class="primary live-reactivate-customer" type="button" data-live-reactivate="${esc(customer.id)}">Riattiva</button>`:''}<button class="danger live-delete-customer" type="button" data-live-delete="${esc(customer.id)}">Elimina</button></div></article>`;
+  const expiry=customer.state==='trial'&&customer.trial_expires_at?'Prova fino al '+liveDate(customer.trial_expires_at):customer.license_expires_at?'Scadenza '+liveDate(customer.license_expires_at):'';
+  const payment=livePaymentState(customer);
+  const modules=defs.map(m=>`<label class="live-module-toggle ${m.ready===false?'disabled':''}"><input type="checkbox" data-live-module="${esc(m.key)}" ${customer.modules?.[m.key]===true?'checked':''} ${m.ready===false?'disabled':''}><span>${esc(m.label)}${m.ready===false?' · In sviluppo':''}</span></label>`).join('');
+  return `<article class="live-client-card unified" data-live-card="${esc(customer.id)}"><div class="live-client-head"><div><strong>${esc(customer.name||'La tua attività')}</strong><small>${esc(customer.email||'Email non disponibile')}${liveActivity(customer)?' · '+esc(liveActivity(customer)):''}</small></div><div class="live-client-badges"><span class="client-badge ${liveStateTone(customer.state)}">${esc(liveStateLabel(customer.state))}</span><span class="client-badge ${payment.tone}">${esc(payment.label)}</span></div></div>${expiry?`<p class="live-client-expiry">${esc(expiry)}</p>`:''}<div class="live-client-info"><span><b>Piano</b> ${esc(customer.license_plan||'—')}</span><span><b>Ultimo accesso</b> ${esc(liveDate(customer.last_sign_in_at)||'—')}</span></div><div class="live-client-modules-editor"><div class="live-client-section-title"><b>Moduli</b><small>Attiva o disattiva e salva</small></div><div class="live-module-grid">${modules}</div></div><div class="live-client-actions"><button class="primary" type="button" data-live-save="${esc(customer.id)}">Salva moduli</button>${customer.state==='suspended'?`<button class="secondary" type="button" data-live-reactivate="${esc(customer.id)}">Riattiva</button>`:`<button class="secondary" type="button" data-live-suspend="${esc(customer.id)}">Sospendi</button>`}<button class="danger" type="button" data-live-delete="${esc(customer.id)}">Elimina</button></div></article>`;
  });
- const pending=registrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')} · prova non ancora avviata</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div><p class="live-client-expiry">I moduli compariranno appena l’account completa l’accesso e avvia la prova.</p></article>`);
+ const pending=registrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')} · nessuna prova avviata</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div><p class="live-client-expiry">In attesa della conferma email o del primo accesso. I moduli verranno assegnati automaticamente quando completa la configurazione.</p></article>`);
  box.innerHTML=[...rows,...pending].join('')||'<p class="note">Nessuna registrazione presente.</p>';
- box.querySelectorAll('[data-live-manage]').forEach(button=>button.onclick=()=>openLiveCustomerModules(button.dataset.liveManage));
+ box.querySelectorAll('[data-live-save]').forEach(button=>button.onclick=()=>saveInlineLiveModules(button.dataset.liveSave));
+ box.querySelectorAll('[data-live-suspend]').forEach(button=>button.onclick=()=>suspendLiveCustomer(button.dataset.liveSuspend));
  box.querySelectorAll('[data-live-reactivate]').forEach(button=>button.onclick=()=>reactivateLiveCustomer(button.dataset.liveReactivate));
  box.querySelectorAll('[data-live-delete]').forEach(button=>button.onclick=()=>deleteLiveCustomer(button.dataset.liveDelete));
+ renderWorkspaceStats();
+}
+async function saveInlineLiveModules(customerId){
+ const card=document.querySelector('[data-live-card="'+CSS.escape(customerId)+'"]'),product=liveManagedProduct||liveProductId();
+ if(!card||!product)return;
+ const modules={};card.querySelectorAll('[data-live-module]').forEach(input=>{if(!input.disabled)modules[input.dataset.liveModule]=input.checked;});
+ const button=card.querySelector('[data-live-save]');if(button)button.disabled=true;
+ try{
+  const response=await adminCall('product-customer-modules',{id:product,customerId,modules});
+  if(!response.saved)throw Error('Salvataggio non confermato');
+  const customer=serverModuleCustomers.find(c=>c.id===customerId);if(customer)customer.modules=response.modules;
+  toast('Moduli cliente salvati');
+  renderLiveClients();
+ }catch(e){toast(e.message);}finally{if(button?.isConnected)button.disabled=false;}
+}
+async function suspendLiveCustomer(customerId){
+ const customer=serverModuleCustomers.find(c=>c.id===customerId),product=liveManagedProduct||liveProductId();if(!customer||!product)return;
+ if(!confirm('Sospendere '+(customer.name||customer.email||'questo cliente')+'? Non potrà usare il gestionale finché non lo riattivi.'))return;
+ try{await adminCall('product-customer-status',{id:product,customerId,status:'suspended'});toast('Cliente sospeso');await loadLiveClients(true);}catch(e){toast(e.message);}
 }
 async function reactivateLiveCustomer(customerId){
  const customer=serverModuleCustomers.find(c=>c.id===customerId);if(!customer)return;
