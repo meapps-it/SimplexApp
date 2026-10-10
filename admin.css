@@ -97,3 +97,12 @@ progress{width:100%;height:18px;accent-color:#1777f2}details{margin-top:16px}sum
 .live-client-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:3px}
 .live-client-actions .primary,.live-client-actions .secondary,.live-client-actions .danger{min-height:44px}
 @media(max-width:700px){.live-module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.live-client-info{grid-template-columns:1fr}.live-client-actions>*{flex:1}.live-client-badges{justify-content:flex-start}}
+
+.live-client-manage{margin-top:2px;border-top:1px solid #e2e8f0;padding-top:8px}
+.live-client-manage>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:#edf4ff;color:#1d4f91;font-weight:850}
+.live-client-manage>summary::-webkit-details-marker{display:none}
+.live-client-manage>summary::after{content:'+';font-size:1.25rem;line-height:1}
+.live-client-manage[open]>summary::after{content:'−'}
+.live-client-manage[open]>.live-client-info{margin-top:10px}
+.live-client-manage[open]>.live-client-modules-editor{margin-top:10px}
+.live-client-manage[open]>.live-client-actions{margin-top:12px}
