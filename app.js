@@ -37,15 +37,27 @@ function renderLiveClients(){
  const box=$('liveClientsList'),status=$('liveClientsStatus');if(!box)return;
  const customers=serverModuleCustomers||[],registrations=serverModuleRegistrations||[],product=liveManagedProduct||liveProductId(),defs=modulesForProduct(product);
  window.__simplexLiveCustomers=customers;window.__simplexLiveRegistrations=registrations;
- if(status)status.textContent=(customers.length+registrations.length)?customers.length+' clienti configurati'+(registrations.length?' · '+registrations.length+' registrazioni in attesa':''):'Nessun cliente trovato.';
- const rows=customers.map(customer=>{
+ const filter=window.__simplexLiveFilter||'all';
+ const labels={active:'Clienti attivi',trial:'Prove attive',suspended:'Sospesi',due:'Da incassare'};
+ const visibleCustomers=customers.filter(customer=>filter==='all'
+  ||(filter==='active'&&['trial','subscribed','licensed'].includes(customer.state))
+  ||(filter==='trial'&&customer.state==='trial')
+  ||(filter==='suspended'&&customer.state==='suspended')
+  ||(filter==='due'&&livePaymentState(customer).due));
+ const visibleRegistrations=filter==='all'?registrations:[];
+ if(status)status.textContent=filter==='all'
+  ?((customers.length+registrations.length)?customers.length+' clienti configurati'+(registrations.length?' · '+registrations.length+' registrazioni in attesa':''):'Nessun cliente trovato.')
+  :labels[filter]+' · '+visibleCustomers.length;
+ const rows=visibleCustomers.map(customer=>{
   const expiry=customer.state==='trial'&&customer.trial_expires_at?'Prova fino al '+liveDate(customer.trial_expires_at):customer.license_expires_at?'Scadenza '+liveDate(customer.license_expires_at):'';
   const payment=livePaymentState(customer);
   const modules=defs.map(m=>`<label class="live-module-toggle ${m.ready===false?'disabled':''}"><input type="checkbox" data-live-module="${esc(m.key)}" ${customer.modules?.[m.key]===true?'checked':''} ${m.ready===false?'disabled':''}><span>${esc(m.label)}${m.ready===false?' · In sviluppo':''}</span></label>`).join('');
   return `<article class="live-client-card unified" data-live-card="${esc(customer.id)}"><div class="live-client-head"><div><strong>${esc(customer.name||'La tua attività')}</strong><small>${esc(customer.email||'Email non disponibile')}${liveActivity(customer)?' · '+esc(liveActivity(customer)):''}</small></div><div class="live-client-badges"><span class="client-badge ${liveStateTone(customer.state)}">${esc(liveStateLabel(customer.state))}</span><span class="client-badge ${payment.tone}">${esc(payment.label)}</span></div></div>${expiry?`<p class="live-client-expiry">${esc(expiry)}</p>`:''}<details class="live-client-manage"><summary>Gestisci cliente</summary><div class="live-client-info"><span><b>Piano</b> ${esc(customer.license_plan||'—')}</span><span><b>Ultimo accesso</b> ${esc(liveDate(customer.last_sign_in_at)||'—')}</span></div><div class="live-client-modules-editor"><div class="live-client-section-title"><b>Moduli</b><small>Attiva o disattiva e salva</small></div><div class="live-module-grid">${modules}</div></div><div class="live-client-actions"><button class="primary" type="button" data-live-save="${esc(customer.id)}">Salva moduli</button>${customer.state==='suspended'?`<button class="secondary" type="button" data-live-reactivate="${esc(customer.id)}">Riattiva</button>`:`<button class="secondary" type="button" data-live-suspend="${esc(customer.id)}">Sospendi</button>`}<button class="danger" type="button" data-live-delete="${esc(customer.id)}">Elimina</button></div></details></article>`;
  });
- const pending=registrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')} · nessuna prova avviata</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div><p class="live-client-expiry">In attesa della conferma email o del primo accesso. I moduli verranno assegnati automaticamente quando completa la configurazione.</p></article>`);
- box.innerHTML=[...rows,...pending].join('')||'<p class="note">Nessuna registrazione presente.</p>';
+ const pending=visibleRegistrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')} · nessuna prova avviata</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div><p class="live-client-expiry">In attesa della conferma email o del primo accesso. I moduli verranno assegnati automaticamente quando completa la configurazione.</p></article>`);
+ const filterBar=filter==='all'?'':`<div class="live-filter-bar"><strong>${esc(labels[filter]||'Filtro')}</strong><button type="button" class="secondary" data-live-filter-reset>Mostra tutti</button></div>`;
+ box.innerHTML=filterBar+([...rows,...pending].join('')||'<p class="note">Nessun cliente in questa categoria.</p>');
+ box.querySelectorAll('[data-live-filter-reset]').forEach(button=>button.onclick=()=>{window.__simplexLiveFilter='all';renderLiveClients();});
  box.querySelectorAll('[data-live-save]').forEach(button=>button.onclick=()=>saveInlineLiveModules(button.dataset.liveSave));
  box.querySelectorAll('[data-live-suspend]').forEach(button=>button.onclick=()=>suspendLiveCustomer(button.dataset.liveSuspend));
  box.querySelectorAll('[data-live-reactivate]').forEach(button=>button.onclick=()=>reactivateLiveCustomer(button.dataset.liveReactivate));
@@ -121,7 +133,7 @@ async function loadServerModules(product,force=false){
 function renderServerModuleSelection(){const c=serverModuleCustomers.find(x=>x.id===$('serverModuleCustomerSelect').value),product=$('moduleProductSelect').value;$('saveProductModules').disabled=!c;$('serverModuleGrid').innerHTML=c?modulesForProduct(product).map(m=>`<label><input data-server-module="${esc(m.key)}" type="checkbox" ${m.ready===false?'disabled':c.modules?.[m.key]===true?'checked':''}> ${esc(m.label)}${m.ready===false?' · In sviluppo':''}</label>`).join(''):'';if($('serverSelectedCustomerMeta'))$('serverSelectedCustomerMeta').innerHTML=c?`<strong>${esc(liveStateLabel(c.state))}</strong><span>${esc(c.email||'Email non disponibile')}</span>${liveActivity(c)?`<span>${esc(liveActivity(c))}</span>`:''}${c.trial_expires_at&&c.state==='trial'?`<span>Prova fino al ${esc(liveDate(c.trial_expires_at))}</span>`:''}${c.license_expires_at&&(c.state==='subscribed'||c.state==='licensed')?`<span>Scadenza ${esc(liveDate(c.license_expires_at))}</span>`:''}`:''}
 async function saveServerModules(){const product=$('moduleProductSelect').value,customer=$('serverModuleCustomerSelect').value;if(!hasServerModules(product)||!serverModuleCustomers.some(c=>c.id===customer))return;const modules={};$('serverModuleGrid').querySelectorAll('[data-server-module]').forEach(x=>{if(!x.disabled)modules[x.dataset.serverModule]=x.checked});$('saveProductModules').disabled=true;$('serverModuleStatus').textContent='Salvataggio sul server…';try{const response=await adminCall('product-customer-modules',{id:product,customerId:customer,modules});if(!response.saved)throw Error('Salvataggio non confermato');const c=serverModuleCustomers.find(x=>x.id===customer);if(c)c.modules=response.modules;renderServerCustomerOverview();if($('moduleProductSelect').value===product)$('serverModuleStatus').textContent='Moduli salvati. Nella versione completa premi Sincronizza per aggiornare i permessi.';}catch(e){$('serverModuleStatus').textContent=e.message}finally{if($('moduleProductSelect').value===product)$('saveProductModules').disabled=false}}
 
-Object.assign(window,{modulesForProduct,activeProductModules,hasServerModules,loadProductModules,clearProductModules,productModuleInputs,productModuleBadges,loadServerModules,renderServerModuleSelection,saveServerModules,loadLiveClients,renderLiveClients,openLiveCustomerModules,deleteLiveCustomer});
+Object.assign(window,{modulesForProduct,activeProductModules,hasServerModules,loadProductModules,clearProductModules,productModuleInputs,productModuleBadges,loadServerModules,renderServerModuleSelection,saveServerModules,loadLiveClients,renderLiveClients,openLiveCustomerModules,deleteLiveCustomer});window.__simplexLiveFilter=window.__simplexLiveFilter||'all';
 }
 function ensureModuleLayout(){
  const grid=document.querySelector('#clientEditor .module-grid');if(grid&&!$('clientModuleGrid'))grid.id='clientModuleGrid';
@@ -339,11 +351,11 @@ function renderWorkspaceStats(){
  const suspended=hasLive?live.filter(c=>c.state==='suspended').length:adminClients.filter(c=>effectiveClientStatus(c)==='suspended').length;
  const due=hasLive?live.filter(c=>livePaymentState(c).due).length:adminClients.filter(c=>!c.paid&&effectiveClientStatus(c)!=='demo').length;
  $('workspaceStats').innerHTML=[
-  ['Clienti attivi',active,'blue'],
-  ['Prove attive',trials,'yellow'],
-  ['Sospesi',suspended,'red'],
-  ['Da incassare',due,'yellow-red']
- ].map(([label,n,tone])=>`<button class="workspace-stat ${tone}" data-workspace-section="clients"><span>${label}</span><strong>${n}</strong></button>`).join('');
+  ['Clienti attivi',active,'blue','active'],
+  ['Prove attive',trials,'yellow','trial'],
+  ['Sospesi',suspended,'red','suspended'],
+  ['Da incassare',due,'yellow-red','due']
+ ].map(([label,n,tone,filter])=>`<button class="workspace-stat ${tone}" data-workspace-section="clients" data-live-dashboard-filter="${filter}"><span>${label}</span><strong>${n}</strong></button>`).join('');
 }
 function renderWorkspace(){
  const apps=getApps(),demoClients=adminClients.filter(c=>c.status==='demo');
@@ -378,7 +390,7 @@ $('addDemoClient').onclick=()=>{adminSection('clients');openClientEditor()};
 $('modulesAll').onclick=()=>{document.querySelectorAll('.client-module').forEach(x=>{if(!x.disabled&&x.closest('label').style.display!=='none')x.checked=true});updateModuleCount()};
 $('modulesNone').onclick=()=>{document.querySelectorAll('.client-module').forEach(x=>x.checked=false);updateModuleCount()};
 $('clientModuleGrid').addEventListener('change',updateModuleCount);
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.workspaceSection){$('paymentFilter').value=b.dataset.unpaid?'unpaid':'';$('clientFilter').value='';$('clientSearch').value='';renderClients();adminSection(b.dataset.workspaceSection)}if(b.dataset.demoApp){const a=getApps().find(a=>a.id===b.dataset.demoApp);if(a){editApp(a);$('appDemo').focus();$('appDemo').scrollIntoView({block:'center'})}}if(b.dataset.configureClient)configureWorkspaceClient(b.dataset.configureClient);if(b.dataset.appModules)openProductModules(b.dataset.appModules)});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.workspaceSection){window.__simplexLiveFilter=b.dataset.liveDashboardFilter||'all';$('paymentFilter').value=b.dataset.unpaid?'unpaid':'';$('clientFilter').value='';$('clientSearch').value='';renderClients();adminSection(b.dataset.workspaceSection);if(b.dataset.liveDashboardFilter)window.renderLiveClients?.()}if(b.dataset.demoApp){const a=getApps().find(a=>a.id===b.dataset.demoApp);if(a){editApp(a);$('appDemo').focus();$('appDemo').scrollIntoView({block:'center'})}}if(b.dataset.configureClient)configureWorkspaceClient(b.dataset.configureClient);if(b.dataset.appModules)openProductModules(b.dataset.appModules)});
 
 render();detailRoute();boot();
 
