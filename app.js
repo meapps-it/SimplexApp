@@ -321,11 +321,14 @@ function effectiveClientStatus(c){return c.expires_at&&new Date(c.expires_at).ge
 function filteredClients(){const q=$('clientSearch').value.trim().toLocaleLowerCase('it');return adminClients.filter(c=>{const product=getApps().find(a=>a.id===c.product_id)?.name||c.product_id||'';return (!q||(c.name+' '+product).toLocaleLowerCase('it').includes(q))&&(!$('clientFilter').value||effectiveClientStatus(c)===$('clientFilter').value)&&(!$('paymentFilter').value||(c.paid===true)===($('paymentFilter').value==='paid'))})}
 function setWorkspaceClientStatus(message){for(const id of ['clientsStatus','demoClientsStatus','modulesClientsStatus'])$(id).textContent=message}
 function livePaymentState(customer){
- if(customer?.subscription_status==='past_due'||customer?.state==='trial_expired')return {label:'Da incassare',tone:'red',due:true};
+ if(customer?.subscription_status==='past_due')return {label:'Da incassare',tone:'red',due:true};
  if(customer?.state==='subscribed'||customer?.state==='licensed')return {label:'Pagato',tone:'green',due:false};
  if(customer?.state==='trial')return {label:'In prova',tone:'yellow',due:false};
+ if(customer?.state==='trial_expired')return {label:'Prova scaduta',tone:'red',due:false};
+ if(customer?.state==='trial_cleared')return {label:'Prova cancellata',tone:'red',due:false};
  if(customer?.state==='suspended')return {label:'Sospeso',tone:'red',due:false};
- return {label:'Da attivare',tone:'yellow',due:false};
+ if(customer?.state==='registered')return {label:'Non abbonato',tone:'yellow',due:false};
+ return {label:'Stato da verificare',tone:'yellow',due:false};
 }
 function renderWorkspaceStats(){
  const live=Array.isArray(window.__simplexLiveCustomers)?window.__simplexLiveCustomers:[];
