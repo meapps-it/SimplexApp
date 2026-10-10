@@ -40,7 +40,7 @@ function renderLiveClients(){
  const filter=window.__simplexLiveFilter||'all';
  const labels={active:'Clienti attivi',trial:'Prove attive',suspended:'Sospesi',due:'Da incassare'};
  const visibleCustomers=customers.filter(customer=>filter==='all'
-  ||(filter==='active'&&['trial','subscribed','licensed'].includes(customer.state))
+  ||(filter==='active'&&['subscribed','licensed'].includes(customer.state))
   ||(filter==='trial'&&customer.state==='trial')
   ||(filter==='suspended'&&customer.state==='suspended')
   ||(filter==='due'&&livePaymentState(customer).due));
@@ -346,7 +346,7 @@ function renderWorkspaceStats(){
  const live=Array.isArray(window.__simplexLiveCustomers)?window.__simplexLiveCustomers:[];
  const regs=Array.isArray(window.__simplexLiveRegistrations)?window.__simplexLiveRegistrations:[];
  const hasLive=live.length||regs.length;
- const active=hasLive?live.filter(c=>['trial','subscribed','licensed'].includes(c.state)).length:adminClients.filter(c=>effectiveClientStatus(c)==='active').length;
+ const active=hasLive?live.filter(c=>['subscribed','licensed'].includes(c.state)).length:adminClients.filter(c=>effectiveClientStatus(c)==='active'&&c.paid===true).length;
  const trials=hasLive?live.filter(c=>c.state==='trial').length:adminClients.filter(c=>effectiveClientStatus(c)==='demo').length;
  const suspended=hasLive?live.filter(c=>c.state==='suspended').length:adminClients.filter(c=>effectiveClientStatus(c)==='suspended').length;
  const due=hasLive?live.filter(c=>livePaymentState(c).due).length:adminClients.filter(c=>!c.paid&&effectiveClientStatus(c)!=='demo').length;
