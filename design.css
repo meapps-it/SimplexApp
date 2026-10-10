@@ -258,3 +258,10 @@ html[data-theme]:has(#homeView:not(.hidden)),html[data-theme]:has(#homeView:not(
 #homeView .cover{column-gap:8px}
 #homeView .top-admin{padding:4px 8px;font-size:10px}
 }
+
+/* Small horizontal logo beside section titles and in the footer. */
+#homeView .section-mascot{display:block;width:132px;height:44px;object-fit:contain;border:0;border-radius:0;background:transparent;flex-shrink:0}
+#homeView .footer-mascot{display:block;width:100px;height:auto;aspect-ratio:1024/341;object-fit:contain;border:0;border-radius:0;background:transparent;flex-shrink:0}
+@media(max-width:700px){
+#homeView .section-mascot{width:100px;height:33px}
+}
