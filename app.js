@@ -298,12 +298,35 @@ let workspaceSection='apps';
 function effectiveClientStatus(c){return c.expires_at&&new Date(c.expires_at).getTime()<Date.now()?'expired':c.status}
 function filteredClients(){const q=$('clientSearch').value.trim().toLocaleLowerCase('it');return adminClients.filter(c=>{const product=getApps().find(a=>a.id===c.product_id)?.name||c.product_id||'';return (!q||(c.name+' '+product).toLocaleLowerCase('it').includes(q))&&(!$('clientFilter').value||effectiveClientStatus(c)===$('clientFilter').value)&&(!$('paymentFilter').value||(c.paid===true)===($('paymentFilter').value==='paid'))})}
 function setWorkspaceClientStatus(message){for(const id of ['clientsStatus','demoClientsStatus','modulesClientsStatus'])$(id).textContent=message}
+function livePaymentState(customer){
+ if(customer?.subscription_status==='past_due'||customer?.state==='trial_expired')return {label:'Da incassare',tone:'red',due:true};
+ if(customer?.state==='subscribed'||customer?.state==='licensed')return {label:'Pagato',tone:'green',due:false};
+ if(customer?.state==='trial')return {label:'In prova',tone:'yellow',due:false};
+ if(customer?.state==='suspended')return {label:'Sospeso',tone:'red',due:false};
+ return {label:'Da attivare',tone:'yellow',due:false};
+}
+function renderWorkspaceStats(){
+ const live=Array.isArray(serverModuleCustomers)?serverModuleCustomers:[];
+ const regs=Array.isArray(serverModuleRegistrations)?serverModuleRegistrations:[];
+ const hasLive=live.length||regs.length;
+ const active=hasLive?live.filter(c=>!['suspended','trial_expired','trial_cleared'].includes(c.state)).length:adminClients.filter(c=>effectiveClientStatus(c)==='active').length;
+ const trials=hasLive?live.filter(c=>c.state==='trial').length:adminClients.filter(c=>effectiveClientStatus(c)==='demo').length;
+ const suspended=hasLive?live.filter(c=>c.state==='suspended').length:adminClients.filter(c=>effectiveClientStatus(c)==='suspended').length;
+ const due=hasLive?live.filter(c=>livePaymentState(c).due).length:adminClients.filter(c=>!c.paid&&effectiveClientStatus(c)!=='demo').length;
+ $('workspaceStats').innerHTML=[
+  ['Clienti attivi',active,'blue'],
+  ['Prove attive',trials,'yellow'],
+  ['Sospesi',suspended,'red'],
+  ['Da incassare',due,'yellow-red']
+ ].map(([label,n,tone])=>`<button class="workspace-stat ${tone}" data-workspace-section="clients"><span>${label}</span><strong>${n}</strong></button>`).join('');
+}
 function renderWorkspace(){
  const apps=getApps(),demoClients=adminClients.filter(c=>c.status==='demo');
- $('workspaceStats').innerHTML=[['App',apps.length,'apps'],['Clienti',adminClients.length,'clients'],['Demo clienti',demoClients.length,'demos'],['Da incassare',adminClients.filter(c=>!c.paid).length,'clients']].map(([label,n,section],i)=>`<button data-workspace-section="${section}" ${i===3?'data-unpaid="true"':''}><span>${label}</span><strong>${n}</strong></button>`).join('');
+ renderWorkspaceStats();
  $('demoAppsList').innerHTML=apps.map(a=>`<article class="workspace-row"><div><strong>${esc(a.name)}</strong><small>${onlineURL(a.demoUrl)?'Demo disponibile':'Link demo da configurare'}</small></div><div class="workspace-row-actions">${onlineURL(a.demoUrl)?`<a class="secondary btn" href="${esc(onlineURL(a.demoUrl))}" target="_blank" rel="noopener noreferrer">Apri demo</a>`:''}${privateProductAction(a.id)}<button class="secondary" data-private-link-edit="${esc(a.id)}">Link completo</button><button class="secondary" data-demo-app="${esc(a.id)}">Configura</button></div></article>`).join('')||'<p class="note">Aggiungi un’app per configurare il link demo.</p>';
  $('demoClientsList').innerHTML=demoClients.map(c=>`<article class="workspace-row"><div><strong>${esc(c.name)}</strong><small>${c.demo_days||7} giorni · Scadenza ${esc(formatClientDate(c.expires_at))}</small></div><div class="workspace-row-actions"><span class="client-badge ${clientStatusTone(c)}">${clientStatusLabel(effectiveClientStatus(c))}</span><button class="secondary" data-configure-client="${esc(c.id)}">Configura demo</button></div></article>`).join('')||'<p class="note">Nessun cliente in demo.</p>';
  renderProductModules();
+ if(managedProducts.size)Promise.resolve().then(()=>loadLiveClients(false)).catch(()=>{});
 }
 function renderProductModules(){
  const select=$('moduleProductSelect'),selected=select.value;
