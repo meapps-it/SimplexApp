@@ -106,3 +106,7 @@ progress{width:100%;height:18px;accent-color:#1777f2}details{margin-top:16px}sum
 .live-client-manage[open]>.live-client-info{margin-top:10px}
 .live-client-manage[open]>.live-client-modules-editor{margin-top:10px}
 .live-client-manage[open]>.live-client-actions{margin-top:12px}
+
+.live-filter-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 12px;padding:10px 12px;border:1px solid #dbe6f2;border-radius:12px;background:#f7f9fc}
+.live-filter-bar strong{color:#233b62}
+.live-filter-bar .secondary{padding:8px 11px}
