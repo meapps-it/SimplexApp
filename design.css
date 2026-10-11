@@ -265,3 +265,90 @@ html[data-theme]:has(#homeView:not(.hidden)),html[data-theme]:has(#homeView:not(
 @media(max-width:700px){
 #homeView .section-mascot{width:100px;height:33px}
 }
+
+/* Gestionale-inspired public interface: pale canvas and quiet white cards. */
+html[data-theme]{--ink:#25272c;--muted:#61656e;--blue:#2477e8;--edge:#e5e8ef;background:#f5f6fb}
+html[data-theme] body,
+html[data-theme]:has(#homeView:not(.hidden)),
+html[data-theme]:has(#homeView:not(.hidden)) body{background:#f5f6fb;color:var(--ink)}
+html[data-theme] .app-shell{max-width:1120px;padding:24px 24px 120px}
+html[data-theme] #homeView .cover{background:transparent;border:0;box-shadow:none;border-radius:0;padding:0;margin:0 0 20px;column-gap:16px;row-gap:20px}
+html[data-theme] #homeView .top .home-brand{max-width:360px}
+html[data-theme] #homeView .home-brand #siteTagline{font-size:12px;color:var(--muted);margin-top:6px}
+html[data-theme] #homeView .top-admin{background:#fff;border:1px solid var(--edge);color:#34475d;border-radius:16px;box-shadow:none;min-height:44px;padding:12px 14px;font-size:12px;max-width:none}
+html[data-theme] #homeView .hero h1{color:var(--ink);font-size:clamp(26px,4vw,40px);line-height:1.16;letter-spacing:-.7px;margin:0}
+html[data-theme] #homeView .hero h1 b{color:var(--ink)}
+html[data-theme] #homeView .home-benefits{gap:20px;margin:0 0 20px;padding:0;color:var(--muted)}
+html[data-theme] #homeView .home-benefits>div{font-size:11px}
+html[data-theme] #homeView .home-benefits img{background:transparent}
+html[data-theme] .panel,
+html[data-theme] .home-intro,
+html[data-theme] .detail-panel,
+html[data-theme] .detail-hero{background:#fff;border:1px solid var(--edge);border-radius:26px;box-shadow:none;color:var(--ink)}
+html[data-theme] .panel{padding:24px;margin-top:20px}
+html[data-theme] .home-intro{padding:22px 24px;gap:18px}
+html[data-theme] .home-intro p{font-size:15px;line-height:1.6;color:var(--muted)}
+html[data-theme] .section-head h2,
+html[data-theme] .business-grid strong,
+html[data-theme] .detail-hero h1{color:var(--ink)}
+html[data-theme] .section-head{margin-bottom:18px}
+html[data-theme] .business-lead{color:var(--muted);margin:0 0 18px}
+html[data-theme] .business-grid article,
+html[data-theme] .business-grid article:nth-child(n){background:#fff;border:1px solid var(--edge);border-radius:20px;padding:18px;box-shadow:none}
+html[data-theme] .business-grid article{position:relative;padding-top:28px}
+html[data-theme] .business-grid article::before{content:"";position:absolute;left:18px;top:14px;width:26px;height:4px;border-radius:4px;background:#2477e8}
+html[data-theme] .business-grid article:nth-child(2)::before{background:#139f7b}
+html[data-theme] .business-grid article:nth-child(3)::before{background:#ee922e}
+html[data-theme] .business-grid span{color:var(--muted)}
+html[data-theme] .app-card,
+html[data-theme] .featured .app-card,
+html[data-theme] .featured .app-card:nth-child(n),
+html[data-theme] .catalog .app-card{background:#fff!important;border:1px solid var(--edge);border-radius:20px;box-shadow:none}
+html[data-theme] .app-card p,
+html[data-theme] .featured p,
+html[data-theme] .catalog p{color:var(--muted)}
+html[data-theme] .categories button,
+html[data-theme] .categories button:nth-child(n){background:#fff!important;border:1px solid var(--edge);color:var(--ink);box-shadow:none;border-radius:20px}
+html[data-theme] .categories button[aria-pressed=true]{background:#eaf2ff!important;outline:2px solid var(--blue);outline-offset:2px}
+html[data-theme] .home-intro .hero-contact-cta,
+html[data-theme] .business-cta,
+html[data-theme] .btn,
+html[data-theme] .primary{background:var(--blue);border:0;border-radius:14px;box-shadow:none;color:#fff}
+html[data-theme] .home-intro .hero-contact-cta:hover,
+html[data-theme] .business-cta:hover,
+html[data-theme] .btn:hover,
+html[data-theme] .primary:hover{background:#175dbb}
+html[data-theme] .secondary,
+html[data-theme] .backbtn,
+html[data-theme] .admin-entry,
+html[data-theme] .share-app,
+html[data-theme] .featured .share-app{background:#f8faff;border:1px solid var(--edge);border-radius:12px;box-shadow:none;color:#496078}
+html[data-theme] .search,
+html[data-theme] .update{background:#fff;border:1px solid var(--edge);box-shadow:none}
+html[data-theme] .version{background:#f2f5fa;border-color:var(--edge);color:var(--muted)}
+html[data-theme] .site-footer{border-color:var(--edge);color:var(--muted)}
+html[data-theme] nav{width:100%;max-width:1120px;bottom:0;background:#fff;border:0;border-top:1px solid var(--edge);border-radius:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));box-shadow:none;backdrop-filter:none}
+html[data-theme] nav button{color:#858e9a;border-radius:20px;min-height:58px}
+html[data-theme] nav button.active{background:#eaf2ff;color:var(--blue)}
+html[data-theme] nav svg{display:block;margin:0 auto 4px;width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html[data-theme] nav span{font-size:12px}
+@media(max-width:700px){
+html[data-theme] .app-shell{padding:18px 16px 112px}
+html[data-theme] #homeView .cover{column-gap:12px;row-gap:18px;margin-bottom:18px}
+html[data-theme] #homeView .top .home-brand{max-width:none}
+html[data-theme] #homeView .top-admin{font-size:10px;padding:10px;max-width:88px;border-radius:14px}
+html[data-theme] #homeView .home-brand #siteTagline{font-size:10px}
+html[data-theme] #homeView .hero h1{font-size:27px;line-height:1.18}
+html[data-theme] #homeView .home-benefits{gap:16px}
+html[data-theme] #homeView .home-benefits>div{font-size:9px}
+html[data-theme] .panel{padding:18px;margin-top:18px;border-radius:26px}
+html[data-theme] .home-intro{padding:18px;border-radius:24px}
+html[data-theme] .home-intro p{font-size:14px}
+html[data-theme] .business-grid article{padding:28px 14px 16px;border-radius:20px}
+html[data-theme] .business-grid article::before{left:14px}
+html[data-theme] .section-head h2{font-size:18px}
+html[data-theme] .featured .app-card,
+html[data-theme] .catalog .app-card{border-radius:16px}
+html[data-theme] nav{width:100%;padding-left:12px;padding-right:12px}
+html[data-theme] nav button{min-height:54px}
+}
