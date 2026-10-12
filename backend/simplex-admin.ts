@@ -108,6 +108,12 @@ Deno.serve(async(req:Request)=>{
   if(action==='product-modules'){
    const rows=await db('simplex_product_modules?select=product_id,modules,management_url,capabilities');return reply({products:rows.map((p:any)=>({product_id:p.product_id,modules:p.modules,managed:!!p.management_url,capabilities:tenantTools.capabilities(p.capabilities)}))});
   }
+  if(action==='product-analytics'){
+   const body=await req.json();if(typeof body.id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(body.id))throw Error('Applicazione non valida');
+   const result=await callManager(body.id,auth,{action:'analytics'});
+   if(!result?.analytics)throw Error('Statistiche non disponibili per questa applicazione');
+   return reply(result);
+  }
   if(action==='product-customers'||action==='product-customer-modules'||action==='product-customer-status'||action==='product-customer-delete'){
    const body=await req.json();if(typeof body.id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(body.id))throw Error('Applicazione non valida');
    const payload=action==='product-customers'?{action:'list'}:action==='product-customer-status'?{action:'status',customerId:body.customerId,status:body.status}:action==='product-customer-delete'?{action:'delete',customerId:body.customerId}:{action:'save',customerId:body.customerId,modules:body.modules};
