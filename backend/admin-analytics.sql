@@ -17,6 +17,7 @@ begin
  and not exists(select 1 from public.sg_licenses l where l.customer_id=c.id and l.active and l.expires_at>now() and l.plan not ilike 'Prova gratuita%')
  )
  select jsonb_build_object('generated_at',now(),'timezone','Europe/Rome',
+ 'registrations',(select coalesce(jsonb_agg(jsonb_build_object('user_id',u.id,'email',u.email,'created_at',u.created_at,'state',case when u.email_confirmed_at is null then 'email_unconfirmed' else 'registered' end) order by u.created_at desc),'[]'::jsonb) from auth.users u),
  'totals',jsonb_build_object(
  'registered',(select count(*) from auth.users),
  'trials_active',(select count(*) from active_trials),
