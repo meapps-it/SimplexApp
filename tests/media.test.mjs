@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 let fetched=[];
-const context=vm.createContext({location:{href:'https://meapps-it.github.io/SimplexApp/'},URL,Map,File,safeIcon:u=>u||'',fetch:async url=>{fetched.push(url);return new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/png'}})}});
+const context=vm.createContext({location:{href:'https://meapps-it.github.io/SimplexApp/'},URL,Map,File,esc:s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('\"','&quot;'),safeIcon:u=>u||'',fetch:async url=>{fetched.push(url);return new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/png'}})}});
 vm.runInContext(readFileSync(new URL('../media.js',import.meta.url),'utf8'),context);
 assert.equal(vm.runInContext("shareImageURL({id:'toi'})",context),'https://meapps-it.github.io/SimplexApp/assets/promotional/turni-operai.png');
 assert.equal(vm.runInContext("shareImageURL({id:'toi',promoImages:[],icon:'icon.png'})",context),'icon.png');
@@ -14,5 +14,5 @@ app.promoImages.push('https://example.test/new.png');await context.prepareShareI
 context.fetch=async()=>new Response('wrong',{headers:{'Content-Type':'text/html'}});
 assert.equal(await context.prepareShareImage({id:'bad',promoImages:['https://example.test/bad']}),null);
 context.fetch=async()=>{throw Error('offline')};assert.equal(await context.prepareShareImage({id:'offline',promoImages:['https://example.test/offline']}),null);
-const appSource=readFileSync(new URL('../app.js',import.meta.url),'utf8');assert.ok(!appSource.includes('renderPromo('));assert.ok(!appSource.includes('handlePromo('));assert.ok(appSource.includes('assets/google-play-badge-it.png'));assert.ok(appSource.includes('Scarica dal Play Store'));
-console.log('PASS: latest promotional image, default assets, explicit removal, safe URLs, preload cache, changed image, invalid MIME/offline and no public image gallery.');
+const appSource=readFileSync(new URL('../app.js',import.meta.url),'utf8');assert.ok(appSource.includes('renderPromo(a)'));assert.equal(context.renderPromo({id:'empty',promoImages:[]}), '');const gallery=context.renderPromo({id:'test',name:'Test <app>',promoImages:['https://example.test/one.png','javascript:alert(1)','https://example.test/two.png']});assert.equal((gallery.match(/data-screen=/g)||[]).length,2);assert.ok(gallery.includes('Immagini promozionali'));assert.ok(gallery.includes('Test &lt;app>'));assert.ok(!gallery.includes('javascript:'));assert.ok(appSource.includes("b.closest('.screenshots').querySelectorAll('[data-screen]')"));assert.ok(!appSource.includes('handlePromo('));assert.ok(appSource.includes('assets/google-play-badge-it.png'));assert.ok(appSource.includes('Scarica dal Play Store'));
+console.log('PASS: latest promotional image, default assets, explicit removal, safe URLs, preload cache, changed image, invalid MIME/offline and separate public promotional gallery.');

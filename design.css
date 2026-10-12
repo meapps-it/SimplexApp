@@ -352,3 +352,8 @@ html[data-theme] .catalog .app-card{border-radius:16px}
 html[data-theme] nav{width:100%;padding-left:12px;padding-right:12px}
 html[data-theme] nav button{min-height:54px}
 }
+
+/* Promotional artwork keeps its full proportions in a separate gallery. */
+.promotional-gallery .promo-image{flex:0 0 min(320px,80vw);height:260px;background:#f5f6fb;border:1px solid #e5e8ef;border-radius:18px;box-shadow:none}
+.promotional-gallery .promo-image img{object-fit:contain}
+@media(max-width:600px){.promotional-gallery .promo-image{flex-basis:76vw;height:240px}}
