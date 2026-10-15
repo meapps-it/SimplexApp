@@ -90,3 +90,13 @@ nav{grid-template-columns:repeat(3,1fr)}
   .business-grid article{gap:11px}
   .business-icon{width:52px;height:52px;flex-basis:52px;border-radius:13px}
 }
+
+/* I contatti sono disponibili ma non competono con le schede delle app. */
+.business-contact-link{display:inline-block;margin:12px 0 0 6px;font-size:13px;font-weight:650;text-decoration:underline;text-underline-offset:3px;color:var(--muted,#5b6a7e)}
+.contact-collapsed{padding:12px 16px!important;margin-top:16px}
+.contact-collapsed>summary{list-style:none;cursor:pointer;font-size:14px;line-height:1.4;font-weight:700;color:var(--muted,#53667e);padding:10px 4px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.contact-collapsed>summary::-webkit-details-marker{display:none}
+.contact-collapsed>summary span{font-size:18px;transition:transform .15s}
+.contact-collapsed[open]>summary span{transform:rotate(180deg)}
+.contact-collapsed .contact-content{padding:12px 4px 8px;border-top:1px solid #e7edf6}
+.contact-collapsed>summary:focus-visible,.business-contact-link:focus-visible{outline:3px solid #1954d1;outline-offset:3px}
