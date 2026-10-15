@@ -1,0 +1,28 @@
+/* Analisi visite, confinata al pannello amministratore */
+.visits-card{margin-bottom:18px}
+.visits-header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.visits-header h2{margin:.2rem 0}
+.visits-header .note{margin:.25rem 0 .5rem}
+.visits-actions{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.visits-actions label{font-size:.82rem;font-weight:700}
+.visits-actions select{display:block;min-width:115px;margin-top:4px}
+.visits-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:18px 0}
+.visits-kpi{padding:14px;border-radius:14px;background:var(--card-bg,#f2f7fc);border:1px solid rgba(99,138,175,.2);display:flex;gap:5px;flex-direction:column}
+.visits-kpi span{font-size:.82rem;opacity:.76}
+.visits-kpi strong{font-size:1.55rem;font-weight:800;font-variant-numeric:tabular-nums}
+.visits-card h3{font-size:1rem;margin:17px 0 9px}
+.visits-chart{height:160px;border-bottom:1px solid rgba(100,140,170,.3);background:repeating-linear-gradient(to top,transparent 0,transparent 39px,rgba(100,140,170,.09) 40px)}
+.visits-bars{height:100%;display:flex;gap:3px;align-items:flex-end;padding:0 3px}
+.visits-bar{flex:1;min-width:2px;background:linear-gradient(0deg,#377de3,#7eb4f0);border-radius:4px 4px 0 0}
+.visits-caption{font-size:.75rem;opacity:.75;line-height:1.45;margin:.6rem 0 1rem}
+.visits-lower{display:grid;grid-template-columns:minmax(180px,1fr) minmax(270px,1.5fr);gap:20px}
+.visits-source{display:grid;gap:5px;margin:0 0 12px}
+.visits-source>div{display:flex;justify-content:space-between;gap:8px;font-size:.86rem}
+.visits-track{height:7px;background:rgba(100,140,180,.14);border-radius:100px;display:block;overflow:hidden}
+.visits-track>span{height:100%;display:block;background:#377de3;border-radius:100px}
+.visits-table-wrap{max-width:100%;overflow:auto}
+.visits-table{width:100%;border-collapse:collapse;font-size:.82rem;text-align:left}
+.visits-table th,.visits-table td{padding:9px 7px;border-bottom:1px solid rgba(100,140,170,.16)}
+.visits-table td{text-align:right;font-variant-numeric:tabular-nums}
+.visits-table thead th:not(:first-child){text-align:right}
+@media(max-width:650px){.visits-lower{grid-template-columns:1fr}.visits-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.visits-actions{width:100%}}
