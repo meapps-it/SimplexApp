@@ -26,7 +26,7 @@
     else if(!data) inner='<p>Statistiche non ancora disponibili.</p>';
     else {
       const t=data.totals||{},series=Array.isArray(data.days)?data.days:[],max=Math.max(1,...series.map(x=>count(x.visits)));
-      const columns=[['Visite',t.visits,'Accessi stimati, non visitatori unici'],['Pagine viste',t.pageviews,'Aperture di pagine e schede'],['Schede app',t.app_views,'Visualizzazioni dei prodotti'],['Demo',t.demos,'Clic sui pulsanti demo'],['Apri',t.opens,'Clic per aprire app e PWA'],['Download',t.downloads,'Clic per scaricare o aprire Play'],['Contatti',t.contacts,'Clic o invii, non messaggi ricevuti']];
+      const columns=[['Visite',t.visits,'Accessi stimati, non visitatori unici'],['Visualizzazioni',t.pageviews,'Visualizzazioni delle pagine del sito'],['App consultate',t.app_views,'Aperture delle schede delle applicazioni'],['Demo',t.demos,'Clic sui pulsanti demo'],['Aperture app',t.opens,'Clic per aprire app e PWA']];
       const allSources=Array.isArray(data.sources)?data.sources:[],denom=Math.max(1,count(t.visits));
       const sourceHtml=allSources.length?allSources.map(s=>{
         const pct=Math.min(100,Math.round(count(s.visits)/denom*100));
