@@ -18,11 +18,44 @@ function liveStateLabel(value){return liveStateLabels[value]||value||'Registrato
 function liveStateTone(value){return value==='subscribed'||value==='licensed'?'green':value==='trial'?'yellow':value==='registered'?'':'red'}
 function liveDate(value){if(!value)return '';const d=new Date(value);return Number.isNaN(d.getTime())?'':d.toLocaleDateString('it-IT')}
 function liveActivity(c){return [liveBusinessLabels[c.business_model]||'',liveSectorLabels[c.activity_sector]||''].filter(Boolean).join(' · ')}
+function pendingRegistrationActions(user){
+ const uid=typeof user.user_id==='string'?user.user_id:'';
+ if(user.state!=='email_unconfirmed'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(uid))return '';
+ return '<div class="pending-registration-actions"><button type="button" class="danger" data-live-registration-delete="'+esc(uid)+'" aria-label="Elimina registrazione non confermata di '+esc(user.email||'utente')+'">Elimina registrazione</button></div>';
+}
+function wireRegistrationDelete(box){
+ box.querySelectorAll('[data-live-registration-delete]').forEach(button=>{
+  button.onclick=()=>deletePendingRegistration(button.dataset.liveRegistrationDelete,button);
+ });
+}
+async function deletePendingRegistration(userId,button){
+ const users=[...serverModuleRegistrations,...(window.__simplexAnalyticsUsers||[])];
+ const user=users.find(u=>u.user_id===userId&&u.state==='email_unconfirmed');
+ if(!user)return toast('Questa registrazione non risulta più eliminabile. Aggiorna l’elenco.');
+ const product=(workspaceSection==='modules'&&$('moduleProductSelect')?.value)||liveManagedProduct||liveProductId();
+ if(!product)return toast('Gestione clienti non collegata.');
+ const email=user.email||'questo indirizzo';
+ if(!confirm('Eliminare definitivamente la registrazione NON confermata «'+email+'»?\n\nL’utente perderà il link di verifica e, per accedere, dovrà registrarsi di nuovo.\n\nI clienti attivi e le registrazioni già utilizzate non possono essere eliminati con questo pulsante.'))return;
+ button.disabled=true;
+ try{
+  const result=await adminCall('product-registration-delete',{id:product,userId});
+  if(result?.deleted!==true)throw Error('Il server non ha confermato l’eliminazione');
+  serverModuleRegistrations=serverModuleRegistrations.filter(u=>u.user_id!==userId);
+  window.__simplexAnalyticsUsers=(window.__simplexAnalyticsUsers||[]).filter(u=>u.user_id!==userId);
+  renderLiveClients();
+  if(workspaceSection==='modules'&&$('moduleProductSelect')?.value===product)await loadServerModules(product,true);
+  await loadLiveClients(true);
+  window.adminAnalytics?.load?.();
+  toast('Registrazione non confermata eliminata');
+ }catch(error){toast(error.message||'Eliminazione non riuscita');}
+ finally{if(button.isConnected)button.disabled=false;}
+}
 function renderServerCustomerOverview(){
  const box=$('serverCustomerOverview');if(!box)return;
  const customerRows=serverModuleCustomers.map(c=>{const trial=c.state==='trial'&&c.trial_expires_at?' · fino al '+liveDate(c.trial_expires_at):'';const paid=(c.state==='subscribed'||c.state==='licensed')&&c.license_plan?' · '+c.license_plan:'';return `<article class="client-row live-client-row" data-live-customer="${esc(c.id)}" role="button" tabindex="0"><div class="client-main"><strong>${esc(c.name||'La tua attività')}</strong><small>${esc(c.email||'Email non disponibile')}${liveActivity(c)?' · '+esc(liveActivity(c)):''}</small></div><div class="client-meta"><span class="client-badge ${liveStateTone(c.state)}">${esc(liveStateLabel(c.state))}${esc(trial)}</span>${paid?`<span class="client-badge green">${esc(paid.slice(3))}</span>`:''}</div><span class="client-chevron" aria-hidden="true">›</span></article>`;});
- const registrationRows=serverModuleRegistrations.map(u=>`<article class="client-row live-client-row pending"><div class="client-main"><strong>${esc(u.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(u.created_at)||'—')} · nessuna prova avviata</small></div><div class="client-meta"><span class="client-badge ${liveStateTone(u.state)}">${esc(liveStateLabel(u.state))}</span></div></article>`);
+ const registrationRows=serverModuleRegistrations.map(u=>`<article class="client-row live-client-row pending"><div class="client-main"><strong>${esc(u.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(u.created_at)||'—')} · nessuna prova avviata</small></div><div class="client-meta"><span class="client-badge ${liveStateTone(u.state)}">${esc(liveStateLabel(u.state))}</span></div>${pendingRegistrationActions(u)}</article>`);
  box.innerHTML=[...customerRows,...registrationRows].join('')||'<p class="note">Nessuna registrazione ancora presente.</p>';
+ wireRegistrationDelete(box);
  box.querySelectorAll('[data-live-customer]').forEach(row=>{const open=()=>{const select=$('serverModuleCustomerSelect');select.value=row.dataset.liveCustomer;renderServerModuleSelection();$('serverSelectedCustomerMeta')?.scrollIntoView({block:'nearest'});};row.onclick=open;row.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}};});
 }
 
@@ -56,9 +89,10 @@ function renderLiveClients(){
   const modules=defs.map(m=>`<label class="live-module-toggle ${m.ready===false?'disabled':''}"><input type="checkbox" data-live-module="${esc(m.key)}" ${customer.modules?.[m.key]===true?'checked':''} ${m.ready===false?'disabled':''}><span>${esc(m.label)}${m.ready===false?' · In sviluppo':''}</span></label>`).join('');
   return `<article class="live-client-card unified" data-live-card="${esc(customer.id)}"><div class="live-client-head"><div><strong>${esc(customer.name||'La tua attività')}</strong><small>${esc(customer.email||'Email non disponibile')}${liveActivity(customer)?' · '+esc(liveActivity(customer)):''}</small></div><div class="live-client-badges"><span class="client-badge ${liveStateTone(customer.state)}">${esc(liveStateLabel(customer.state))}</span><span class="client-badge ${payment.tone}">${esc(payment.label)}</span></div></div>${expiry?`<p class="live-client-expiry">${esc(expiry)}</p>`:''}<details class="live-client-manage"><summary>Gestisci cliente</summary><div class="live-client-info"><span><b>Piano</b> ${esc(customer.license_plan||'—')}</span><span><b>Ultimo accesso</b> ${esc(liveDate(customer.last_sign_in_at)||'—')}</span></div><div class="live-client-modules-editor"><div class="live-client-section-title"><b>Moduli</b><small>Attiva o disattiva e salva</small></div><div class="live-module-grid">${modules}</div></div><div class="live-client-actions"><button class="primary" type="button" data-live-save="${esc(customer.id)}">Salva moduli</button>${customer.state==='suspended'?`<button class="secondary" type="button" data-live-reactivate="${esc(customer.id)}">Riattiva</button>`:`<button class="secondary" type="button" data-live-suspend="${esc(customer.id)}">Sospendi</button>`}<button class="danger" type="button" data-live-delete="${esc(customer.id)}">Elimina</button></div></details></article>`;
  });
- const pending=visibleRegistrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')}${filter==='registered'?'':' · nessuna prova avviata'}</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div>${filter==='registered'?'':'<p class="live-client-expiry">In attesa della conferma email o del primo accesso. I moduli verranno assegnati automaticamente quando completa la configurazione.</p>'}</article>`);
+ const pending=visibleRegistrations.map(user=>`<article class="live-client-card pending"><div class="live-client-head"><div><strong>${esc(user.email||'Registrazione senza email')}</strong><small>Registrato il ${esc(liveDate(user.created_at)||'—')}${filter==='registered'?'':' · nessuna prova avviata'}</small></div><span class="client-badge ${liveStateTone(user.state)}">${esc(liveStateLabel(user.state))}</span></div>${filter==='registered'?'':'<p class="live-client-expiry">In attesa della conferma email o del primo accesso. I moduli verranno assegnati automaticamente quando completa la configurazione.</p>'}${pendingRegistrationActions(user)}</article>`);
  const filterBar=filter==='all'?'':`<div class="live-filter-bar"><strong>${esc(labels[filter]||'Filtro')}</strong><button type="button" class="secondary" data-live-filter-reset>Mostra tutti</button></div>`;
  box.innerHTML=filterBar+([...rows,...pending].join('')||'<p class="note">Nessun cliente in questa categoria.</p>');
+ wireRegistrationDelete(box);
  box.querySelectorAll('[data-live-filter-reset]').forEach(button=>button.onclick=()=>{window.__simplexLiveFilter='all';renderLiveClients();});
  box.querySelectorAll('[data-live-save]').forEach(button=>button.onclick=()=>saveInlineLiveModules(button.dataset.liveSave));
  box.querySelectorAll('[data-live-suspend]').forEach(button=>button.onclick=()=>suspendLiveCustomer(button.dataset.liveSuspend));
