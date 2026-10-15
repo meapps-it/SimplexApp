@@ -5,6 +5,11 @@
   const fieldset = document.getElementById('contactFields');
   const button = document.getElementById('contactSend');
   const endpoint = CLOUD.url + '/functions/v1/simplex-contact';
+  const details = document.getElementById('contatti');
+  const reveal = () => { if (details) details.open = true; };
+  document.addEventListener('click', event => { if (event.target.closest('a[href="#contatti"]')) reveal(); });
+  window.addEventListener('hashchange', () => { if (location.hash === '#contatti') reveal(); });
+  if (location.hash === '#contatti') reveal();
   let token = '', widget, sending = false;
   async function setup() {
     try {
