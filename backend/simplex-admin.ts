@@ -114,6 +114,14 @@ Deno.serve(async(req:Request)=>{
    if(!result?.analytics)throw Error('Statistiche non disponibili per questa applicazione');
    return reply(result);
   }
+  if(action==='product-registration-delete'){
+   const body=await req.json();
+   if(typeof body.id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(body.id))throw Error('Applicazione non valida');
+   if(typeof body.userId!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.userId))throw Error('Registrazione non valida');
+   const result=await callManager(body.id,auth,{action:'registration-delete',userId:body.userId});
+   if(result?.deleted!==true)throw Error('Eliminazione non confermata dal gestionale');
+   return reply({deleted:true});
+  }
   if(action==='product-customers'||action==='product-customer-modules'||action==='product-customer-status'||action==='product-customer-delete'){
    const body=await req.json();if(typeof body.id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(body.id))throw Error('Applicazione non valida');
    const payload=action==='product-customers'?{action:'list'}:action==='product-customer-status'?{action:'status',customerId:body.customerId,status:body.status}:action==='product-customer-delete'?{action:'delete',customerId:body.customerId}:{action:'save',customerId:body.customerId,modules:body.modules};
