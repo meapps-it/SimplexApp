@@ -65,7 +65,7 @@ function cleanMessage(value){
   if(typeof value!=='string')return '';
   return value.replace(/Bearer\s+[A-Za-z0-9._-]+/gi,'Bearer [chiave nascosta]').slice(0,900);
 }
-function veniceError(data,status){
+function veniceError(data,status,context={}){
   const raw=
     (typeof data?.error?.message==='string'&&data.error.message)||
     (typeof data?.error==='string'&&data.error)||
@@ -73,6 +73,13 @@ function veniceError(data,status){
     'Richiesta Venice non riuscita';
   const err=Error(cleanMessage(raw));
   err.status=status===401?401:status===402?402:status===403?403:status===409?409:status===429?429:400;
+  err.veniceDetails={
+    model:cleanMessage(String(context.model||'')),
+    mode:cleanMessage(String(context.mode||'')),
+    stage:cleanMessage(String(context.stage||'')),
+    code:cleanMessage(String(data?.error?.code||data?.code||'')),
+    reason:cleanMessage(String(data?.error?.reason||data?.reason||data?.detail||data?.details||''))
+  };
   return err;
 }
 async function veniceJson(path,key,{method='GET',body}={}){
@@ -273,7 +280,7 @@ Deno.serve(async req=>{
             docsUrl:data.docs_url||''
           },409);
         }
-        throw veniceError(data,vr.status);
+        throw veniceError(data,vr.status,{model:s.model,mode,stage:'queue'});
       }
       if(typeof data.queue_id!=='string')throw Error('Venice non ha restituito l’identificativo del video');
       return reply(req,{
@@ -301,7 +308,7 @@ Deno.serve(async req=>{
         return reply(req,{status:'COMPLETED',ready:true,delivery:'proxy'});
       }
       const data=await vr.json().catch(()=>({}));
-      if(!vr.ok)throw veniceError(data,vr.status);
+      if(!vr.ok)throw veniceError(data,vr.status,{model,stage:'retrieve'});
       return reply(req,{
         status:typeof data.status==='string'?data.status:'PROCESSING',
         ready:data.status==='COMPLETED',
@@ -333,13 +340,16 @@ Deno.serve(async req=>{
         });
       }
       const data=await vr.json().catch(()=>({}));
-      if(!vr.ok)throw veniceError(data,vr.status);
+      if(!vr.ok)throw veniceError(data,vr.status,{model,stage:'download'});
       return reply(req,{error:'Il file non è ancora disponibile per il download',status:data.status||'PROCESSING'},409);
     }
 
     return reply(req,{error:'Operazione non riconosciuta'},400);
   }catch(e){
     const status=Number(e?.status)||400;
-    return reply(req,{error:e instanceof Error?e.message:'Operazione non riuscita'},status);
+    return reply(req,{
+      error:e instanceof Error?e.message:'Operazione non riuscita',
+      ...(e?.veniceDetails?{veniceDetails:e.veniceDetails}:{})
+    },status);
   }
 });
