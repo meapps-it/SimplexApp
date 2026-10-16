@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0d304d">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Studio video privato SimplexApp basato su Grok Imagine API.">
+  <title>Simplex Video Studio</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="../assets/favicon-mascot.png">
+  <link rel="apple-touch-icon" href="../assets/pwa-192.png">
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="Torna a SimplexApp">
+      <img src="../assets/simplexapp-header-horizontal.webp" alt="">
+      <span>Video Studio</span>
+    </a>
+    <button id="logoutBtn" class="ghost hidden" type="button">Esci</button>
+  </header>
+
+  <main class="shell">
+    <section id="loginView" class="card auth-card">
+      <p class="eyebrow">Accesso privato</p>
+      <h1>Simplex Video Studio</h1>
+      <p>Usa lo stesso account Admin di SimplexApp.</p>
+      <form id="loginForm">
+        <label>Email
+          <input id="email" type="email" autocomplete="username" required>
+        </label>
+        <label>Password
+          <input id="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="primary" type="submit">Accedi</button>
+      </form>
+      <p id="loginStatus" class="status" role="status"></p>
+    </section>
+
+    <div id="studioView" class="hidden">
+      <section class="hero card">
+        <div>
+          <p class="eyebrow">Grok Imagine API</p>
+          <h1>Genera i video senza smanettare.</h1>
+          <p>Foto, prompt, formato, durata. Il resto lo fa il backend, che conserva la chiave xAI lontano dal browser.</p>
+        </div>
+        <div id="connectionBadge" class="badge bad">xAI non collegato</div>
+      </section>
+
+      <details id="connectionPanel" class="card connection" open>
+        <summary>Connessione xAI</summary>
+        <p id="connectedText">Crea una chiave nella console xAI e incollala qui. Non viene salvata nel telefono né mostrata dopo il collegamento.</p>
+        <div id="connectBox">
+          <label>Chiave API xAI
+            <input id="xaiKey" type="password" autocomplete="off" placeholder="xai-…">
+          </label>
+          <button id="connectBtn" class="primary" type="button">Collega xAI</button>
+        </div>
+        <button id="disconnectBtn" class="danger hidden" type="button">Scollega chiave xAI</button>
+        <p id="connectionStatus" class="status" role="status"></p>
+      </details>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Nuovo video</p>
+            <h2>Generatore</h2>
+          </div>
+          <span id="costBadge" class="cost">Stima $0.25</span>
+        </div>
+
+        <div class="mode-grid" role="group" aria-label="Tipo di generazione">
+          <button class="mode active" data-mode="image" type="button">
+            <strong>Da foto</strong><span>La foto è il primo fotogramma</span>
+          </button>
+          <button class="mode" data-mode="reference" type="button">
+            <strong>Riferimenti</strong><span>Personaggi e oggetti coerenti</span>
+          </button>
+          <button class="mode" data-mode="text" type="button">
+            <strong>Solo testo</strong><span>Parte da zero</span>
+          </button>
+        </div>
+
+        <form id="generatorForm">
+          <div id="imageField">
+            <label>Foto iniziale
+              <input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp">
+            </label>
+            <p class="note">Per un reel verticale conviene partire da una foto già in 9:16.</p>
+          </div>
+
+          <div id="referenceField" class="hidden">
+            <label>Immagini di riferimento
+              <input id="referenceFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+            </label>
+            <p class="note">Da 1 a 7 immagini. Nel prompt puoi richiamarle come &lt;IMAGE_0&gt;, &lt;IMAGE_1&gt; e così via.</p>
+          </div>
+
+          <label>Descrizione del video
+            <textarea id="prompt" rows="6" maxlength="5000" required placeholder="Esempio: pubblicità verticale, la donna guarda il telefono, sorride e mostra l'app. Movimento naturale, luce realistica, camera fluida…"></textarea>
+          </label>
+
+          <div class="options">
+            <label>Modello
+              <select id="model">
+                <option value="grok-imagine-video-1.5-lite">1.5 Lite · economico</option>
+                <option value="grok-imagine-video-1.5">1.5 · qualità/riferimenti</option>
+              </select>
+            </label>
+            <label>Durata
+              <select id="duration">
+                <option value="5">5 secondi</option>
+                <option value="8" selected>8 secondi</option>
+                <option value="10">10 secondi</option>
+                <option value="12">12 secondi</option>
+                <option value="15">15 secondi</option>
+              </select>
+            </label>
+            <label>Risoluzione
+              <select id="resolution">
+                <option value="480p">480p</option>
+                <option value="720p" selected>720p</option>
+                <option value="1080p">1080p</option>
+              </select>
+            </label>
+            <label id="aspectLabel">Formato
+              <select id="aspect">
+                <option value="9:16" selected>9:16 · Reel/TikTok</option>
+                <option value="16:9">16:9 · Orizzontale</option>
+                <option value="1:1">1:1 · Quadrato</option>
+                <option value="4:3">4:3</option>
+                <option value="3:4">3:4</option>
+                <option value="2:3">2:3</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="check">
+            <input id="audio" type="checkbox" checked>
+            <span>Genera anche audio</span>
+          </label>
+
+          <button id="generateBtn" class="primary generate" type="submit">Genera video</button>
+          <p class="note price-note">La cifra è una stima basata sui prezzi API attuali; il costo effettivo viene addebitato da xAI.</p>
+          <p id="generateStatus" class="status" role="status"></p>
+        </form>
+      </section>
+
+      <section id="resultCard" class="card hidden">
+        <p class="eyebrow">Risultato</p>
+        <h2>Video pronto</h2>
+        <video id="resultVideo" controls playsinline></video>
+        <div class="actions">
+          <a id="openVideo" class="primary link-button" target="_blank" rel="noopener">Apri video</a>
+          <button id="newVideoBtn" class="ghost" type="button">Nuovo video</button>
+        </div>
+        <p class="note">I link restituiti dal servizio possono scadere: conserva il video quando ti piace.</p>
+      </section>
+
+      <section id="historyCard" class="card hidden">
+        <div class="section-head"><h2>Ultimi video</h2><button id="clearHistory" class="ghost small" type="button">Pulisci</button></div>
+        <div id="historyList" class="history"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js?v=1"></script>
+</body>
+</html>
