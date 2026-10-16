@@ -123,17 +123,49 @@ function validDataImage(value){
     value.length<=6500000 &&
     /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(value);
 }
-function generationSettings(body){
-  const model=validModel(body.model)?body.model:'';
-  if(!model)throw Error('Seleziona un modello video');
+async function getVideoModel(key,id){
+  if(!validModel(id))throw Error('Seleziona un modello video');
+  const models=await listModels(key);
+  const model=models.find(x=>x.id===id);
+  if(!model)throw Error('Il modello selezionato non è più disponibile su Venice');
+  return model;
+}
+function generationSettings(body,modelInfo){
+  const model=modelInfo.id;
+  const c=modelInfo.constraints||{};
   const duration=Math.trunc(Number(body.duration)||0);
-  if(duration<1||duration>30)throw Error('Durata non valida');
-  const resolutions=new Set(['256p','360p','480p','540p','580p','720p','768P','1080p','true_1080p','1440p','2160p','2K','4k']);
-  const resolution=resolutions.has(body.resolution)?body.resolution:'720p';
-  const aspects=new Set(['1:1','2:3','3:2','3:4','4:3','4:5','5:4','9:16','9:21','16:9','21:9','adaptive','auto']);
-  const aspectRatio=aspects.has(body.aspectRatio)?body.aspectRatio:'9:16';
-  const audio=body.generateAudio!==false;
-  return {model,duration,resolution,aspectRatio,audio};
+  if(duration<1||duration>120)throw Error('Durata non valida');
+  const durationWire=String(duration)+'s';
+  if(Array.isArray(c.durations)&&c.durations.length&&!c.durations.map(String).includes(durationWire)){
+    throw Error('Questo modello non supporta '+duration+' secondi');
+  }
+
+  let resolution=typeof body.resolution==='string'?body.resolution:'';
+  if(Array.isArray(c.resolutions)&&c.resolutions.length){
+    const allowed=c.resolutions.map(String);
+    if(!allowed.includes(resolution))throw Error('Questo modello non supporta la risoluzione '+resolution);
+  }else{
+    resolution='';
+  }
+
+  let aspectRatio=typeof body.aspectRatio==='string'?body.aspectRatio:'';
+  if(Array.isArray(c.aspect_ratios)&&c.aspect_ratios.length){
+    const allowed=c.aspect_ratios.map(String);
+    if(!allowed.includes(aspectRatio))throw Error('Questo modello non supporta il formato '+aspectRatio);
+  }else{
+    aspectRatio='';
+  }
+
+  const audioConfigurable=c.audio_configurable===true;
+  const audio=audioConfigurable ? body.generateAudio!==false : c.audio===true;
+  return {model,duration,durationWire,resolution,aspectRatio,audio,audioConfigurable};
+}
+function requestShape(s){
+  const payload={model:s.model,duration:s.durationWire};
+  if(s.resolution)payload.resolution=s.resolution;
+  if(s.aspectRatio)payload.aspect_ratio=s.aspectRatio;
+  if(s.audioConfigurable)payload.audio=s.audio;
+  return payload;
 }
 
 Deno.serve(async req=>{
@@ -180,16 +212,11 @@ Deno.serve(async req=>{
 
     if(action==='quote'){
       const body=await req.json().catch(()=>({}));
-      const s=generationSettings(body);
+      const info=await getVideoModel(key,body.model);
+      const s=generationSettings(body,info);
       const q=await veniceJson('/video/quote',key,{
         method:'POST',
-        body:{
-          model:s.model,
-          duration:String(s.duration)+'s',
-          resolution:s.resolution,
-          aspect_ratio:s.aspectRatio,
-          audio:s.audio
-        }
+        body:requestShape(s)
       });
       return reply(req,{quote:Number(q.quote),currency:'USD'});
     }
@@ -199,15 +226,9 @@ Deno.serve(async req=>{
       const prompt=typeof body.prompt==='string'?body.prompt.trim():'';
       if(!prompt||prompt.length>15000)return reply(req,{error:'Scrivi una descrizione del video (massimo 15000 caratteri)'},400);
       const mode=['text','image','reference'].includes(body.mode)?body.mode:'image';
-      const s=generationSettings(body);
-      const payload={
-        model:s.model,
-        prompt,
-        duration:String(s.duration)+'s',
-        resolution:s.resolution,
-        aspect_ratio:s.aspectRatio,
-        audio:s.audio
-      };
+      const info=await getVideoModel(key,body.model);
+      const s=generationSettings(body,info);
+      const payload={...requestShape(s),prompt};
 
       if(mode==='image'){
         if(!validDataImage(body.image))return reply(req,{error:'Carica una foto JPG, PNG o WebP valida'},400);
