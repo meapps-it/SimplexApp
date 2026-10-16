@@ -187,6 +187,66 @@ function modeDefaultId(){
   if(mode==='reference')return'seedance-2-5-reference-to-video-basic';
   return'seedance-2-5-text-to-video-basic';
 }
+function selectedModel(){
+  return models.find(m=>m.id===$('model').value)||null;
+}
+function setSelectValues(select,values,preferred,labeler=v=>v){
+  const clean=[...new Set(values.filter(v=>v!==''&&v!==null&&v!==undefined).map(String))];
+  select.innerHTML='';
+  for(const value of clean){
+    const opt=document.createElement('option');
+    opt.value=value;
+    opt.textContent=labeler(value);
+    select.appendChild(opt);
+  }
+  if(!clean.length){
+    const opt=document.createElement('option');
+    opt.value='';
+    opt.textContent='Non configurabile';
+    select.appendChild(opt);
+    select.disabled=true;
+    return;
+  }
+  select.disabled=false;
+  select.value=clean.includes(String(preferred))?String(preferred):clean[clean.length-1];
+}
+function applyModelConstraints(){
+  const m=selectedModel();
+  if(!m){scheduleQuote();return}
+  const c=m.constraints||{};
+
+  const currentDuration=$('duration').value;
+  const durationValues=Array.isArray(c.durations)
+    ? c.durations.map(v=>String(v).replace(/s$/i,'')).filter(v=>/^\d+$/.test(v))
+    : [];
+  if(durationValues.length){
+    setSelectValues($('duration'),durationValues,currentDuration,v=>v+' secondi');
+  }
+
+  const currentResolution=$('resolution').value;
+  const resolutionValues=Array.isArray(c.resolutions)?c.resolutions.map(String):[];
+  if(resolutionValues.length){
+    const preferred=resolutionValues.includes(currentResolution)?currentResolution:(resolutionValues.includes('480p')?'480p':resolutionValues[0]);
+    setSelectValues($('resolution'),resolutionValues,preferred,v=>v);
+  }
+
+  const currentAspect=$('aspect').value;
+  const aspectValues=Array.isArray(c.aspect_ratios)?c.aspect_ratios.map(String):[];
+  if(aspectValues.length){
+    const preferred=aspectValues.includes(currentAspect)?currentAspect:(aspectValues.includes('9:16')?'9:16':aspectValues[0]);
+    setSelectValues($('aspect'),aspectValues,preferred,v=>{
+      if(v==='9:16')return'9:16 · Reel/TikTok';
+      if(v==='16:9')return'16:9 · Orizzontale';
+      if(v==='1:1')return'1:1 · Quadrato';
+      return v;
+    });
+  }
+
+  const configurable=c.audio_configurable===true;
+  $('audio').disabled=!configurable;
+  if(!configurable)$('audio').checked=c.audio===true;
+  scheduleQuote();
+}
 function populateModels(){
   const select=$('model');
   const previous=select.value;
@@ -212,7 +272,7 @@ function populateModels(){
     const preferred=filtered.find(x=>x.id===modeDefaultId())||filtered.find(x=>x.id.includes('seedance-2-5'))||filtered[0];
     select.value=preferred.id;
   }
-  scheduleQuote();
+  applyModelConstraints();
 }
 async function loadModels(prefetched){
   try{
@@ -504,7 +564,8 @@ $('disconnectBtn').addEventListener('click',async()=>{
   }catch(err){setStatus($('connectionStatus'),err.message,'error')}
 });
 document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>selectMode(b.dataset.mode)));
-['model','duration','resolution','aspect','audio'].forEach(id=>$(id).addEventListener('change',scheduleQuote));
+$('model').addEventListener('change',applyModelConstraints);
+['duration','resolution','aspect','audio'].forEach(id=>$(id).addEventListener('change',scheduleQuote));
 $('imageFile').addEventListener('change',scheduleQuote);
 $('referenceFiles').addEventListener('change',()=>{
   if($('referenceFiles').files.length>10)setStatus($('generateStatus'),'Massimo 10 immagini di riferimento.','error');
