@@ -235,12 +235,15 @@ Deno.serve(async req=>{
         payload.image_url=body.image;
       }else if(mode==='reference'){
         const refs=Array.isArray(body.referenceImages)?body.referenceImages:[];
-        if(refs.length<1||refs.length>10||refs.some(x=>!validDataImage(x))){
-          return reply(req,{error:'Usa da 1 a 10 immagini di riferimento valide'},400);
+        if(refs.length<2||refs.length>10||refs.some(x=>!validDataImage(x))){
+          return reply(req,{error:'Usa una foto iniziale e da 1 a 9 riferimenti aggiuntivi validi'},400);
         }
         const total=refs.reduce((n,x)=>n+x.length,0);
         if(total>19000000)return reply(req,{error:'Le immagini di riferimento sono troppo pesanti'},400);
         payload.reference_image_urls=refs;
+        if(body.initialFrameIncluded===true){
+          payload.prompt='@Image1 is the first frame of the video. Keep its opening composition and begin motion from that exact frame. '+prompt;
+        }
       }
 
       if(body.seedanceConsent===true){
