@@ -176,6 +176,10 @@ function inferMode(id){
   if(v.includes('text-to-video'))return'text';
   return'other';
 }
+function effectiveMode(){
+  if(mode==='text')return'text';
+  return $('referenceFiles').files?.length ? 'reference' : 'image';
+}
 function modelRank(id){
   const v=id.toLowerCase();
   const families=['seedance-2-5','grok-imagine-1-5','kling-o3','wan-3','minimax-h3','runway','ltx','vidu','veo3','flux','gemini'];
@@ -183,8 +187,9 @@ function modelRank(id){
   return i<0?99:i;
 }
 function modeDefaultId(){
-  if(mode==='image')return'seedance-2-5-image-to-video-basic';
-  if(mode==='reference')return'seedance-2-5-reference-to-video-basic';
+  const m=effectiveMode();
+  if(m==='image')return'seedance-2-5-image-to-video-basic';
+  if(m==='reference')return'seedance-2-5-reference-to-video-basic';
   return'seedance-2-5-text-to-video-basic';
 }
 function selectedModel(){
@@ -251,7 +256,7 @@ function populateModels(){
   const select=$('model');
   const previous=select.value;
   const filtered=models
-    .filter(m=>inferMode(m.id)===mode)
+    .filter(m=>inferMode(m.id)===effectiveMode())
     .sort((a,b)=>modelRank(a.id)-modelRank(b.id)||String(a.name).localeCompare(String(b.name),'it'));
   select.innerHTML='';
   for(const m of filtered){
@@ -289,13 +294,12 @@ function selectMode(next){
   mode=next;
   document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
   $('imageField').classList.toggle('hidden',mode!=='image');
-  $('referenceField').classList.toggle('hidden',mode!=='reference');
   if(models.length)populateModels();
   else scheduleQuote();
 }
 function quoteBody(){
   return{
-    mode,
+    mode:effectiveMode(),
     model:$('model').value,
     duration:Number($('duration').value),
     resolution:$('resolution').value,
@@ -483,15 +487,25 @@ async function generate(){
   const body={...quoteBody(),prompt};
 
   if(mode==='image'){
-    setStatus($('generateStatus'),'Preparo la foto…');
-    body.image=await prepareImage($('imageFile').files?.[0]);
-  }else if(mode==='reference'){
-    const files=[...($('referenceFiles').files||[])];
-    if(!files.length||files.length>10)throw Error('Seleziona da 1 a 10 immagini di riferimento');
-    body.referenceImages=[];
-    for(let i=0;i<files.length;i++){
-      setStatus($('generateStatus'),'Preparo immagine '+(i+1)+' di '+files.length+'…');
-      body.referenceImages.push(await prepareImage(files[i]));
+    const initial=$('imageFile').files?.[0];
+    if(!initial)throw Error('Seleziona la foto iniziale');
+    const refs=[...($('referenceFiles').files||[])];
+    if(refs.length>9)throw Error('Puoi aggiungere al massimo 9 riferimenti oltre alla foto iniziale');
+
+    if(refs.length){
+      body.mode='reference';
+      body.referenceImages=[];
+      setStatus($('generateStatus'),'Preparo la foto iniziale…');
+      body.referenceImages.push(await prepareImage(initial));
+      for(let i=0;i<refs.length;i++){
+        setStatus($('generateStatus'),'Preparo riferimento '+(i+1)+' di '+refs.length+'…');
+        body.referenceImages.push(await prepareImage(refs[i]));
+      }
+      body.initialFrameIncluded=true;
+    }else{
+      body.mode='image';
+      setStatus($('generateStatus'),'Preparo la foto iniziale…');
+      body.image=await prepareImage(initial);
     }
   }
 
@@ -568,8 +582,10 @@ $('model').addEventListener('change',applyModelConstraints);
 ['duration','resolution','aspect','audio'].forEach(id=>$(id).addEventListener('change',scheduleQuote));
 $('imageFile').addEventListener('change',scheduleQuote);
 $('referenceFiles').addEventListener('change',()=>{
-  if($('referenceFiles').files.length>10)setStatus($('generateStatus'),'Massimo 10 immagini di riferimento.','error');
-  scheduleQuote();
+  const n=$('referenceFiles').files.length;
+  if(n>9)setStatus($('generateStatus'),'Massimo 9 riferimenti aggiuntivi oltre alla foto iniziale.','error');
+  if(models.length)populateModels();
+  else scheduleQuote();
 });
 $('generatorForm').addEventListener('submit',async e=>{
   e.preventDefault();
