@@ -10,7 +10,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="../assets/favicon-mascot.png">
   <link rel="apple-touch-icon" href="../assets/pwa-192.png">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <header class="topbar">
@@ -75,10 +75,7 @@
 
         <div class="mode-grid" role="group" aria-label="Tipo di generazione">
           <button class="mode active" data-mode="image" type="button">
-            <strong>Da foto</strong><span>Anima una foto iniziale</span>
-          </button>
-          <button class="mode" data-mode="reference" type="button">
-            <strong>Riferimenti</strong><span>Usa più immagini per coerenza</span>
+            <strong>Da foto</strong><span>Foto iniziale + riferimenti facoltativi</span>
           </button>
           <button class="mode" data-mode="text" type="button">
             <strong>Solo testo</strong><span>Crea la scena da zero</span>
@@ -87,17 +84,15 @@
 
         <form id="generatorForm">
           <div id="imageField">
-            <label>Foto iniziale
+            <label>Foto iniziale *
               <input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp">
             </label>
-            <p class="note">Per un reel verticale conviene partire da una foto già in 9:16.</p>
-          </div>
+            <p class="note">Obbligatoria: sarà il fotogramma iniziale del video.</p>
 
-          <div id="referenceField" class="hidden">
-            <label>Immagini di riferimento
+            <label>Riferimenti aggiuntivi (facoltativi)
               <input id="referenceFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
             </label>
-            <p class="note">Da 1 a 10 immagini. Il modo di richiamarle nel prompt dipende dal modello scelto.</p>
+            <p class="note">Fino a 9 immagini aggiuntive. La foto iniziale diventa @Image1; i riferimenti diventano @Image2, @Image3 e così via.</p>
           </div>
 
           <label>Descrizione del video
@@ -172,6 +167,6 @@
     </div>
   </main>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
