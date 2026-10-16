@@ -494,7 +494,10 @@ async function generate(){
   const prompt=$('prompt').value.trim();
   if(!prompt)throw Error('Scrivi cosa deve succedere nel video');
   const quote=await requestQuote();
-  if(quote===null)throw Error('Questa combinazione di modello, durata e risoluzione non è disponibile');
+  if(quote===null){
+    const detail=$('generateStatus').textContent.trim();
+    throw Error(detail||'Questa combinazione di modello, durata e risoluzione non è disponibile');
+  }
   const body={...quoteBody(),prompt};
 
   if(mode==='image'){
