@@ -158,7 +158,7 @@ Deno.serve(async req=>{
       const models=await listModels(key);
       if(!models.length)return reply(req,{error:'La chiave è valida, ma non risultano modelli video disponibili'},400);
       const accountBalances=await balances(key);
-      await db('simplex_private_settings','POST',{id:1,venice_api_key:key});
+      await db('simplex_private_settings?id=eq.1','PATCH',{venice_api_key:key});
       return reply(req,{connected:true,models,balances:accountBalances});
     }
 
