@@ -2,7 +2,7 @@ import '../tenant-config.js';
 const tenantTools=(globalThis as any).SimplexTenants;
 import { uploadAsset } from './github-upload.ts';
 // GitHub credential is confined to a service-role-only table; never returned to clients.
-const ORIGIN='https://meapps-it.github.io';
+const ORIGIN='https://simplexapp.it';
 const REPO='meapps-it/SimplexApp';
 const MAX_APK=2*1024*1024*1024-1;
 const DEMO_BUCKET='simplex-demo';
