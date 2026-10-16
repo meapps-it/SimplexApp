@@ -6,7 +6,7 @@
   "display": "standalone",
   "background_color": "#f3f7fa",
   "theme_color": "#0d304d",
-  "description": "Generatore video privato SimplexApp con Grok Imagine API",
+  "description": "Generatore video privato SimplexApp collegato alla Venice API",
   "icons": [
     {
       "src": "../assets/pwa-192.png",
