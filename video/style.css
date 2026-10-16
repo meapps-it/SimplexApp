@@ -37,12 +37,14 @@ button,a{touch-action:manipulation}
 .hero{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;background:linear-gradient(145deg,#fff,#edf6fb)}
 .hero h1,.auth-card h1{margin:.15rem 0 .5rem;font-size:clamp(1.8rem,6vw,2.65rem);line-height:1.04}
 .hero p{max-width:610px}
+.hero-badges{display:grid;gap:8px;justify-items:end}
 h2{margin:.15rem 0 .4rem;font-size:1.35rem}
 p{line-height:1.45}
 .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;font-weight:900;color:var(--blue2);margin:0 0 5px}
 .badge,.cost{display:inline-flex;align-items:center;white-space:nowrap;border-radius:999px;padding:8px 11px;font-size:.8rem;font-weight:800}
 .badge.bad{background:#fbe9e9;color:var(--bad)}
 .badge.good{background:#e4f6ed;color:var(--good)}
+.badge.neutral{background:#e7f1f8;color:var(--blue)}
 .cost{background:#e7f1f8;color:var(--blue)}
 summary{cursor:pointer;font-weight:900;font-size:1.05rem}
 .connection[open] summary{margin-bottom:12px}
@@ -80,8 +82,9 @@ input:focus,textarea:focus,select:focus{border-color:#4d93bf;box-shadow:0 0 0 3p
 .history{display:grid;gap:9px}
 .history-item{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 .history-item strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58vw}
-.history-item small{color:var(--muted)}
+.history-item small{display:block;color:var(--muted);margin-top:3px}
 .history-item a{color:var(--blue);font-weight:800;text-decoration:none}
+.muted{color:var(--muted);font-size:.78rem}
 .small{padding:8px 10px;font-size:.8rem}
 #connectBox{display:grid;grid-template-columns:1fr auto;gap:9px;align-items:end}
 #connectBox label{margin:0}
@@ -89,7 +92,7 @@ input:focus,textarea:focus,select:focus{border-color:#4d93bf;box-shadow:0 0 0 3p
   .shell{padding-top:14px}
   .card{padding:16px;border-radius:18px}
   .hero{display:block}
-  .hero .badge{margin-top:8px}
+  .hero-badges{justify-items:start;margin-top:10px}
   .mode-grid{grid-template-columns:1fr}
   .mode{text-align:left}
   .options{grid-template-columns:1fr}
