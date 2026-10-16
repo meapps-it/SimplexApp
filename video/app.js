@@ -44,7 +44,18 @@ async function cloud(path,{method='GET',body,token}={}){
   const data=await r.json().catch(()=>({}));
   if(!r.ok){
     const raw=data.error_description||data.msg||data.error||data.message||'Connessione non riuscita';
-    const e=Error(typeof raw==='string'?raw:(raw?.message||'Operazione non riuscita'));
+    let message=typeof raw==='string'?raw:(raw?.message||'Operazione non riuscita');
+    const d=data.veniceDetails;
+    if(d){
+      const extra=[];
+      if(d.model)extra.push('Modello: '+d.model);
+      if(d.mode)extra.push('Modalità: '+d.mode);
+      if(d.stage)extra.push('Fase: '+d.stage);
+      if(d.code)extra.push('Codice: '+d.code);
+      if(d.reason)extra.push('Motivo: '+d.reason);
+      if(extra.length)message+='\n'+extra.join(' · ');
+    }
+    const e=Error(message);
     e.status=r.status;
     e.data=data;
     throw e;
