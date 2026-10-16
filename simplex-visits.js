@@ -11,7 +11,9 @@
     /facebook|\bmeta\b|\bfb\b/.test(utm) || /(^|\.)(facebook\.com|fb\.com|fb\.me|l\.facebook\.com)$/.test(ref) ? 'facebook' :
     /google/.test(utm) || /(^|\.)google\.[a-z.]+$/.test(ref) ? 'google' : !ref && !utm ? 'direct' : 'other';
   const isOwner = () => {
-    try { return !!localStorage.getItem('simplex_admin_session'); } catch { return false; }
+    try {
+      return !!(window.adminSession || localStorage.getItem('simplex_admin_session') || sessionStorage.getItem('simplex_admin_session'));
+    } catch { return !!window.adminSession; }
   };
   function route() {
     const hash = location.hash.replace(/^#/,'');
