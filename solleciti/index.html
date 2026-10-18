@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2457d6">
+<meta name="description" content="Solleciti by SimplexApp: pagamenti, documenti e richiami ai clienti sotto controllo.">
+<title>Solleciti · SimplexApp</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../assets/favicon-mascot.png">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<main class="shell">
+<header class="topbar">
+<a class="brand" href="https://simplexapp.it/" aria-label="Torna a SimplexApp"><img src="../assets/simplexapp-header-horizontal.webp" alt="SimplexApp"></a>
+<button id="installBtn" class="ghost hidden" type="button">Installa</button>
+</header>
+
+<section class="hero">
+<div><span class="eyebrow">MICRO-APP SIMPLEXAPP</span><h1>Solleciti</h1>
+<p>Pagamenti, documenti e clienti da richiamare. Tutto quello che non deve sparire nel buco nero di WhatsApp.</p></div>
+<div class="hero-mark" aria-hidden="true">↗</div>
+</section>
+
+<section class="summary">
+<article><span>Scaduti</span><strong id="overdueCount">0</strong></article>
+<article><span>Oggi</span><strong id="todayCount">0</strong></article>
+<article><span>Sollecitati</span><strong id="sentCount">0</strong></article>
+<article><span>Risolti</span><strong id="doneCount">0</strong></article>
+</section>
+
+<section class="panel">
+<div class="section-head"><div><h2>Nuovo sollecito</h2><p>Chi devi inseguire e per cosa.</p></div><button id="toggleForm" class="primary" type="button">＋ Aggiungi</button></div>
+<form id="reminderForm" class="form hidden">
+<input type="hidden" id="editId">
+<div class="two">
+<label>Cliente / contatto<input id="client" maxlength="80" required placeholder="Es. Mario Rossi"></label>
+<label>Telefono WhatsApp <span>(facoltativo)</span><input id="phone" inputmode="tel" maxlength="24" placeholder="Es. +39 333 1234567"></label>
+</div>
+<div class="two">
+<label>Motivo<select id="type"><option>Pagamento</option><option>Documento da ricevere</option><option>Conferma preventivo</option><option>Conferma appuntamento</option><option>Richiamare</option><option>Altro</option></select></label>
+<label>Entro il<input id="dueDate" type="date" required></label>
+</div>
+<div class="two">
+<label>Oggetto / cosa manca<input id="subject" maxlength="120" required placeholder="Es. Fattura n. 12 / documento identità"></label>
+<label>Importo € <span>(facoltativo)</span><input id="amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></label>
+</div>
+<label>Note interne <span>(facoltative)</span><textarea id="notes" rows="2" maxlength="300" placeholder="Queste note non vengono inviate al cliente."></textarea></label>
+<label>Messaggio<textarea id="message" rows="4" maxlength="700"></textarea></label>
+<div class="message-tools"><button id="regenMessage" class="ghost small" type="button">Rigenera messaggio</button></div>
+<div class="form-actions"><button id="cancelBtn" class="ghost" type="button">Annulla</button><button class="primary" type="submit">Salva</button></div>
+</form>
+</section>
+
+<section class="panel">
+<div class="toolbar"><div><h2>Da seguire</h2><p>Le cose che altrimenti finiscono dimenticate.</p></div>
+<select id="filter"><option value="active">Da fare</option><option value="overdue">Scaduti</option><option value="sent">Sollecitati</option><option value="done">Risolti</option><option value="all">Tutti</option></select></div>
+<div id="list" class="list"></div>
+<div id="emptyState" class="empty hidden"><div>✓</div><strong>Niente da inseguire.</strong><span>Evento raro. Goditelo.</span></div>
+</section>
+
+<section class="panel tools"><h2>Dati</h2><p>I dati restano su questo dispositivo. Puoi esportare e ripristinare un backup.</p>
+<div class="tool-actions"><button id="exportBtn" class="ghost" type="button">Esporta backup</button><label class="ghost file-label">Importa backup<input id="importFile" type="file" accept="application/json"></label></div>
+</section>
+
+<footer><a href="https://simplexapp.it/">SimplexApp</a><span>·</span><span>Solleciti v0.1</span></footer>
+</main>
+
+<template id="itemTemplate">
+<article class="reminder">
+<div class="status-dot"></div>
+<div class="reminder-main">
+<div class="reminder-top"><strong class="item-client"></strong><span class="badge"></span></div>
+<div class="item-subject"></div><div class="item-meta"></div><p class="item-notes"></p><div class="history"></div>
+<div class="quick-actions"><button class="whatsapp primary" type="button">WhatsApp</button><button class="copy ghost" type="button">Copia testo</button><button class="done ghost" type="button">Risolto</button></div>
+</div>
+<div class="item-actions"><button class="edit" type="button">Modifica</button><button class="delete" type="button">Elimina</button></div>
+</article>
+</template>
+<script src="app.js?v=1"></script>
+</body>
+</html>
