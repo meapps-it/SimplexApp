@@ -28,6 +28,7 @@ button,a{touch-action:manipulation}
 .brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:800}
 .brand img{width:116px;height:39px;object-fit:contain}
 .brand span{border-left:1px solid var(--line);padding-left:10px}
+.top-actions{display:flex;align-items:center;gap:8px}
 .shell{width:min(820px,100%);margin:0 auto;padding:22px 14px calc(50px + env(safe-area-inset-bottom))}
 .card{
   background:var(--card);border:1px solid var(--line);border-radius:22px;
