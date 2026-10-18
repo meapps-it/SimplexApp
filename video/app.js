@@ -443,6 +443,58 @@ function showResult(videoUrl,context){
     quote:context.quote
   });
 }
+// Use the last decoded frame of a finished clip as the next initial photo.
+async function continueFromLastFrame(){
+  const source=$('resultVideo').currentSrc||$('resultVideo').src;
+  if(!source)throw Error('Nessun video pronto da continuare');
+  const btn=$('continueVideoBtn');
+  btn.disabled=true;
+  setStatus($('generateStatus'),'Estraggo l’ultimo fotogramma…');
+  const video=document.createElement('video');
+  video.muted=true;
+  video.preload='auto';
+  video.playsInline=true;
+  video.crossOrigin='anonymous';
+  try{
+    const wait=(event)=>new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>{cleanup();reject(Error('Impossibile leggere il fotogramma: video scaduto o non disponibile'))},20000);
+      const success=()=>{cleanup();resolve()};
+      const failure=()=>{cleanup();reject(Error('Impossibile leggere il video. Salvalo e riprova'))};
+      function cleanup(){clearTimeout(timer);video.removeEventListener(event,success);video.removeEventListener('error',failure)}
+      video.addEventListener(event,success,{once:true});
+      video.addEventListener('error',failure,{once:true});
+    });
+    const metadata=wait('loadedmetadata');
+    video.src=source;
+    video.load();
+    await metadata;
+    if(!Number.isFinite(video.duration)||video.duration<=0||!video.videoWidth)throw Error('Durata o dimensioni del video non disponibili');
+    const seeked=wait('seeked');
+    video.currentTime=Math.max(0,video.duration-0.12);
+    await seeked;
+    const canvas=document.createElement('canvas');
+    canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+    const ctx=canvas.getContext('2d');
+    if(!ctx)throw Error('Impossibile creare il fotogramma');
+    ctx.drawImage(video,0,0,canvas.width,canvas.height);
+    const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('Impossibile esportare il fotogramma')),'image/jpeg',0.92));
+    const file=new File([blob],'ultimo-fotogramma.jpg',{type:'image/jpeg'});
+    const transfer=new DataTransfer();
+    transfer.items.add(file);
+    $('imageFile').files=transfer.files;
+    selectMode('image');
+    $('resultCard').classList.add('hidden');
+    $('prompt').focus();
+    window.scrollTo({top:0,behavior:'smooth'});
+    setStatus($('generateStatus'),'Ultimo fotogramma caricato come foto iniziale. Scrivi la scena successiva e controlla il costo prima di generare.','ok');
+    scheduleQuote();
+  }finally{
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+    btn.disabled=false;
+  }
+}
 async function getFinishedVideo(context){
   if(context.downloadUrl)return context.downloadUrl;
   setStatus($('generateStatus'),'Scarico il video finito…');
@@ -609,6 +661,7 @@ $('generatorForm').addEventListener('submit',async e=>{
   try{await generate()}catch(err){setStatus($('generateStatus'),err.message,'error')}
   finally{if(!polling)$('generateBtn').disabled=!connected||currentQuote===null}
 });
+$('continueVideoBtn').addEventListener('click',()=>continueFromLastFrame().catch(err=>setStatus($('generateStatus'),err.message,'error')));
 $('newVideoBtn').addEventListener('click',()=>{
   $('resultCard').classList.add('hidden');
   $('prompt').focus();
