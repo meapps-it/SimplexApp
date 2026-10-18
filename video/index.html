@@ -10,7 +10,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="../assets/favicon-mascot.png">
   <link rel="apple-touch-icon" href="../assets/pwa-192.png">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
   <header class="topbar">
@@ -18,7 +18,7 @@
       <img src="../assets/simplexapp-header-horizontal.webp" alt="">
       <span>Video Studio</span>
     </a>
-    <button id="logoutBtn" class="ghost hidden" type="button">Esci</button>
+    <div class="top-actions"><button id="installBtn" class="ghost" type="button">Installa</button><button id="logoutBtn" class="ghost hidden" type="button">Esci</button></div>
   </header>
 
   <main class="shell">
@@ -168,6 +168,7 @@
     </div>
   </main>
 
+  <script src="../install-pwa.js?v=1"></script>
   <script src="app.js?v=7"></script>
 </body>
 </html>
