@@ -1,51 +1,85 @@
 'use strict';
 (()=>{
-  const button=document.getElementById('installBtn');
-  if(!button)return;
-
   let deferredPrompt=null;
-  const isStandalone=()=>window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  let button=null;
+  let installed=false;
 
-  function markInstalled(){
-    button.textContent='Installata';
-    button.disabled=true;
-    button.setAttribute('aria-label','App già installata');
+  const manifestLink=()=>document.querySelector('link[rel="manifest"]');
+  const manifestUrl=()=>{try{return new URL(manifestLink()?.href||location.href,location.href).href}catch{return location.href}};
+  const markerKey=()=> 'simplex_pwa_installed:'+manifestUrl();
+  const isStandalone=()=>window.matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true;
+
+  function getButton(){
+    button=button||document.getElementById('installBtn');
+    return button;
   }
-
-  function showInstructions(){
-    if(isStandalone()){markInstalled();return}
-    const ua=navigator.userAgent||'';
-    if(/iphone|ipad|ipod/i.test(ua)){
+  function hideButton(){
+    const b=getButton(); if(!b)return;
+    b.hidden=true;
+    b.classList.add('hidden');
+    b.setAttribute('aria-hidden','true');
+  }
+  function showButton(){
+    const b=getButton(); if(!b||installed)return;
+    b.hidden=false;
+    b.classList.remove('hidden');
+    b.removeAttribute('aria-hidden');
+    b.disabled=false;
+    b.textContent='Installa';
+  }
+  function rememberInstalled(){
+    installed=true;
+    try{localStorage.setItem(markerKey(),'1')}catch{}
+    hideButton();
+  }
+  async function detectInstalled(){
+    if(isStandalone()){rememberInstalled();return true}
+    try{
+      if(localStorage.getItem(markerKey())==='1'){installed=true;hideButton();return true}
+    }catch{}
+    try{
+      if(typeof navigator.getInstalledRelatedApps==='function'){
+        const apps=await navigator.getInstalledRelatedApps();
+        if(Array.isArray(apps)&&apps.some(app=>app.platform==='webapp')){
+          rememberInstalled();return true;
+        }
+      }
+    }catch{}
+    return false;
+  }
+  function manualInstructions(){
+    if(/iphone|ipad|ipod/i.test(navigator.userAgent||'')){
       alert('Per installare questa PWA: tocca Condividi e poi “Aggiungi alla schermata Home”.');
-      return;
+    }else{
+      alert('Apri il menu ⋮ del browser e scegli “Installa app” oppure “Aggiungi alla schermata Home”.');
     }
-    alert('Se il browser non apre l’installazione automatica, usa il menu ⋮ e scegli “Installa app” oppure “Aggiungi alla schermata Home”.');
   }
-
-  if(isStandalone())markInstalled();
+  async function install(){
+    if(await detectInstalled())return;
+    if(!deferredPrompt){manualInstructions();return}
+    const prompt=deferredPrompt;
+    deferredPrompt=null;
+    try{
+      prompt.prompt();
+      const choice=await prompt.userChoice;
+      if(choice?.outcome==='accepted') setTimeout(detectInstalled,600);
+    }catch{
+      manualInstructions();
+    }
+  }
 
   window.addEventListener('beforeinstallprompt',event=>{
     event.preventDefault();
     deferredPrompt=event;
-    if(!isStandalone()){
-      button.disabled=false;
-      button.textContent='Installa';
-    }
+    showButton();
   });
+  window.addEventListener('appinstalled',rememberInstalled);
 
-  window.addEventListener('appinstalled',()=>{
-    deferredPrompt=null;
-    markInstalled();
-  });
-
-  button.addEventListener('click',async()=>{
-    if(isStandalone()){markInstalled();return}
-    if(!deferredPrompt){showInstructions();return}
-    try{
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-    }finally{
-      deferredPrompt=null;
-    }
+  document.addEventListener('DOMContentLoaded',async()=>{
+    const b=getButton();
+    if(!b)return;
+    b.addEventListener('click',install);
+    if(await detectInstalled())return;
+    showButton();
   });
 })();
