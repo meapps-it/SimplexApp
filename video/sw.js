@@ -1,10 +1,10 @@
-const CACHE='simplex-video-v8';
-const SHELL=['./','./index.html','./style.css?v=8','./app.js?v=7','./manifest.webmanifest','../install-pwa.js?v=1','../assets/pwa-192.png','../assets/pwa-512.png'];
+const CACHE='simplex-video-v9';
+const SHELL=['./','./index.html','./style.css?v=9','./app.js?v=7','./manifest.webmanifest','../install-pwa.js?v=2','../assets/pwa-192.png','../assets/pwa-512.png'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()));
 });
 self.addEventListener('activate',event=>{
-  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('simplex-video-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
 });
 self.addEventListener('fetch',event=>{
   const req=event.request;
