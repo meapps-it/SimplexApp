@@ -102,12 +102,9 @@ nav{grid-template-columns:repeat(3,1fr)}
 .contact-collapsed>summary:focus-visible,.business-contact-link:focus-visible{outline:3px solid #1954d1;outline-offset:3px}
 
 
-/* PWA install button v1 */
-.top-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.pwa-install{border:1px solid #ffffff80;background:#ffffff26;color:#fff;padding:9px 13px;border-radius:12px;font-size:12px;font-weight:800;min-height:40px;backdrop-filter:blur(8px)}
-.pwa-install:hover{background:#ffffff38}
-.pwa-install:disabled{opacity:.72;cursor:default}
-@media(max-width:600px){
-  .top-actions{gap:5px}
-  .pwa-install,.top-admin{font-size:10px;padding:7px 9px;min-height:36px}
-}
+
+
+/* PWA install button v2 */
+.pwa-install{border:2px solid #fff!important;background:#fff!important;color:#145ad5!important;padding:9px 13px;border-radius:12px;font-size:12px;font-weight:850;min-height:40px;box-shadow:0 4px 12px #0b3d8f33}
+.pwa-install:hover{background:#f7fbff!important}.pwa-install:disabled{opacity:.72;cursor:default}
+@media(max-width:600px){.pwa-install{font-size:10px;padding:7px 9px;min-height:36px}}
