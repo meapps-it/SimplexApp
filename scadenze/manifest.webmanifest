@@ -1,15 +1,37 @@
 {
-  "name":"Scadenze · SimplexApp",
-  "short_name":"Scadenze",
-  "description":"Pagamenti, rinnovi, documenti e promemoria sotto controllo.",
-  "start_url":"./",
-  "scope":"./",
-  "display":"standalone",
-  "background_color":"#f3f7fc",
-  "theme_color":"#2457d6",
-  "icons":[
-    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"},
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
-  ]
+  "name": "Scadenze · SimplexApp",
+  "short_name": "Scadenze",
+  "description": "Pagamenti, rinnovi, documenti e promemoria sotto controllo.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f7fc",
+  "theme_color": "#2457d6",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://simplexapp.it/scadenze/manifest.webmanifest"
+    }
+  ],
+  "prefer_related_applications": false
 }
