@@ -102,3 +102,7 @@ input:focus,textarea:focus,select:focus{border-color:#4d93bf;box-shadow:0 0 0 3p
   .brand span{font-size:.88rem}
   .brand img{width:100px;height:34px}
 }
+
+/* PWA install button v2 */
+.topbar #installBtn{border:2px solid var(--blue);background:#fff;color:var(--blue);box-shadow:0 4px 12px rgba(13,77,124,.16);font-weight:850}
+.topbar #installBtn:hover{background:#eef7fc}
