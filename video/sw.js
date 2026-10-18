@@ -1,5 +1,5 @@
-const CACHE='simplex-video-v7';
-const SHELL=['./','./index.html','./style.css?v=7','./app.js?v=7','./manifest.webmanifest','../assets/pwa-192.png','../assets/pwa-512.png'];
+const CACHE='simplex-video-v8';
+const SHELL=['./','./index.html','./style.css?v=8','./app.js?v=7','./manifest.webmanifest','../install-pwa.js?v=1','../assets/pwa-192.png','../assets/pwa-512.png'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()));
 });
