@@ -100,3 +100,94 @@ nav{grid-template-columns:repeat(3,1fr)}
 .contact-collapsed[open]>summary span{transform:rotate(180deg)}
 .contact-collapsed .contact-content{padding:12px 4px 8px;border-top:1px solid #e7edf6}
 .contact-collapsed>summary:focus-visible,.business-contact-link:focus-visible{outline:3px solid #1954d1;outline-offset:3px}
+
+
+/* v14: Home con gerarchia più forte, mantenendo l'identità SimplexApp */
+.hero-strong{
+  min-height:320px;
+  display:flex;
+  align-items:center;
+  padding:28px 26px;
+  background:linear-gradient(135deg,#eef7ff 0%,#dceeff 55%,#e9f1ff 100%);
+  border-radius:26px;
+  box-shadow:0 10px 28px #2672f01a
+}
+.hero-copy-strong{max-width:760px;padding:0}
+.hero-kicker{
+  display:inline-block;
+  margin-bottom:10px;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#1762c6
+}
+.hero-strong h1{
+  margin:0 0 14px;
+  font-size:clamp(30px,4.3vw,50px);
+  line-height:1.05;
+  letter-spacing:-1px;
+  color:#13233a
+}
+.hero-subtitle{
+  margin:0;
+  max-width:680px;
+  font-size:18px;
+  line-height:1.5;
+  color:#506177
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.hero-primary,.hero-secondary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:0 18px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:800;
+  transition:transform .15s ease,filter .15s ease
+}
+.hero-primary{
+  background:linear-gradient(110deg,#1684ff,#2672f0);
+  color:#fff;
+  box-shadow:0 8px 18px #2581ed2e
+}
+.hero-secondary{background:#fff;color:#1762c6;border:1px solid #d4e2f3}
+.hero-primary:hover,.hero-secondary:hover{filter:brightness(.98);transform:translateY(-1px)}
+.hero-primary:focus-visible,.hero-secondary:focus-visible{outline:3px solid #fbbd3a;outline-offset:3px}
+
+.business-panel-strong{padding:22px}
+.business-grid-strong{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.business-grid-strong article{
+  min-height:138px;
+  padding:18px;
+  border-radius:18px;
+  background:linear-gradient(145deg,#fff,#f7fbff);
+  border:1px solid #e7edf6;
+  box-shadow:0 6px 14px #1c67ae0d
+}
+.business-grid-strong strong{font-size:18px;margin-bottom:6px}
+.business-grid-strong span{font-size:14px;line-height:1.45;color:#657087}
+
+@media(max-width:600px){
+  .hero-strong{
+    min-height:auto;
+    display:flex;
+    grid-template-columns:none;
+    padding:20px 16px;
+    border-radius:22px;
+    margin-top:16px
+  }
+  .hero-copy-strong{padding:0}
+  .hero-kicker{font-size:11px;margin-bottom:8px}
+  .hero-strong h1{font-size:27px;line-height:1.08;letter-spacing:-.7px;margin-bottom:12px}
+  .hero-subtitle{font-size:14px;line-height:1.42}
+  .hero-actions{flex-direction:column;gap:9px;margin-top:18px}
+  .hero-primary,.hero-secondary{width:100%;min-height:44px;font-size:14px}
+  .business-panel-strong{padding:14px}
+  .business-grid-strong{grid-template-columns:1fr;gap:9px}
+  .business-grid-strong article{min-height:0;padding:14px}
+  .business-grid-strong strong{font-size:15px}
+  .business-grid-strong span{font-size:12px;line-height:1.35}
+}
