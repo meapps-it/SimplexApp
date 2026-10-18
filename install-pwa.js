@@ -56,7 +56,10 @@
   }
   async function install(){
     if(await detectInstalled())return;
-    if(!deferredPrompt){manualInstructions();return}
+    if(!deferredPrompt){
+      alert('Installazione non disponibile in questo browser in questo momento.');
+      return;
+    }
     const prompt=deferredPrompt;
     deferredPrompt=null;
     try{
