@@ -8,13 +8,14 @@
 <title>Solleciti · SimplexApp</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="../assets/favicon-mascot.png">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=2">
+  <script src="../install-pwa.js?v=2"></script>
 </head>
 <body>
 <main class="shell">
 <header class="topbar">
 <a class="brand" href="https://simplexapp.it/" aria-label="Torna a SimplexApp"><img src="../assets/simplexapp-header-horizontal.webp" alt="SimplexApp"></a>
-<button id="installBtn" class="ghost" type="button">Installa</button>
+<button id="installBtn" class="ghost hidden" type="button" hidden>Installa</button>
 </header>
 
 <section class="hero">
@@ -78,7 +79,7 @@
 <div class="item-actions"><button class="edit" type="button">Modifica</button><button class="delete" type="button">Elimina</button></div>
 </article>
 </template>
-<script src="../install-pwa.js?v=1"></script>
+
 <script src="app.js?v=2"></script>
 </body>
 </html>
