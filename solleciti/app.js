@@ -2,7 +2,7 @@
 const KEY="simplex_solleciti_v1";
 const $=id=>document.getElementById(id);
 const form=$("reminderForm"),list=$("list"),empty=$("emptyState"),template=$("itemTemplate");
-let items=load(),deferredPrompt=null;
+let items=load();
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch{return []}}
 function save(){localStorage.setItem(KEY,JSON.stringify(items))}
 function makeId(){return crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)}
@@ -109,8 +109,6 @@ $("cancelBtn").onclick=hideForm;
 $("filter").onchange=render;
 $("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),items:items},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="solleciti-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 $("importFile").onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());const incoming=Array.isArray(data)?data:data.items;if(!Array.isArray(incoming))throw new Error();if(!confirm("Importare "+incoming.length+" solleciti? I dati attuali verranno sostituiti."))return;items=incoming;save();render()}catch{alert("Backup non valido.")}finally{e.target.value=""}};
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBtn").classList.remove("hidden")});
-$("installBtn").onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$("installBtn").classList.add("hidden")};
 if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 resetForm();render();
 })();
