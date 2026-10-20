@@ -13,7 +13,7 @@ globalThis.fetch=async(url,options={})=>{const u=new URL(url),path=u.pathname;co
  throw Error('Unexpected request '+path);
 };
 await import('../backend/simplex-admin.ts');
-async function send(action,body={},authenticated=true){return handler(new Request('https://test/functions/v1/simplex-admin?action='+action,{method:'POST',headers:{...(authenticated?{Authorization:'Bearer test-user'}:{}),Origin:'https://meapps-it.github.io','Content-Type':'application/json'},body:JSON.stringify(body)}));}
+async function send(action,body={},authenticated=true){return handler(new Request('https://test/functions/v1/simplex-admin?action='+action,{method:'POST',headers:{...(authenticated?{Authorization:'Bearer test-user'}:{}),Origin:'https://simplexapp.it','Content-Type':'application/json'},body:JSON.stringify(body)}));}
 assert.equal((await send('product-modules',{},false)).status,401);role='visitor';assert.equal((await send('product-modules')).status,403);assert.equal((await send('product-modules-save',{id:'inventory',modules:[]})).status,403);role='admin';
 assert.equal((await send('product-modules')).status,200);
 const products=await(await send('product-modules')).json();assert.equal(products.products[0].managed,true);assert.ok(!JSON.stringify(products).includes(endpoint));

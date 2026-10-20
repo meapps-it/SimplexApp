@@ -11,7 +11,7 @@ globalThis.fetch=async(url,options={})=>{const u=new URL(url),data=options.body?
  throw Error('Unexpected request '+url);
 };
 await import('../backend/simplex-admin.ts');
-const send=(client,auth=true)=>handler(new Request('https://admin.test/?action=client-save',{method:'POST',headers:{Origin:'https://meapps-it.github.io',...(auth?{Authorization:'Bearer admin'}:{})},body:JSON.stringify({client})}));
+const send=(client,auth=true)=>handler(new Request('https://admin.test/?action=client-save',{method:'POST',headers:{Origin:'https://simplexapp.it',...(auth?{Authorization:'Bearer admin'}:{})},body:JSON.stringify({client})}));
 test('admin-only branding, generic configuration, preserved identity and explicit sync failures',async()=>{
  const client={name:'Cliente Rossi',business_name:'Ferramenta Rossi',email:'rossi@example.com',product_id:product,status:'active',plan:'base',modules:{products:true,inventory:true},branding:{app_name:'Gestionale Rossi',primary_color:'#a52c35',menu_layout:'left'}};
  assert.equal((await send(client,false)).status,401);admin=false;assert.equal((await send(client)).status,403);admin=true;
