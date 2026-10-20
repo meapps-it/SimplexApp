@@ -1,88 +1,56 @@
 'use strict';
 (()=>{
   let deferredPrompt=null;
-  let button=null;
   let installed=false;
-
-  const manifestLink=()=>document.querySelector('link[rel="manifest"]');
-  const manifestUrl=()=>{try{return new URL(manifestLink()?.href||location.href,location.href).href}catch{return location.href}};
-  const markerKey=()=> 'simplex_pwa_installed:'+manifestUrl();
+  const getButton=()=>document.getElementById('installBtn');
+  const manifestUrl=()=>{try{return new URL(document.querySelector('link[rel="manifest"]')?.href||location.href,location.href).href}catch{return location.href}};
   const isStandalone=()=>window.matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true;
-
-  function getButton(){
-    button=button||document.getElementById('installBtn');
-    return button;
+  function renderButton(){
+    const button=getButton();if(!button)return;
+    button.hidden=installed;button.classList.toggle('hidden',installed);
+    if(installed)button.setAttribute('aria-hidden','true');else button.removeAttribute('aria-hidden');
+    button.disabled=false;button.textContent='Installa';
   }
-  function hideButton(){
-    const b=getButton(); if(!b)return;
-    b.hidden=true;
-    b.classList.add('hidden');
-    b.setAttribute('aria-hidden','true');
-  }
-  function showButton(){
-    const b=getButton(); if(!b||installed)return;
-    b.hidden=false;
-    b.classList.remove('hidden');
-    b.removeAttribute('aria-hidden');
-    b.disabled=false;
-    b.textContent='Installa';
-  }
-  function rememberInstalled(){
-    installed=true;
-    try{localStorage.setItem(markerKey(),'1')}catch{}
-    hideButton();
-  }
+  function rememberInstalled(){installed=true;renderButton();}
   async function detectInstalled(){
-    if(isStandalone()){rememberInstalled();return true}
+    if(isStandalone()){rememberInstalled();return;}
+    // A stored flag cannot prove an app is still installed after uninstalling it.
+    // Related apps must match THIS manifest, not merely share the same domain.
     try{
-      if(localStorage.getItem(markerKey())==='1'){installed=true;hideButton();return true}
+      const related=await navigator.getInstalledRelatedApps?.();
+      if(Array.isArray(related)&&related.some(app=>{
+        if(app.platform!=='webapp'||!app.url)return false;
+        try{return new URL(app.url,location.href).href===manifestUrl();}catch{return false;}
+      }))rememberInstalled();
     }catch{}
-    try{
-      if(typeof navigator.getInstalledRelatedApps==='function'){
-        const apps=await navigator.getInstalledRelatedApps();
-        if(Array.isArray(apps)&&apps.some(app=>app.platform==='webapp')){
-          rememberInstalled();return true;
-        }
-      }
-    }catch{}
-    return false;
   }
   function manualInstructions(){
-    if(/iphone|ipad|ipod/i.test(navigator.userAgent||'')){
-      alert('Per installare questa PWA: tocca Condividi e poi “Aggiungi alla schermata Home”.');
+    const ua=navigator.userAgent||'';
+    if(/FBAN|FBAV|Instagram|; wv\)/i.test(ua)){
+      alert('Puoi usare l’app senza installarla. Per installarla, apri il menu e scegli “Apri nel browser”. Poi usa “Installa app” o “Aggiungi alla schermata Home” nel menu del browser.');
+    }else if(/iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)){
+      alert('Puoi già usare l’app qui. Per installarla, apri il menu Condividi e scegli “Aggiungi alla schermata Home”.');
     }else{
-      alert('Apri il menu ⋮ del browser e scegli “Installa app” oppure “Aggiungi alla schermata Home”.');
+      alert('Puoi già usare l’app nel browser. Per installarla, apri il menu del browser e scegli “Installa app” oppure “Aggiungi alla schermata Home”. Se non trovi queste voci, apri lo stesso indirizzo in un browser che supporta l’installazione.');
     }
   }
-  async function install(){
-    if(await detectInstalled())return;
-    if(!deferredPrompt){
-      alert('Installazione non disponibile in questo browser in questo momento.');
-      return;
-    }
-    const prompt=deferredPrompt;
-    deferredPrompt=null;
+  function install(){
+    if(isStandalone()){rememberInstalled();return;}
+    if(!deferredPrompt){manualInstructions();return;}
+    const prompt=deferredPrompt;deferredPrompt=null;
+    const button=getButton();if(button)button.disabled=true;
+    // Must run directly inside the click, before any asynchronous installation check.
     try{
-      prompt.prompt();
-      const choice=await prompt.userChoice;
-      if(choice?.outcome==='accepted') setTimeout(detectInstalled,600);
-    }catch{
-      manualInstructions();
-    }
+      const showing=prompt.prompt();
+      Promise.resolve(showing).then(()=>prompt.userChoice).then(()=>{
+        renderButton();detectInstalled();
+      }).catch(()=>{renderButton();manualInstructions();});
+    }catch{renderButton();manualInstructions();}
   }
-
   window.addEventListener('beforeinstallprompt',event=>{
-    event.preventDefault();
-    deferredPrompt=event;
-    showButton();
+    event.preventDefault();deferredPrompt=event;installed=false;renderButton();
   });
   window.addEventListener('appinstalled',rememberInstalled);
-
-  document.addEventListener('DOMContentLoaded',async()=>{
-    const b=getButton();
-    if(!b)return;
-    b.addEventListener('click',install);
-    if(await detectInstalled())return;
-    showButton();
-  });
+  function init(){const button=getButton();if(!button)return;button.addEventListener('click',install);installed=isStandalone();renderButton();detectInstalled();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

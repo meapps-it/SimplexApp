@@ -29,7 +29,7 @@ globalThis.fetch=async(url,opts={})=>{url=String(url);calls.push({url,method:opt
  throw Error('Unexpected URL '+url);
 };
 await import('../backend/simplex-admin.ts');
-async function send(action,body={},headers={},binary=false){return handler(new Request('https://test/functions/v1/simplex-admin?action='+action,{method:'POST',headers:{Authorization:'Bearer test-user-token',Origin:'https://meapps-it.github.io','Content-Type':binary?'application/vnd.android.package-archive':'application/json',...headers},body:binary?body:JSON.stringify(body)}))}
+async function send(action,body={},headers={},binary=false){return handler(new Request('https://test/functions/v1/simplex-admin?action='+action,{method:'POST',headers:{Authorization:'Bearer test-user-token',Origin:'https://simplexapp.it','Content-Type':binary?'application/vnd.android.package-archive':'application/json',...headers},body:binary?body:JSON.stringify(body)}))}
 mode='invalid';assert.equal((await send('save')).status,401);
 mode='visitor';assert.equal((await send('save')).status,403);
 mode='admin';assert.equal((await send('save',{}, {Origin:'https://evil.test'})).status,403);
