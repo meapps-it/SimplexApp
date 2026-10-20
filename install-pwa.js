@@ -4,11 +4,14 @@
   let installed=false;
   const getButton=()=>document.getElementById('installBtn');
   const manifestUrl=()=>{try{return new URL(document.querySelector('link[rel="manifest"]')?.href||location.href,location.href).href}catch{return location.href}};
-  const isStandalone=()=>window.matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true;
+  const isStandalone=()=>['standalone','fullscreen','minimal-ui','window-controls-overlay'].some(mode=>window.matchMedia?.('(display-mode: '+mode+')').matches)||navigator.standalone===true;
+  const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent||'')||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const embedded=()=>/FBAN|FBAV|Instagram|; wv\)/i.test(navigator.userAgent||'');
   function renderButton(){
     const button=getButton();if(!button)return;
-    button.hidden=installed;button.classList.toggle('hidden',installed);
-    if(installed)button.setAttribute('aria-hidden','true');else button.removeAttribute('aria-hidden');
+    const hide=installed||isStandalone()||embedded()||(!deferredPrompt&&!isIOS());
+    button.hidden=hide;button.classList.toggle('hidden',hide);
+    if(hide)button.setAttribute('aria-hidden','true');else button.removeAttribute('aria-hidden');
     button.disabled=false;button.textContent='Installa';
   }
   function rememberInstalled(){installed=true;renderButton();}
@@ -48,9 +51,11 @@
     }catch{renderButton();manualInstructions();}
   }
   window.addEventListener('beforeinstallprompt',event=>{
-    event.preventDefault();deferredPrompt=event;installed=false;renderButton();
+    event.preventDefault();if(installed||isStandalone())return;deferredPrompt=event;renderButton();
   });
   window.addEventListener('appinstalled',rememberInstalled);
+  for(const mode of ['standalone','fullscreen','minimal-ui','window-controls-overlay'])window.matchMedia?.('(display-mode: '+mode+')').addEventListener?.('change',()=>{renderButton();detectInstalled();});
+  window.addEventListener('pageshow',()=>{renderButton();detectInstalled();});
   function init(){const button=getButton();if(!button)return;button.addEventListener('click',install);installed=isStandalone();renderButton();detectInstalled();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
