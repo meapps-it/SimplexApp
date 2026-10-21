@@ -226,3 +226,17 @@ html[data-theme] .catalog-refresh #homeView .business-grid article{display:flex;
 html[data-theme] .catalog-refresh #homeView .business-grid article::before{display:none}
 html[data-theme] .catalog-refresh #homeView .business-grid .business-icon{display:block;width:36px;height:36px;flex:0 0 36px;object-fit:contain;margin:0}
 html[data-theme] .catalog-refresh #homeView .business-grid article>div{min-width:0}
+/* Featured apps: never fewer than two columns, including phones. */
+html[data-theme] .catalog-refresh #homeView .featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+html[data-theme] .catalog-refresh #homeView .featured .app-card{display:flex;flex-direction:column;align-items:stretch;min-width:0;min-height:0;padding:16px 12px 10px;border-radius:13px;background:#fff;gap:10px}
+html[data-theme] .catalog-refresh #homeView .featured .card-top{display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center;gap:10px}
+html[data-theme] .catalog-refresh #homeView .featured .app-icon{width:56px;height:56px;flex:none;object-fit:contain;margin:0;border-radius:12px}
+html[data-theme] .catalog-refresh #homeView .featured .card-content{display:block;min-width:0;width:100%}
+html[data-theme] .catalog-refresh #homeView .featured h3{font-size:15px;line-height:1.3;white-space:normal;overflow-wrap:anywhere;margin:6px 0 8px;min-height:0}
+html[data-theme] .catalog-refresh #homeView .featured .card-category{font-size:8px;letter-spacing:.3px;color:#65768b}
+html[data-theme] .catalog-refresh #homeView .featured p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.5;margin:0 0 10px;min-height:0}
+html[data-theme] .catalog-refresh #homeView .featured .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;font-size:10px}
+html[data-theme] .catalog-refresh #homeView .featured .actions{width:100%;margin-top:auto;padding:0;display:flex}
+html[data-theme] .catalog-refresh #homeView .featured .card-link{display:flex;align-items:center;justify-content:center;min-height:44px;width:100%;box-sizing:border-box;font-size:13px;border-radius:8px}
+html[data-theme] .catalog-refresh #homeView .featured .share-app{min-height:32px;margin:0;font-size:10px;background:none;border:0;color:#63748a}
+@media(min-width:1000px){html[data-theme] .catalog-refresh #homeView .featured{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
