@@ -120,3 +120,19 @@ html[data-theme] .catalog-refresh #homeView .hero-copy{display:block;width:100%;
 
 @media(max-width:600px){html[data-theme] .catalog-refresh #homeView .hero{background-position:88% center}html[data-theme] .catalog-refresh #homeView .hero::before{background:linear-gradient(90deg,#06309cf7 0%,#06309ce8 55%,#06309c99 100%)}}
 html[data-theme] .catalog-refresh #homeView #contatti{width:100%;max-width:none;box-sizing:border-box}
+/* Compact cover requested after mobile preview review. */
+html[data-theme] .catalog-refresh #homeView .hero{min-height:340px;padding:32px 40px}
+html[data-theme] .catalog-refresh #homeView .hero h1{font-size:43px;margin-bottom:14px}
+html[data-theme] .catalog-refresh #homeView .hero-description{margin-bottom:18px}
+html[data-theme] .catalog-refresh #homeView .hero-kicker{margin-bottom:15px}
+html[data-theme] .catalog-refresh #homeView .hero-platforms{margin-top:18px}
+@media(max-width:600px){
+ html[data-theme] .catalog-refresh #homeView .hero{min-height:0;padding:22px 20px;background-size:auto 100%}
+ html[data-theme] .catalog-refresh #homeView .hero h1{font-size:28px;line-height:1.13;letter-spacing:-1px;margin-bottom:12px}
+ html[data-theme] .catalog-refresh #homeView .hero-kicker{font-size:8px;letter-spacing:1px;margin-bottom:12px}
+ html[data-theme] .catalog-refresh #homeView .hero-description{font-size:12px;line-height:1.5;max-width:none;margin-bottom:15px}
+ html[data-theme] .catalog-refresh #homeView .hero-ctas{flex-direction:row;align-items:center;gap:12px}
+ html[data-theme] .catalog-refresh #homeView .hero-ctas .primary{font-size:11px;padding:10px 12px;gap:12px;min-height:44px}
+ html[data-theme] .catalog-refresh #homeView .hero-secondary{font-size:11px}
+ html[data-theme] .catalog-refresh #homeView .hero-platforms{margin-top:15px}
+}
