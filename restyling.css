@@ -147,3 +147,17 @@ html[data-theme] .catalog-refresh #homeView .hero-secondary:hover{background:#12
  html[data-theme] .catalog-refresh #homeView .top-admin{min-height:44px}
  html[data-theme] .catalog-refresh #homeView .categories button{min-height:44px}
 }
+/* Restore the requested two-column mobile catalog. */
+@media(max-width:600px){
+ html[data-theme] .catalog-refresh #homeView #catalogGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{padding:13px;gap:11px;min-height:0;border-radius:15px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-top{grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .app-icon{grid-row:auto;grid-column:1;width:44px;height:44px;border-radius:11px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-category{grid-column:2;align-self:center;font-size:8px;letter-spacing:.25px;overflow-wrap:anywhere}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid h3{grid-column:1/-1;font-size:15px;line-height:1.3;align-self:start;overflow-wrap:normal}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content p{grid-column:1/-1;font-size:12px;line-height:1.5}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .meta{gap:5px;font-size:10px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .actions .card-link[href^="#app/"]{font-size:13px;min-height:44px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .fav{right:7px;bottom:12px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .share-app{font-size:10px;margin-right:23px;padding-right:16px}
+}
