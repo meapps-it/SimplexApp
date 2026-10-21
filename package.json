@@ -1,1 +1,14 @@
-{"name":"simplexapp-pwa","private":true,"type":"module","scripts":{"dev":"node scripts/dev-server.mjs","test":"node --test tests/*.test.mjs"},"devDependencies":{"jsdom":"26.1.0"}}
+{
+  "name": "simplexapp-pwa",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "preview:build": "node scripts/build-restyling-preview.mjs",
+    "pretest": "npm run preview:build"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  }
+}
