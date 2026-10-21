@@ -1,0 +1,26 @@
+import {mkdir,copyFile,cp,readFile,writeFile,rm} from 'node:fs/promises';
+const out=new URL('../preview-dist/',import.meta.url),root=new URL('../',import.meta.url);
+await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});
+const files=['index.html','style.css','premium.css','design.css','catalog-refresh.css','workspace.css','admin.css','visits.css','restyling.css','restyling-ui.js','app.js','media.js','vitrine.js','tenant-config.js','tenant-customization.js','admin-analytics.js'];
+for(const file of files)await copyFile(new URL(file,root),new URL(file,out));
+await cp(new URL('assets/',root),new URL('assets/',out),{recursive:true});
+await cp(new URL('data/',root),new URL('data/',out),{recursive:true});
+await copyFile(new URL('preview/cloud-demo.js',root),new URL('cloud-demo.js',out));
+await copyFile(new URL('preview/demo-ui.js',root),new URL('demo-ui.js',out));
+let html=await readFile(new URL('index.html',out),'utf8');
+html=html.replace(/<script src="(?:cloud|contact|simplex-visits|admin-visits|install-pwa)\.js[^\"]*"><\/script>/g,'').replace('<script src="media.js','<script src="cloud-demo.js"></script><script src="media.js');
+html=html.replace('</body>','<script src="demo-ui.js"></script></body>').replace(/<link rel="manifest"[^>]*>/,'').replace('content="index,follow,max-image-preview:large"','content="noindex,nofollow"');
+const csp="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; form-action 'none'; worker-src 'none'; object-src 'none'; base-uri 'none'; frame-src 'self'";
+html=html.replace('<head>','<head><meta http-equiv="Content-Security-Policy" content="'+csp+'">');
+await writeFile(new URL('index.html',out),html);
+let js=await readFile(new URL('app.js',out),'utf8');
+js=js.replace("if('serviceWorker'in navigator&&['https:','http:'].includes(location.protocol))navigator.serviceWorker.register('./sw.js').catch(()=>toast('Modalità offline non disponibile su questo indirizzo'))",'/* Service worker omitted in isolated preview. */');
+await writeFile(new URL('app.js',out),js);
+await writeFile(new URL('robots.txt',out),'User-agent: *\nDisallow: /\n');
+// Native media already in the repository; keep these as promotional images.
+const apps=JSON.parse(await readFile(new URL('data/apps.json',out),'utf8'));
+apps.find(a=>a.id==='toi').promoImages=['assets/promotional/turni-operai.png'];
+await writeFile(new URL('data/apps.json',out),JSON.stringify(apps,null,2));
+await writeFile(new URL('responsive.html',out),`<!doctype html><html lang="it"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SimplexApp · Anteprima smartphone</title><style>body{margin:0;background:#e7edf6;font:14px system-ui}header{padding:16px;display:flex;align-items:center;justify-content:center;gap:18px}a{color:#0754d6}iframe{display:block;border:1px solid #ced9e8;border-radius:20px;margin:0 auto;background:white;width:393px;height:852px;max-width:100%}</style><header><label>Viewport <select id="viewport"><option>320</option><option>360</option><option selected>393</option><option>768</option><option>1024</option></select> px</label><a href="./">Versione desktop</a></header><iframe title="Anteprima smartphone" src="./"></iframe><script>document.getElementById("viewport").onchange=e=>document.querySelector("iframe").style.width=e.target.value+"px";</script></html>`);
+let analytics=await readFile(new URL('admin-analytics.js',out),'utf8');await writeFile(new URL('admin-analytics.js',out),analytics.replace('La tendenza reale degli ultimi sei mesi.','Dati dimostrativi: nessuna statistica di produzione.'));
+console.log('Isolated preview built: '+out.pathname);

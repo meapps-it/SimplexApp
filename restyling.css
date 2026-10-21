@@ -1,0 +1,242 @@
+/* Professional visual layer. No backend, billing or authentication changes. */
+:root{--sx-blue:#0754d6;--sx-ink:#102b50;--sx-yellow:#ffcf38;--sx-muted:#52647b;--sx-line:#dce5f1}
+html{scroll-behavior:smooth;scroll-padding-top:32px}
+html[data-theme] body.catalog-refresh{background:#f6f8fc;color:var(--sx-ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html[data-theme] .catalog-refresh #homeView .app-shell{max-width:1240px;padding:24px 36px 110px;gap:28px}
+html[data-theme] .catalog-refresh #homeView .cover{display:block;background:none;overflow:visible}
+html[data-theme] .catalog-refresh #homeView .top{padding:0 0 24px;border-bottom:1px solid var(--sx-line);margin-bottom:24px;min-height:88px}
+html[data-theme] .catalog-refresh #homeView .top .home-brand{width:260px;max-width:42%;flex-basis:260px}
+html[data-theme] .catalog-refresh #homeView .desktop-links{display:flex;gap:26px;align-items:center}
+.desktop-links a{font-size:14px;font-weight:600;color:#354d6c;text-decoration:none}
+.desktop-links a:hover{color:var(--sx-blue)}
+html[data-theme] .catalog-refresh #homeView .top-actions{gap:28px}
+html[data-theme] .catalog-refresh #homeView .top-admin{border:1px solid #cbd9ec;border-radius:10px;color:var(--sx-ink);font-size:12px;background:transparent}
+html[data-theme] .catalog-refresh #homeView .hero{min-height:410px;border-radius:24px;margin:0;padding:48px;background:#0654dc url('assets/premium-cover.webp') center center/cover no-repeat;box-shadow:0 14px 36px #0747a61a;overflow:hidden;display:flex;align-items:center}
+html[data-theme] .catalog-refresh #homeView .hero-copy{max-width:64%;padding:0}
+.hero-kicker{display:block;font-size:11px;font-weight:750;letter-spacing:1.7px;color:#d8e7ff;margin-bottom:22px}
+html[data-theme] .catalog-refresh #homeView .hero h1{font-size:clamp(34px,3.8vw,51px);line-height:1.13;letter-spacing:-1.8px;color:#fff;max-width:none;margin:0 0 19px;font-weight:750}
+html[data-theme] .catalog-refresh #homeView .hero h1 b{color:#ffdb58;font-weight:750}
+html[data-theme] .catalog-refresh #homeView .hero-description{font-size:16px;line-height:1.65;color:#e3eeff;margin:0 0 26px;max-width:440px}
+.hero-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:20px}
+html[data-theme] .catalog-refresh #homeView .hero-ctas .primary{display:flex;align-items:center;gap:20px;min-height:48px;padding:13px 20px;background:var(--sx-yellow);color:#14305a;border:0;border-radius:10px;box-shadow:none;font-size:14px;font-weight:750}
+.hero-secondary{color:white;font-size:13px;font-weight:650;text-decoration:underline;text-underline-offset:5px}
+.hero-platforms{display:flex;gap:19px;margin-top:28px;color:#d4e4ff;font-size:11px;letter-spacing:.3px}
+.hero-platforms span+span{border-left:1px solid #ffffff50;padding-left:19px}
+html[data-theme] .catalog-refresh #homeView .home-intro{margin:0;padding:0 2px}
+html[data-theme] .catalog-refresh #homeView .home-intro p{font-size:15px;color:var(--sx-muted)}
+html[data-theme] .catalog-refresh #homeView .catalog-search-strip{max-width:560px;width:100%;margin-top:8px}
+html[data-theme] .catalog-refresh #homeView .search{height:50px;border:1px solid #d9e3ef;border-radius:12px;box-shadow:0 3px 12px #14345b04;font-size:14px}
+html[data-theme] .catalog-refresh #homeView .categories{gap:8px;flex-wrap:wrap;overflow:visible;padding:0}
+html[data-theme] .catalog-refresh #homeView .categories button{border-radius:9px;min-height:42px;padding:9px 14px;background:white;box-shadow:none;border:1px solid #e1e8f1;color:#435c7b;gap:7px}
+html[data-theme] .catalog-refresh #homeView .categories button b{font-size:12px}
+html[data-theme] .catalog-refresh #homeView .categories button img{width:20px;height:20px}
+html[data-theme] .catalog-refresh #homeView .categories button[aria-pressed=true]{background:#e9f1ff;color:#0754d6;border-color:#a8c5f3}
+html[data-theme] .catalog-refresh #homeView .catalog-head{position:static;clip-path:none;width:auto;height:auto;overflow:visible;display:flex;align-items:center;margin:0 0 20px}
+html[data-theme] .catalog-refresh #homeView .catalog-head h2{display:flex;font-size:24px;letter-spacing:-.7px;color:var(--sx-ink);font-weight:750;gap:12px}
+html[data-theme] .catalog-refresh #homeView .catalog-head h2>img{display:none}
+html[data-theme] .catalog-refresh #homeView .catalog-head>.section-mascot{display:none}
+html[data-theme] .catalog-refresh #homeView #catalogGrid{gap:22px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{border-radius:17px;border:1px solid #dbe5f2;padding:25px;gap:15px;box-shadow:0 5px 14px #183c6f06;transition:transform .2s,box-shadow .2s;min-height:320px;overflow:visible}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card:hover{transform:translateY(-4px);box-shadow:0 14px 28px #123d7312;border-color:#a9c6ee}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .card-top{grid-template-columns:72px minmax(0,1fr);gap:15px;align-items:center}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .app-icon{width:72px;height:72px;border-radius:17px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content{display:contents}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .card-category{grid-column:2;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#35629c;font-weight:700;align-self:end}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .app-icon{grid-row:1/3}
+html[data-theme] .catalog-refresh #homeView #catalogGrid h3{grid-column:2;margin:0;font-size:18px;line-height:1.3;color:var(--sx-ink);font-weight:750;align-self:start}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content p{font-size:14px;line-height:1.65;color:var(--sx-muted);-webkit-line-clamp:unset;line-clamp:unset;display:block;margin:2px 0;overflow:visible}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .meta{gap:7px;font-size:11px;min-height:24px;color:#355170}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .status{color:#38536f;font-weight:600}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .version{background:#eef4fc;border:1px solid #e2eaf5;color:#3a5879;padding:3px 8px;border-radius:6px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .actions .card-link[href^="#app/"]{background:#0754d6;color:white;border-radius:9px;font-size:14px;min-height:45px;box-shadow:0 3px 8px #0754d61a}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .share-app{font-size:11px;color:#536984;margin-right:40px;padding:4px 0;min-height:32px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .fav{bottom:21px;right:21px;min-height:36px;min-width:36px}
+html[data-theme] .catalog-refresh #homeView .business-panel{order:6;position:relative;background:#eaf2ff;border:1px solid #d2e2fa;border-radius:20px;padding:32px;margin-top:12px;display:flex;flex-direction:column;scroll-margin-top:25px}
+html[data-theme] .catalog-refresh #homeView .business-panel .section-head{order:1;margin:8px 0 12px}
+html[data-theme] .catalog-refresh #homeView .business-panel .section-head h2{font-size:28px;line-height:1.25;letter-spacing:-.9px;color:var(--sx-ink)}
+html[data-theme] .catalog-refresh #homeView .business-panel .section-head h2 img,html[data-theme] .catalog-refresh #homeView .business-panel .section-mascot{display:none}
+.section-eyebrow{font-size:10px;letter-spacing:1.8px;color:#2054a2;font-weight:750}
+html[data-theme] .catalog-refresh #homeView .business-lead{order:2;font-size:15px;color:#425e80;line-height:1.65;max-width:670px;margin:0 0 24px}
+html[data-theme] .catalog-refresh #homeView .business-grid{order:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+html[data-theme] .catalog-refresh #homeView .business-grid article{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:13px;padding:22px;background:white;border:1px solid #d9e5f5;border-radius:13px;box-shadow:none}
+html[data-theme] .catalog-refresh #homeView .business-icon{width:40px;height:40px;object-fit:contain}
+html[data-theme] .catalog-refresh #homeView .business-grid strong{display:block;font-size:15px;color:var(--sx-ink);margin-bottom:9px}
+html[data-theme] .catalog-refresh #homeView .business-grid span{font-size:13px;line-height:1.65;color:var(--sx-muted)}
+html[data-theme] .catalog-refresh #homeView .business-contact-link{order:4;align-self:flex-start;background:var(--sx-blue);color:white;border-radius:9px;margin-top:24px;padding:13px 19px;font-size:13px;font-weight:650;text-decoration:none}
+html[data-theme] .catalog-refresh #homeView .featured-panel{order:7;margin:12px 0}
+html[data-theme] .catalog-refresh #homeView .section-head h2{font-size:22px;color:var(--sx-ink);letter-spacing:-.5px}
+html[data-theme] .catalog-refresh #homeView .featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+html[data-theme] .catalog-refresh #homeView .featured .app-card{display:flex;flex-direction:column;align-items:stretch;gap:10px;background:white;border:1px solid var(--sx-line);box-shadow:none;border-radius:14px;padding:20px}
+html[data-theme] .catalog-refresh #homeView .featured .card-top{align-items:flex-start}
+html[data-theme] .catalog-refresh #homeView .featured .app-icon{width:48px;height:48px;border-radius:12px}
+html[data-theme] .catalog-refresh #homeView .featured h3{font-size:15px;color:var(--sx-ink)}
+html[data-theme] .catalog-refresh #homeView .featured .card-category{font-size:10px;color:#426697}
+html[data-theme] .catalog-refresh #homeView .featured p{font-size:12px;color:var(--sx-muted);line-height:1.5}
+html[data-theme] .catalog-refresh #homeView .featured .actions{margin-top:auto}
+html[data-theme] .catalog-refresh #homeView .featured .btn{background:#eaf2ff;color:#0754d6;border-radius:8px;box-shadow:none}
+html[data-theme] .catalog-refresh #homeView .featured .fav{display:none}
+html[data-theme] .catalog-refresh #homeView .home-benefits{display:flex;justify-content:space-evenly;border-block:1px solid var(--sx-line);padding:22px 0;margin:0}
+html[data-theme] .catalog-refresh #homeView .home-benefits>div{display:flex;align-items:center;gap:12px;color:#52647b;font-size:12px}
+html[data-theme] .catalog-refresh #homeView .home-benefits img{width:36px;height:36px;object-fit:contain}
+html[data-theme] .catalog-refresh #homeView .updates{gap:14px}
+html[data-theme] .catalog-refresh #homeView .update{border:1px solid var(--sx-line);border-radius:12px;box-shadow:none;padding:19px}
+html[data-theme] .catalog-refresh #homeView #contatti{background:#102e57;border:0;border-radius:16px;color:white;box-shadow:none;margin-top:10px;padding:0}
+html[data-theme] .catalog-refresh #homeView #contatti>summary{padding:28px 30px;font-size:23px;color:white;font-weight:700;letter-spacing:-.5px}
+html[data-theme] .catalog-refresh #homeView #contatti .contact-content{background:#fff;color:var(--sx-ink);border-radius:0 0 16px 16px;padding:28px 30px}
+html[data-theme] .catalog-refresh #homeView .site-footer{margin-top:8px;padding:25px 0 0;display:flex;align-items:center;gap:22px;justify-content:space-between;border-top:1px solid var(--sx-line);color:#52647b;font-size:12px;text-align:left}
+.site-footer small{font-size:10px;line-height:2;color:#67788d}
+html[data-theme] .catalog-refresh #homeView .footer-mascot{width:150px;height:auto}
+html[data-theme] .catalog-refresh nav{background:#ffffffed;backdrop-filter:blur(16px);max-width:610px;border:1px solid #d5e2f3;border-radius:16px;box-shadow:0 8px 26px #102f631c;bottom:14px;padding:7px}
+html[data-theme] .catalog-refresh nav button{border-radius:11px;font-size:11px;min-height:50px;color:#536984}
+html[data-theme] .catalog-refresh nav button.active{background:#e8f1ff;color:#0754d6}
+html[data-theme] .catalog-refresh .detail-shell{max-width:1168px;padding:28px 30px 110px}
+html[data-theme] .catalog-refresh .detail-hero{border-radius:20px;background:#e8f1ff;border:1px solid #d2e2f8;padding:32px;color:var(--sx-ink)}
+html[data-theme] .catalog-refresh .detail-panel{border:1px solid var(--sx-line);border-radius:15px;padding:25px;background:white;box-shadow:none}
+html[data-theme] .catalog-refresh .screenshots{gap:16px;padding:6px 3px 16px;scroll-snap-type:x mandatory}
+html[data-theme] .catalog-refresh .screenshot{border:1px solid var(--sx-line);border-radius:13px;overflow:hidden;scroll-snap-align:start;background:#eef3fa}
+html[data-theme] .catalog-refresh .screenshot img{object-fit:contain;max-height:380px}
+html[data-theme] .catalog-refresh .detail-actions{padding:18px;gap:12px;flex-wrap:wrap;border:1px solid var(--sx-line);border-radius:14px;background:#fff}
+html[data-theme] .catalog-refresh .detail-actions .btn{border-radius:9px;background:var(--sx-blue);color:white;box-shadow:none}
+html[data-theme] .catalog-refresh .admin-wrap{max-width:1180px;color:var(--sx-ink);padding-top:32px}
+html[data-theme] .catalog-refresh .admin-head{border-radius:18px;background:#102e57;color:#fff;padding:27px;border-bottom:4px solid var(--sx-yellow)}
+html[data-theme] .catalog-refresh .admin-head h1{font-size:26px;line-height:1.3;color:white}
+html[data-theme] .catalog-refresh .admin-head .eyebrow{color:#ffdc68}
+html[data-theme] .catalog-refresh .admin-head .backbtn{background:white;color:var(--sx-ink);border:0}
+html[data-theme] .catalog-refresh .admin-card{border:1px solid var(--sx-line);border-radius:15px;box-shadow:0 4px 12px #17325205}
+html[data-theme] .catalog-refresh .admin-tabs button{border-radius:9px;min-height:44px}
+html[data-theme] .catalog-refresh .admin-tabs button.active{background:#0754d6;color:white}
+html[data-theme] .catalog-refresh .primary{border-radius:9px;background:#0754d6;color:#fff;box-shadow:none}
+html[data-theme] .catalog-refresh input,html[data-theme] .catalog-refresh select,html[data-theme] .catalog-refresh textarea{border-radius:9px}
+html[data-theme] .catalog-refresh :focus-visible{outline:3px solid #e7ad00;outline-offset:4px}
+.preview-banner{padding:9px 16px;background:#fff2be;color:#614800;text-align:center;font-size:11px;border-bottom:1px solid #ead486;font-weight:650}
+@media(min-width:1000px){html[data-theme] .catalog-refresh #homeView .catalog-search-strip{align-self:flex-end;margin-bottom:-78px;position:relative;z-index:1}html[data-theme] .catalog-refresh #homeView .category-panel{margin-top:60px}html[data-theme] .catalog-refresh #homeView #catalogo{margin-top:-105px;padding-top:0}html[data-theme] .catalog-refresh #homeView .catalog-head{margin-bottom:90px}}
+@media(max-width:900px){html[data-theme] .catalog-refresh #homeView .desktop-links{display:none}html[data-theme] .catalog-refresh #homeView .hero{padding:35px;min-height:370px;background-position:58% center}html[data-theme] .catalog-refresh #homeView .hero h1{font-size:38px}html[data-theme] .catalog-refresh #homeView .hero-copy{max-width:75%}html[data-theme] .catalog-refresh #homeView #catalogGrid{gap:14px}html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{padding:18px}html[data-theme] .catalog-refresh #homeView .featured{grid-template-columns:1fr}html[data-theme] .catalog-refresh #homeView .business-grid{gap:10px}html[data-theme] .catalog-refresh #homeView .business-grid article{padding:15px}}
+@media(max-width:600px){html[data-theme] .catalog-refresh #homeView .app-shell{padding:12px 18px 108px;gap:22px}html[data-theme] .catalog-refresh #homeView .top{padding-bottom:13px;margin-bottom:17px;min-height:65px;gap:12px}html[data-theme] .catalog-refresh #homeView .top .home-brand{width:216px;max-width:65%;flex-basis:216px}html[data-theme] .catalog-refresh #homeView .top-actions{max-width:32%;gap:5px}html[data-theme] .catalog-refresh #homeView .top-admin{font-size:10px;padding:7px 9px;min-height:36px;border-radius:8px}html[data-theme] .catalog-refresh #homeView .hero{padding:28px 22px 32px;min-height:400px;border-radius:18px;background-position:45% center;background-size:auto 100%;position:relative;isolation:isolate;align-items:flex-start}html[data-theme] .catalog-refresh #homeView .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#06309cf2 0%,#06309ce6 50%,#06309c70 100%)}html[data-theme] .catalog-refresh #homeView .hero-copy{max-width:100%;width:100%}.hero-kicker{font-size:9px;letter-spacing:1.25px;margin-bottom:23px}html[data-theme] .catalog-refresh #homeView .hero h1{font-size:34px;letter-spacing:-1.25px;line-height:1.16;margin-bottom:19px}html[data-theme] .catalog-refresh #homeView .hero-description{font-size:13px;line-height:1.7;max-width:265px;margin-bottom:23px}.hero-ctas{gap:18px;align-items:flex-start;flex-direction:column}html[data-theme] .catalog-refresh #homeView .hero-ctas .primary{font-size:12px;min-height:44px;padding:12px 16px}.hero-secondary{font-size:12px}.hero-platforms{font-size:9px;gap:10px;margin-top:26px}.hero-platforms span+span{padding-left:10px}html[data-theme] .catalog-refresh #homeView .home-intro p{font-size:13px;line-height:1.65}html[data-theme] .catalog-refresh #homeView .catalog-search-strip{margin:0}html[data-theme] .catalog-refresh #homeView .categories{gap:7px}html[data-theme] .catalog-refresh #homeView .categories button{padding:8px 11px;min-height:38px}html[data-theme] .catalog-refresh #homeView .categories button b{font-size:11px}html[data-theme] .catalog-refresh #homeView .categories button img{width:18px;height:18px}html[data-theme] .catalog-refresh #homeView .catalog-head{margin:3px 0 17px}html[data-theme] .catalog-refresh #homeView .catalog-head h2{font-size:23px}html[data-theme] .catalog-refresh #homeView #catalogGrid{grid-template-columns:1fr;gap:15px}html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{padding:23px;min-height:290px;border-radius:15px}html[data-theme] .catalog-refresh #homeView #catalogGrid .card-top{grid-template-columns:64px minmax(0,1fr);gap:13px}html[data-theme] .catalog-refresh #homeView #catalogGrid .app-icon{width:64px;height:64px;border-radius:14px}html[data-theme] .catalog-refresh #homeView #catalogGrid h3{font-size:18px}html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content p{font-size:13px}html[data-theme] .catalog-refresh #homeView .business-panel{padding:24px 20px;border-radius:16px}html[data-theme] .catalog-refresh #homeView .business-panel .section-head h2{font-size:25px}html[data-theme] .catalog-refresh #homeView .business-lead{font-size:13px}html[data-theme] .catalog-refresh #homeView .business-grid{grid-template-columns:1fr;gap:12px}html[data-theme] .catalog-refresh #homeView .business-grid article{flex-direction:row;padding:18px;gap:15px}html[data-theme] .catalog-refresh #homeView .business-icon{width:36px;height:36px;flex:0 0 36px}html[data-theme] .catalog-refresh #homeView .business-grid strong{font-size:14px}html[data-theme] .catalog-refresh #homeView .business-grid span{font-size:12px}.section-eyebrow{font-size:9px}html[data-theme] .catalog-refresh #homeView .home-benefits{gap:10px;justify-content:space-between}html[data-theme] .catalog-refresh #homeView .home-benefits>div{font-size:10px;gap:5px}html[data-theme] .catalog-refresh #homeView .home-benefits img{width:25px;height:25px}html[data-theme] .catalog-refresh #homeView #contatti>summary{font-size:19px;padding:24px 20px}html[data-theme] .catalog-refresh #homeView #contatti .contact-content{padding:22px 18px}html[data-theme] .catalog-refresh #homeView .site-footer{flex-wrap:wrap;gap:13px}html[data-theme] .catalog-refresh #homeView .footer-mascot{width:125px}html[data-theme] .catalog-refresh #homeView .site-footer>span{font-size:10px}html[data-theme] .catalog-refresh nav{max-width:calc(100% - 28px);bottom:10px;border-radius:14px}html[data-theme] .catalog-refresh .detail-shell{padding:20px 18px 110px}html[data-theme] .catalog-refresh .detail-hero{padding:22px;gap:16px}html[data-theme] .catalog-refresh .detail-hero h1{font-size:26px}html[data-theme] .catalog-refresh .detail-panel{padding:20px}html[data-theme] .catalog-refresh .admin-head{padding:20px}html[data-theme] .catalog-refresh .admin-head h1{font-size:21px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+/* Explicitly reset the legacy hero flex layout. */
+html[data-theme] .catalog-refresh #homeView .hero-copy{display:block;width:100%;max-width:64%;flex:none}
+@media(max-width:900px){html[data-theme] .catalog-refresh #homeView .hero-copy{max-width:75%}}
+@media(max-width:600px){html[data-theme] .catalog-refresh #homeView .hero-copy{max-width:100%}}
+
+@media(max-width:600px){html[data-theme] .catalog-refresh #homeView .hero{background-position:88% center}html[data-theme] .catalog-refresh #homeView .hero::before{background:linear-gradient(90deg,#06309cf7 0%,#06309ce8 55%,#06309c99 100%)}}
+html[data-theme] .catalog-refresh #homeView #contatti{width:100%;max-width:none;box-sizing:border-box}
+/* Compact cover requested after mobile preview review. */
+html[data-theme] .catalog-refresh #homeView .hero{min-height:320px;padding:26px 40px}
+html[data-theme] .catalog-refresh #homeView .hero h1{font-size:43px;margin-bottom:14px}
+html[data-theme] .catalog-refresh #homeView .hero-description{margin-bottom:18px}
+html[data-theme] .catalog-refresh #homeView .hero-kicker{margin-bottom:15px}
+html[data-theme] .catalog-refresh #homeView .hero-platforms{margin-top:18px}
+@media(max-width:600px){
+ html[data-theme] .catalog-refresh #homeView .hero{min-height:0;padding:16px 20px;background-size:auto 100%}
+ html[data-theme] .catalog-refresh #homeView .hero h1{font-size:28px;line-height:1.13;letter-spacing:-1px;margin-bottom:12px}
+ html[data-theme] .catalog-refresh #homeView .hero-kicker{font-size:8px;letter-spacing:1px;margin-bottom:8px}
+ html[data-theme] .catalog-refresh #homeView .hero-description{font-size:12px;line-height:1.5;max-width:none;margin-bottom:12px}
+ html[data-theme] .catalog-refresh #homeView .hero-ctas{flex-direction:row;align-items:center;gap:12px}
+ html[data-theme] .catalog-refresh #homeView .hero-ctas .primary{font-size:11px;padding:10px 12px;gap:12px;min-height:44px}
+ html[data-theme] .catalog-refresh #homeView .hero-secondary{font-size:11px}
+ html[data-theme] .catalog-refresh #homeView .hero-platforms{margin-top:12px}
+}
+/* Balanced cover actions, preserving the approved type and compact height. */
+html[data-theme] .catalog-refresh #homeView .hero-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;padding:10px 15px;border:1px solid #b9d2ff;border-radius:9px;background:#083b9c99;color:#fff;text-decoration:none;text-align:center;line-height:1.3}
+html[data-theme] .catalog-refresh #homeView .hero-secondary:hover{background:#124eae;border-color:#fff}
+@media(max-width:600px){
+ html[data-theme] .catalog-refresh #homeView .hero-ctas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:stretch}
+ html[data-theme] .catalog-refresh #homeView .hero-ctas .primary{display:flex;justify-content:center;min-width:0;padding:8px;font-size:12px;line-height:1.3;min-height:44px}
+ html[data-theme] .catalog-refresh #homeView .hero-ctas .primary span[aria-hidden]{display:none}
+ html[data-theme] .catalog-refresh #homeView .hero-secondary{min-width:0;padding:8px;font-size:12px;min-height:44px}
+ html[data-theme] .catalog-refresh #homeView .top-admin{min-height:44px}
+ html[data-theme] .catalog-refresh #homeView .categories button{min-height:44px}
+}
+/* Restore the requested two-column mobile catalog. */
+@media(max-width:600px){
+ html[data-theme] .catalog-refresh #homeView #catalogGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{padding:13px;gap:11px;min-height:0;border-radius:15px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-top{grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .app-icon{grid-row:auto;grid-column:1;width:44px;height:44px;border-radius:11px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-category{grid-column:2;align-self:center;font-size:8px;letter-spacing:.25px;overflow-wrap:anywhere}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid h3{grid-column:1/-1;font-size:15px;line-height:1.3;align-self:start;overflow-wrap:normal}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content p{grid-column:1/-1;font-size:12px;line-height:1.5}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .meta{gap:5px;font-size:10px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .actions .card-link[href^="#app/"]{font-size:13px;min-height:44px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .fav{right:7px;bottom:12px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .share-app{font-size:10px;margin-right:23px;padding-right:16px}
+}
+/* Quieter app-store cards and a shorter home, following review. */
+html[data-theme] .catalog-refresh #homeView .home-intro,
+html[data-theme] .catalog-refresh #homeView .home-benefits{display:none}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{background:#fff;border:1px solid #e0e6ee;border-radius:13px;box-shadow:none;padding:23px;gap:13px;min-height:0}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card:hover{transform:none;box-shadow:none;border-color:#b9cce5}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .card-top{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;text-align:center;justify-items:center;align-items:start}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .app-icon{grid-column:1;grid-row:auto;width:68px;height:68px;object-fit:contain;justify-self:center;border-radius:15px;margin:0 0 3px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .card-category{grid-column:1;grid-row:auto;font-size:9px;letter-spacing:.5px;color:#65768b;align-self:auto}
+html[data-theme] .catalog-refresh #homeView #catalogGrid h3{grid-column:1;grid-row:auto;text-align:center;font-size:19px;line-height:1.3;min-height:49px;margin:0;font-weight:700}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content p{grid-column:1;text-align:center;font-size:13px;line-height:1.5;color:#5a6c82;min-height:58px;margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .meta{justify-content:center;min-height:20px;gap:6px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .status{font-weight:400;font-size:11px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .actions .card-link[href^="#app/"]{background:#eaf2ff;color:#0754d6;box-shadow:none;border-radius:8px;min-height:44px;font-size:14px;font-weight:700}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .actions .card-link:hover{background:#d9e9ff}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .fav{top:10px;right:10px;bottom:auto;margin:0;background:none;width:32px;height:32px;min-height:32px;min-width:32px;padding:7px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .fav img{width:18px;height:18px}
+html[data-theme] .catalog-refresh #homeView #catalogGrid .share-app{margin:0;padding:0;align-self:center;min-height:32px;color:#63748a;font-weight:400}
+html[data-theme] .catalog-refresh #homeView .business-panel{padding:24px;background:#fff;border:1px solid #e0e6ee;border-radius:13px;margin-top:0}
+html[data-theme] .catalog-refresh #homeView .business-panel .section-eyebrow{display:none}
+html[data-theme] .catalog-refresh #homeView .business-panel .section-head{margin:0 0 10px}
+html[data-theme] .catalog-refresh #homeView .business-panel .section-head h2{font-size:22px}
+html[data-theme] .catalog-refresh #homeView .business-lead{font-size:13px;margin-bottom:14px}
+html[data-theme] .catalog-refresh #homeView .business-grid{gap:18px}
+html[data-theme] .catalog-refresh #homeView .business-grid article{background:none;border:0;border-radius:0;padding:0;gap:9px}
+html[data-theme] .catalog-refresh #homeView .business-icon{display:none}
+html[data-theme] .catalog-refresh #homeView .business-grid strong{font-size:13px;margin-bottom:5px}
+html[data-theme] .catalog-refresh #homeView .business-grid span{font-size:12px;line-height:1.5}
+html[data-theme] .catalog-refresh #homeView .business-contact-link{margin-top:18px;background:#eaf2ff;color:#0754d6;padding:10px 14px;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center}
+html[data-theme] .catalog-refresh #homeView .home-extras{order:9;border-block:1px solid #dce5f1;background:none;padding:0}
+.home-extras>summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 0;cursor:pointer;list-style:none;font-size:15px;font-weight:650;color:#354f72}
+.home-extras>summary::-webkit-details-marker{display:none}
+.home-extras>summary span{font-size:20px;font-weight:400}
+.home-extras[open]>summary span{transform:rotate(45deg)}
+.home-extras-content{padding:0 0 22px}
+html[data-theme] .catalog-refresh #homeView .home-extras .featured-panel{margin:0 0 24px}
+html[data-theme] .catalog-refresh #homeView .home-extras #novita{margin:0}
+@media(max-width:600px){
+ html[data-theme] .catalog-refresh #homeView .app-shell{gap:18px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{padding:18px 12px 10px;gap:9px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .app-icon{width:58px;height:58px;border-radius:13px;margin-bottom:2px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-top{gap:8px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid h3{font-size:15px;min-height:39px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-category{font-size:8px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content p{font-size:12px;min-height:54px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .status{font-size:10px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .actions .card-link[href^="#app/"]{font-size:13px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .fav{top:7px;right:6px;width:28px;height:28px;min-width:28px;min-height:28px;padding:6px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .share-app{font-size:10px}
+ html[data-theme] .catalog-refresh #homeView .business-panel{padding:20px}
+ html[data-theme] .catalog-refresh #homeView .business-grid{grid-template-columns:1fr;gap:10px}
+ html[data-theme] .catalog-refresh #homeView .business-grid article{padding:0 0 10px;border-bottom:1px solid #edf1f6;display:block}
+ html[data-theme] .catalog-refresh #homeView .business-grid article:last-child{padding-bottom:0;border:0}
+}
+@media(max-width:600px){
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .app-card{padding:16px 12px 8px;gap:8px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-top{gap:7px}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid h3,
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .card-content p{min-height:0}
+ html[data-theme] .catalog-refresh #homeView #catalogGrid .share-app{min-height:28px}
+}
+/* Business icons restored; featured apps remain expanded above the news. */
+html[data-theme] .catalog-refresh #homeView .business-grid article{display:flex;flex-direction:row;align-items:flex-start;gap:13px}
+html[data-theme] .catalog-refresh #homeView .business-grid article::before{display:none}
+html[data-theme] .catalog-refresh #homeView .business-grid .business-icon{display:block;width:36px;height:36px;flex:0 0 36px;object-fit:contain;margin:0}
+html[data-theme] .catalog-refresh #homeView .business-grid article>div{min-width:0}
+/* Featured apps: never fewer than two columns, including phones. */
+html[data-theme] .catalog-refresh #homeView .featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+html[data-theme] .catalog-refresh #homeView .featured .app-card{display:flex;flex-direction:column;align-items:stretch;min-width:0;min-height:0;padding:16px 12px 10px;border-radius:13px;background:#fff;gap:10px}
+html[data-theme] .catalog-refresh #homeView .featured .card-top{display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center;gap:10px}
+html[data-theme] .catalog-refresh #homeView .featured .app-icon{width:56px;height:56px;flex:none;object-fit:contain;margin:0;border-radius:12px}
+html[data-theme] .catalog-refresh #homeView .featured .card-content{display:block;min-width:0;width:100%}
+html[data-theme] .catalog-refresh #homeView .featured h3{font-size:15px;line-height:1.3;white-space:normal;overflow-wrap:anywhere;margin:6px 0 8px;min-height:0}
+html[data-theme] .catalog-refresh #homeView .featured .card-category{font-size:8px;letter-spacing:.3px;color:#65768b}
+html[data-theme] .catalog-refresh #homeView .featured p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.5;margin:0 0 10px;min-height:0}
+html[data-theme] .catalog-refresh #homeView .featured .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;font-size:10px}
+html[data-theme] .catalog-refresh #homeView .featured .actions{width:100%;margin-top:auto;padding:0;display:flex}
+html[data-theme] .catalog-refresh #homeView .featured .card-link{display:flex;align-items:center;justify-content:center;min-height:44px;width:100%;box-sizing:border-box;font-size:13px;border-radius:8px}
+html[data-theme] .catalog-refresh #homeView .featured .share-app{min-height:32px;margin:0;font-size:10px;background:none;border:0;color:#63748a}
+@media(min-width:1000px){html[data-theme] .catalog-refresh #homeView .featured{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
