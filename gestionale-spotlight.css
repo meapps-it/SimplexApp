@@ -110,3 +110,21 @@ html[data-theme] .catalog-refresh #homeView .spotlight-preview-data div:nth-chil
 .spotlight-brand-logo{display:block;width:100%;max-width:440px;height:auto;object-fit:contain;margin:0 auto 14px}.manager-detail-brand{display:flex;justify-content:center;padding:18px;background:#f5f8ff;border:1px solid #dbe5f4;border-radius:20px;margin:20px 0}.manager-detail-brand img{width:100%;max-width:440px;height:auto;object-fit:contain}
 html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo){height:auto;gap:12px;align-self:center}html[data-theme] .catalog-refresh #homeView .spotlight-brand-logo{max-height:120px;margin:0;filter:drop-shadow(0 4px 6px #071c3e33)}html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo) .spotlight-screenshot{height:220px;max-height:220px}
 @media(max-width:700px){html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo) .spotlight-screenshot{height:180px;max-height:180px}}
+/* Su telefono il primo piano resta una scheda compatta, con entrambe le azioni. */
+@media(max-width:700px){
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight{
+    padding:16px;gap:12px
+  }
+  html[data-theme] .catalog-refresh #homeView .spotlight-eyebrow{margin:0 0 10px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-icon{width:40px;height:40px;padding:3px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-title-line h2{font-size:clamp(20px,5.6vw,26px)}
+  html[data-theme] .catalog-refresh #homeView .spotlight-lead,
+  html[data-theme] .catalog-refresh #homeView .spotlight-description{display:none}
+  html[data-theme] .catalog-refresh #homeView .spotlight-chips{gap:5px;margin:12px 0}
+  html[data-theme] .catalog-refresh #homeView .spotlight-chips span{padding:4px 6px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-actions{gap:8px;display:flex}
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo){margin:0;gap:0}
+  html[data-theme] .catalog-refresh #homeView .spotlight-brand-logo{width:220px;max-width:100%;max-height:64px}
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual .spotlight-screenshot,
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual .spotlight-preview{display:none}
+}

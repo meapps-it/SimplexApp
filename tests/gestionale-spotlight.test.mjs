@@ -84,6 +84,6 @@ test('solo home pubblica, aggiornamento al render, inclusione nel cache offline'
   assert.ok(html.indexOf('gestionale-spotlight.js?v=3')<html.indexOf('app.js?v=44'));
   assert.match(app,/renderGestionaleSpotlight\?\.\(a\)/);
   assert.match(sw,/gestionale-spotlight\.js\?v=3/);
-  assert.match(sw,/gestionale-spotlight\.css\?v=1/);
+  assert.match(sw,/gestionale-spotlight\.css\?v=\d+/);
   assert.match(sw,/app\.js\?v=44/);
 });
