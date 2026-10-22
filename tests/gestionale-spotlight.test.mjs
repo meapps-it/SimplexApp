@@ -32,6 +32,16 @@ test('solo Gestionale & Inventario reale e pubblico appare in primo piano',()=>{
     assert.equal(t.box.querySelector('.spotlight-main-action').textContent.includes('Scopri il gestionale'),true);
   } finally {t.dom.window.close();}
 });
+test('il nuovo nome Simplex Manager resta visibile nel riquadro dopo la rinomina',()=>{
+  const t=fixture();
+  try {
+    t.w.renderGestionaleSpotlight([{id:'app_1791209955436',name:'Simplex Manager',icon:'https://example.test/manager.png',demoUrl:'https://simplex-gestionale.pages.dev/?mode=demo',webUrl:'https://simplex-gestionale.pages.dev/'}]);
+    assert.equal(t.box.hidden,false);
+    assert.equal(t.box.querySelector('h2').textContent,'Simplex Manager');
+    assert.equal(t.box.querySelector('.spotlight-open-action').textContent.trim().includes('Apri demo'),true);
+    assert.equal(t.box.querySelector('.spotlight-open-action').href,'https://simplex-gestionale.pages.dev/?mode=demo');
+  } finally {t.dom.window.close();}
+});
 test('il riquadro non pubblicizza app disattivate e scompare senza scheda',()=>{
   const t=fixture();
   try {
@@ -71,7 +81,7 @@ test('solo home pubblica, aggiornamento al render, inclusione nel cache offline'
   assert.match(html,/id="gestionaleSpotlight"[^>]+hidden/);
   assert.ok(html.indexOf('id="gestionaleSpotlight"')<html.indexOf('id="catalogGrid"'));
   assert.ok(html.indexOf('id="gestionaleSpotlight"')<html.indexOf('id="detailView"'));
-  assert.ok(html.indexOf('gestionale-spotlight.js?v=2')<html.indexOf('app.js?v=43'));
+  assert.ok(html.indexOf('gestionale-spotlight.js?v=3')<html.indexOf('app.js?v=43'));
   assert.match(app,/renderGestionaleSpotlight\?\.\(a\)/);
   assert.match(sw,/gestionale-spotlight\.js\?v=2/);
   assert.match(sw,/gestionale-spotlight\.css\?v=1/);
