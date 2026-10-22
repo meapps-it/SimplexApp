@@ -23,7 +23,7 @@
     }
     const label = typeof esc === 'function' ? esc : value => String(value || '');
     const icon = typeof safeIcon === 'function' ? safeIcon(app.icon) : '';
-    const web = typeof onlineURL === 'function' ? onlineURL(app.webUrl) : '';
+    const web = typeof onlineURL === 'function' ? (onlineURL(app.demoUrl) || onlineURL(app.webUrl)) : '';
     const screenshot = Array.isArray(app.screenshots)
       ? app.screenshots.find(url => typeof url === 'string' && /^https:\/\//i.test(url)) : '';
     container.hidden = false;
@@ -41,7 +41,7 @@
         </div>
         <div class="spotlight-actions">
           <a class="spotlight-main-action" href="${label(link)}">Scopri il gestionale <span aria-hidden="true">→</span></a>
-          ${web ? `<a class="spotlight-open-action" href="${label(web)}" target="_blank" rel="noopener noreferrer">Apri <span aria-hidden="true">↗</span></a>` : ''}
+          ${web ? `<a class="spotlight-open-action" href="${label(web)}" target="_blank" rel="noopener noreferrer">Apri demo <span aria-hidden="true">↗</span></a>` : ''}
         </div>
       </div>
       <div class="gestionale-spotlight-visual" aria-hidden="true">
