@@ -68,7 +68,7 @@ test('solo home pubblica, aggiornamento al render, inclusione nel cache offline'
   const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
   const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');
   assert.match(html,/id="gestionaleSpotlight"[^>]+hidden/);
-  assert.ok(html.indexOf('id="gestionaleSpotlight"')>html.indexOf('id="catalogGrid"'));
+  assert.ok(html.indexOf('id="gestionaleSpotlight"')<html.indexOf('id="catalogGrid"'));
   assert.ok(html.indexOf('id="gestionaleSpotlight"')<html.indexOf('id="detailView"'));
   assert.ok(html.indexOf('gestionale-spotlight.js?v=1')<html.indexOf('app.js?v=43'));
   assert.match(app,/renderGestionaleSpotlight\?\.\(a\)/);
