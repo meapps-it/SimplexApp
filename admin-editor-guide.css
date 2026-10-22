@@ -1,0 +1,12 @@
+/* Editor descrizioni: preview e indicazioni, nessun dato pubblicato automaticamente. */
+#adminView .description-guide{grid-column:1/-1;border:1px solid #d6e3f3;background:#f7faff;border-radius:14px;padding:14px 16px;min-width:0}
+#adminView .description-guide h3{margin:0 0 8px;font-size:16px;color:#17375d}
+#adminView .description-guide .note{margin:7px 0}
+#adminView .description-guide-status{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;font-size:12px}
+#adminView .description-guide-status span{background:#e6eef9;color:#24436d;border-radius:7px;padding:6px 9px}
+#adminView .description-guide details{margin:8px 0}
+#adminView .description-guide summary{font-size:13px}
+#adminView .description-preview{margin-top:12px;border-top:1px solid #d6e3f3;padding-top:12px}
+#adminView .description-preview strong{font-size:13px;color:#23416b}
+#adminView .description-short-preview{font-weight:650;color:#273b56}
+#adminView .description-full-preview{white-space:pre-line;overflow-wrap:anywhere;color:#354b66;max-height:240px;overflow:auto}
