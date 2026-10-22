@@ -97,5 +97,5 @@ test('file statici e service worker caricano il gestore prima di app.js',()=>{
   assert.match(html,/id="appScreensFile"[^>]+multiple/);
   assert.match(worker,/screenshots-editor\.js\?v=1/);
   assert.match(worker,/screenshots-editor\.css\?v=1/);
-  assert.match(worker,/app\.js\?v=42/);
+  assert.match(worker,/app\.js\?v=43/);
 });
