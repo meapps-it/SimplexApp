@@ -6,3 +6,5 @@
 #adminView .screen-editor-tile small{display:block;text-align:center;font-weight:750;font-size:11px;color:#286449;background:#e9f4ed;padding:5px;border-radius:6px}
 #adminView .screen-editor-tile button{width:100%;min-height:38px;margin-top:auto}
 #adminView .screen-editor-pending{border-style:dashed;border-color:#4d9275;background:#f8fcf9}
+
+#adminView .admin-screens .screen-editor-remove,#adminView #removePromoImages{display:block;min-height:44px;border:1px solid #d53c3c;background:#fff0f0;color:#a91e1e;font-weight:800;border-radius:9px}#adminView .promo-replace{display:flex;flex-wrap:wrap;gap:10px;grid-column:1/-1}

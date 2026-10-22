@@ -92,10 +92,10 @@ test('dopo ogni upload riuscito il file esce dalla coda e il link resta in sched
 test('file statici e service worker caricano il gestore prima di app.js',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const worker=readFileSync(new URL('../sw.js',import.meta.url),'utf8');
-  assert.match(html,/screenshots-editor\.js\?v=1/);
-  assert.ok(html.indexOf('screenshots-editor.js?v=1')<html.indexOf('app.js?v=43'));
+  assert.match(html,/screenshots-editor\.js\?v=2/);
+  assert.ok(html.indexOf('screenshots-editor.js?v=2')<html.indexOf('app.js?v=44'));
   assert.match(html,/id="appScreensFile"[^>]+multiple/);
-  assert.match(worker,/screenshots-editor\.js\?v=1/);
-  assert.match(worker,/screenshots-editor\.css\?v=1/);
-  assert.match(worker,/app\.js\?v=43/);
+  assert.match(worker,/screenshots-editor\.js\?v=2/);
+  assert.match(worker,/screenshots-editor\.css\?v=2/);
+  assert.match(worker,/app\.js\?v=44/);
 });

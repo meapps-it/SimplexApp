@@ -1,7 +1,7 @@
 /* Screenshot multipli nell'editor app: le selezioni successive si sommano. */
 (() => {
   'use strict';
-  function createScreenshotPicker({input, links, preview, counter, onError = () => {}, limit = 12, noun = 'screenshot', singular = 'screenshot'}) {
+  function createScreenshotPicker({input, links, preview, counter, onError = () => {}, limit = 12, noun = 'screenshot', singular = 'screenshot', removeLabel = 'Rimuovi'}) {
     if (!input || !links || !preview) throw Error('Editor screenshot incompleto.');
     const pending = [];
     const allowed = new Set(['image/png', 'image/jpeg', 'image/webp']);
@@ -52,9 +52,9 @@
       }
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'secondary';
-      button.textContent = 'Rimuovi';
-      button.setAttribute('aria-label', 'Rimuovi ' + label);
+      button.className = 'secondary screen-editor-remove';
+      button.textContent = removeLabel;
+      button.setAttribute('aria-label', removeLabel + ' ' + label);
       button.addEventListener('click', onRemove);
       item.append(button);
       return item;
@@ -93,7 +93,7 @@
     });
     links.addEventListener('input', render);
     render();
-    return {files: () => pending.map(entry => entry.file), add, remove, clear, render, existing, replace: files => add(files, {replace:true})};
+    return {files: () => pending.map(entry => entry.file), add, remove, clear, render, existing, removeAll: () => { clear(); links.value = ''; render(); }, replace: files => add(files, {replace:true})};
   }
   window.createScreenshotPicker = createScreenshotPicker;
 })();
