@@ -1,0 +1,109 @@
+/* Primo piano del prodotto di punta; non altera le altre schede né i temi. */
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight {
+  order: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, .85fr);
+  align-items: center;
+  gap: 22px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 34px 37px;
+  border: 1px solid #123e7f;
+  border-radius: 22px;
+  background: linear-gradient(115deg,#102e60 0%,#093c8c 64%,#0954c6 100%);
+  box-shadow: 0 13px 30px #113d841b;
+  color: #fff;
+}
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight[hidden]{display:none!important}
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight:after{
+  position:absolute;content:'';width:440px;height:440px;right:-190px;top:-210px;
+  border-radius:50%;background:#ffffff0c;z-index:-1
+}
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-copy{min-width:0}
+html[data-theme] .catalog-refresh #homeView .spotlight-eyebrow{
+  margin:0 0 15px;color:#ffdb58;font-weight:800;font-size:11px;letter-spacing:1.4px
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-title-line{display:flex;align-items:center;gap:13px;min-width:0}
+html[data-theme] .catalog-refresh #homeView .spotlight-icon{
+  width:66px;height:66px;flex-shrink:0;object-fit:contain;background:white;border-radius:16px;
+  padding:5px;border:2px solid #ffffffa3
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-title-line h2{
+  font-size:clamp(24px,3vw,34px);line-height:1.16;letter-spacing:-.9px;color:white;margin:0;
+  font-weight:800;overflow-wrap:anywhere
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-lead{
+  font-size:17px;line-height:1.45;font-weight:700;color:#fff;margin:17px 0 8px
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-description{
+  font-size:14px;line-height:1.65;color:#e0ebff;max-width:570px;margin:0 0 18px
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
+html[data-theme] .catalog-refresh #homeView .spotlight-chips span{
+  font-size:11px;border:1px solid #ffffff57;border-radius:7px;padding:6px 9px;
+  background:#ffffff15;color:#f3f8ff
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-actions{display:flex;flex-wrap:wrap;align-items:center;gap:11px}
+html[data-theme] .catalog-refresh #homeView .spotlight-actions a{
+  display:inline-flex;align-items:center;justify-content:center;gap:16px;
+  min-height:47px;padding:12px 17px;border-radius:10px;text-decoration:none;
+  font-size:13px;font-weight:800;transition:transform .15s,background .15s
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-main-action{background:#ffdb58;color:#16325d}
+html[data-theme] .catalog-refresh #homeView .spotlight-open-action{
+  background:#ffffff1c;color:#fff;border:1px solid #ffffff9e
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-actions a:hover{transform:translateY(-2px)}
+html[data-theme] .catalog-refresh #homeView .spotlight-actions a:focus-visible{outline:3px solid white;outline-offset:3px}
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual{
+  min-width:0;display:grid;place-items:center;height:280px
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-screenshot{
+  height:100%;max-height:280px;width:auto;max-width:100%;object-fit:contain;
+  border-radius:15px;box-shadow:0 15px 28px #071c3e66;border:3px solid #ffffffb0
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview{
+  background:#fff;width:100%;max-width:340px;height:217px;transform:rotate(-4deg);
+  border:6px solid #dfeaff;border-radius:15px;box-shadow:0 18px 40px #061b4370;overflow:hidden;
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-bar{
+  height:35px;background:#dcecff;display:flex;align-items:center;padding:0 12px;gap:6px
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-bar span{
+  display:block;width:8px;height:8px;border-radius:50%;background:#88b6f3
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-body{display:flex;height:calc(100% - 35px)}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-side{background:#123f80;width:23%}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-data{
+  flex:1;display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:18px;background:#f6faff;align-content:start
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-data div{
+  border-radius:8px;height:57px;background:#daebff;border:1px solid #c1dbfa
+}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-data div:nth-child(2){background:#fff1c4;border-color:#f7da83}
+html[data-theme] .catalog-refresh #homeView .spotlight-preview-data div:nth-child(3){background:#d8f0e1;border-color:#acdbbd}
+@media(max-width:700px){
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight{
+    grid-template-columns:minmax(0,1fr);padding:23px 21px;gap:9px;border-radius:18px
+  }
+  html[data-theme] .catalog-refresh #homeView .spotlight-title-line{gap:10px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-icon{width:51px;height:51px;border-radius:12px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-title-line h2{font-size:clamp(22px,6vw,29px)}
+  html[data-theme] .catalog-refresh #homeView .spotlight-lead{font-size:15px;margin:14px 0 7px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-description{font-size:13px;line-height:1.55}
+  html[data-theme] .catalog-refresh #homeView .spotlight-chips{margin-bottom:17px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-chips span{font-size:10px;padding:6px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-actions a{flex:1;min-width:0;padding:10px 9px;font-size:12px;min-height:45px;gap:8px}
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual{height:152px;margin-top:12px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-screenshot{max-height:150px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-preview{max-width:240px;height:148px;transform:rotate(-3deg)}
+  html[data-theme] .catalog-refresh #homeView .spotlight-preview-data{gap:8px;padding:12px}
+  html[data-theme] .catalog-refresh #homeView .spotlight-preview-data div{height:35px}
+}
+@media(max-width:350px){
+  html[data-theme] .catalog-refresh #homeView .spotlight-actions{display:grid;grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-theme] .catalog-refresh #homeView .spotlight-actions a{transition:none}
+}
