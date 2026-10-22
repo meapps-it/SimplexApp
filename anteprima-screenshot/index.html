@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d304d">
+<title>Anteprima screenshot · SimplexApp</title>
+<style>
+:root{font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;color:#1a3248;background:#eff3f8}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh}
+header{background:#0d304d;color:#fff;padding:15px max(18px,calc((100vw - 1060px)/2));display:flex;align-items:center;gap:14px}
+header img{height:45px;width:45px;object-fit:contain;background:#fff;border-radius:12px;padding:4px}
+header strong{font-size:19px}header small{display:block;font-size:12px;color:#c8dfed}
+main{max-width:1080px;margin:auto;padding:22px 15px 80px}
+.eyebrow{font-weight:800;font-size:11px;color:#166c96;text-transform:uppercase;letter-spacing:1.4px}
+h1{font-size:clamp(24px,5vw,34px);margin:6px 0 5px;line-height:1.2}
+h2{font-size:19px;margin:0 0 10px}h3{font-size:16px;margin:0}
+p{margin:8px 0 16px}.intro{max-width:800px;color:#4b6479}
+.notice{background:#fff1cf;border:1px solid #edcf85;border-radius:13px;padding:13px 16px;margin-bottom:20px;font-size:14px}
+.notice strong{color:#614b20}
+.layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:16px}
+.card{background:#fff;border:1px solid #d5e0eb;border-radius:18px;padding:22px;box-shadow:0 5px 18px #163a5c0a;min-width:0}
+label{display:block;font-weight:700;font-size:13px;margin-top:14px}
+input,textarea{display:block;width:100%;margin-top:7px;border-radius:11px;border:1px solid #b9cad9;padding:12px;background:#fff;color:#1a3248;font:inherit}
+textarea{resize:vertical;min-height:90px}input[type=file]{font-size:13px;background:#f4f9fd;cursor:pointer}
+input[type=file]::file-selector-button{background:#dae8f7;border:0;border-radius:9px;padding:10px;color:#154e74;font-weight:750;margin-right:10px}
+.hint{font-size:12px;color:#536c7e;font-weight:400;margin:6px 0 0}
+button{border:1px solid #afc4d7;border-radius:10px;min-height:43px;padding:10px 15px;font-weight:700;font:inherit;cursor:pointer;color:#1d4a6a;background:#f5f9fd}
+button.primary{color:white;background:#176a94;border-color:#176a94;font-weight:800}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #ffbc48;outline-offset:3px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:21px}
+#screensCount{font-size:13px;font-weight:800;color:#1a648f;background:#edf6fe;border-radius:9px;padding:9px 12px;margin:12px 0}
+.admin-screens{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.screen-editor-tile{border:1px solid #c4d6e7;border-radius:11px;background:#f9fcff;padding:7px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.screen-editor-tile img{width:100%;height:150px;object-fit:contain;border-radius:7px;background:#e7edf3}
+.screen-editor-tile button{font-size:12px;min-height:37px;padding:6px 8px}
+.screen-editor-tile small{font-size:11px;color:#236f58;text-align:center;font-weight:700}
+.screen-editor-pending{border:2px dashed #4a9879}
+.side-help{font-size:13px;color:#4b6479;padding-left:20px}.side-help li{margin:0 0 11px}
+#result{margin-top:13px;min-height:20px;font-size:13px;font-weight:650;color:#17674c}
+#result.error{color:#a43836}
+#previewPanel[hidden]{display:none}
+#previewGrid{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 2px}
+#previewGrid img{flex:0 0 auto;width:175px;height:275px;object-fit:contain;background:#edf3f7;border:1px solid #c5d8e7;border-radius:12px;scroll-snap-align:start}
+.badge{display:inline-block;font-size:11px;border-radius:99px;background:#ddecfb;color:#174971;padding:4px 10px;margin-bottom:9px;font-weight:800}
+footer{text-align:center;color:#678094;margin:24px 0;font-size:12px}
+footer a{color:#176a94}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.card{padding:18px}header{padding-inline:17px}main{padding:17px 12px 55px}}
+</style>
+</head>
+<body>
+<header><img src="../assets/logo.png" alt="" loading="lazy"><div><strong>SimplexApp</strong><small>Prova caricamento screenshot Android</small></div></header>
+<main>
+<span class="eyebrow">Versione di prova · 22 ottobre 2026</span>
+<h1>Prova il caricamento di più screenshot</h1>
+<p class="intro">Questa schermata usa lo stesso nuovo selettore preparato per l'area gestione. Puoi aggiungere immagini in più passaggi, controllarle e toglierle prima di vedere l'anteprima.</p>
+<div class="notice"><strong>Prova sicura:</strong> le immagini restano sul tuo dispositivo, non vengono inviate a SimplexApp e non modificano nessuna scheda reale. Il salvataggio è soltanto una simulazione.</div>
+<div class="layout">
+<section class="card" aria-labelledby="editorTitle">
+<span class="badge">EDITOR DI PROVA</span>
+<h2 id="editorTitle">Modifica scheda applicazione</h2>
+<label for="name">Nome applicazione<input id="name" type="text" value="La mia applicazione" maxlength="100"></label>
+<label for="description">Descrizione breve<textarea id="description" rows="2">Un'app pratica da usare ogni giorno.</textarea></label>
+<label for="appScreensFile">Screenshot dell'app
+<input id="appScreensFile" type="file" accept="image/png,image/jpeg,image/webp" multiple aria-describedby="screensCount">
+</label>
+<p class="hint">Seleziona più foto insieme, oppure apri di nuovo la galleria per aggiungerne altre. Massimo 12 immagini (8 MB ciascuna).</p>
+<p id="screensCount" role="status" aria-live="polite">0 di 12 screenshot</p>
+<div id="adminScreensPreview" class="admin-screens" aria-label="Screenshot in attesa di caricamento"></div>
+<textarea id="appScreens" hidden aria-hidden="true"></textarea>
+<div class="actions">
+<button id="simulate" type="button" class="primary">Mostra anteprima della scheda</button>
+<button id="reset" type="button">Svuota screenshot</button>
+</div>
+<p id="result" role="status" aria-live="polite"></p>
+</section>
+<aside class="card">
+<h2>Come provarlo sul telefono</h2>
+<ol class="side-help">
+<li>Tocca <strong>Scegli file</strong> e seleziona due o tre screenshot dalla galleria.</li>
+<li>Tocca ancora <strong>Scegli file</strong> e seleziona un'altra immagine.</li>
+<li>Controlla che tutte rimangano visibili. Puoi usare <strong>Rimuovi</strong> su una singola foto.</li>
+<li>Tocca <strong>Mostra anteprima della scheda</strong> per vedere il carosello.</li>
+</ol>
+<p class="hint">Questa pagina non usa il tuo account e non verifica ancora il caricamento su Supabase. Serve a controllare l'uso della galleria e la grafica prima della pubblicazione.</p>
+</aside>
+</div>
+<section class="card" id="previewPanel" hidden aria-labelledby="previewTitle" style="margin-top:16px">
+<span class="badge">COME APPARIRÀ AI VISITATORI</span>
+<h2 id="previewTitle">Anteprima applicazione</h2>
+<h3 id="cardTitle">La mia applicazione</h3>
+<p id="cardDescription"></p>
+<div id="previewGrid" aria-label="Carosello screenshot"></div>
+<p class="hint">Scorri le immagini orizzontalmente con il dito.</p>
+</section>
+<footer>SimplexApp · Ambiente dimostrativo isolato · <a href="../">Torna al sito ufficiale</a></footer>
+</main>
+<script src="./screenshots-editor.js?v=1"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const picker = window.createScreenshotPicker({
+    input:$('appScreensFile'),links:$('appScreens'),preview:$('adminScreensPreview'),counter:$('screensCount'),
+    onError:error=>{const r=$('result');r.textContent=error.message;r.className='error'}
+  });
+  let showing=[];
+  function release() {showing.forEach(url=>URL.revokeObjectURL(url));showing=[]}
+  $('reset').addEventListener('click',()=>{picker.clear();release();$('previewGrid').replaceChildren();$('previewPanel').hidden=true;$('result').textContent='Le immagini di prova sono state rimosse.';$('result').className=''});
+  $('simulate').addEventListener('click',()=>{
+    release();
+    const files=picker.files();
+    const valid=picker.existing().filter(url=>/^https:\/\//i.test(url));
+    if(!files.length&&!valid.length){$('result').textContent='Seleziona almeno uno screenshot per l’anteprima.';$('result').className='error';return;}
+    const urls=[...valid,...files.map(file=>{const url=URL.createObjectURL(file);showing.push(url);return url})];
+    const grid=$('previewGrid');grid.replaceChildren();
+    urls.forEach((url,index)=>{const img=document.createElement('img');img.src=url;img.alt='Screenshot '+(index+1)+' di '+urls.length;img.loading='lazy';grid.append(img)});
+    $('cardTitle').textContent=$('name').value.trim()||'La mia applicazione';
+    $('cardDescription').textContent=$('description').value.trim();
+    $('previewPanel').hidden=false;
+    $('result').textContent='Anteprima creata con '+urls.length+' immagini. Nessun file inviato o salvato online.';
+    $('result').className='';
+    $('previewPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  window.addEventListener('pagehide',release);
+})();
+</script>
+</body>
+</html>
