@@ -116,3 +116,13 @@ progress{width:100%;height:18px;accent-color:#1777f2}details{margin-top:16px}sum
 .pending-registration-actions .danger{font-size:12px;min-height:36px;padding:7px 12px;border-radius:10px}
 .pending-registration-actions button:disabled{opacity:.55;cursor:wait}
 @media(max-width:700px){.pending-registration-actions{justify-content:flex-start}}
+
+/* Icone visibili nelle sezioni dell'Area gestione, anche su smartphone. */
+#adminView .admin-tabs{overflow-x:auto;scrollbar-width:thin;align-items:stretch}
+#adminView .admin-tabs button{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;flex:1 0 auto;min-width:100px}
+#adminView .admin-tabs button svg{width:19px;height:19px;flex-shrink:0;stroke-width:2}
+@media(max-width:600px){
+#adminView .admin-tabs{gap:3px;padding:4px}
+#adminView .admin-tabs button{min-width:76px;gap:5px;padding:10px 8px;font-size:11px}
+#adminView .admin-tabs button svg{width:18px;height:18px}
+}
