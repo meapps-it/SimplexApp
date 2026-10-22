@@ -20,14 +20,14 @@ test('solo Gestionale & Inventario reale e pubblico appare in primo piano',()=>{
   try {
     const products=[
       {id:'vg',name:'Gestionale V&G',featured:true},
-      {id:'prod_443',name:'Gestionale & Inventario',description:'Catalogo',icon:'https://simplexapp.it/assets/app.png',webUrl:'https://simplex-gestionale.pages.dev/',screenshots:['https://example.test/shot.png']}
+      {id:'prod_443',name:'Gestionale & Inventario',description:'Catalogo',icon:'https://simplexapp.it/assets/app.png',webUrl:'https://simplex-gestionale.pages.dev/',demoUrl:'https://simplex-gestionale.pages.dev/?mode=demo',screenshots:['https://example.test/shot.png']}
     ];
     t.w.renderGestionaleSpotlight(products);
     assert.equal(t.box.hidden,false);
     assert.equal(t.box.querySelector('h2').textContent,'Gestionale & Inventario');
     assert.equal(t.box.querySelector('.spotlight-main-action').getAttribute('href'),'#app/prod_443');
-    assert.equal(t.box.querySelector('.spotlight-open-action').getAttribute('href'),'https://simplex-gestionale.pages.dev/');
-    assert.match(t.box.querySelector('.spotlight-open-action').textContent,/Apri demo/);
+    assert.equal(t.box.querySelector('.spotlight-open-action').getAttribute('href'),'https://simplex-gestionale.pages.dev/?mode=demo');
+    assert.match(t.box.querySelector('.spotlight-open-action').textContent,/APRI DEMO/);
     assert.equal(t.box.querySelector('.spotlight-screenshot').getAttribute('src'),'https://example.test/shot.png');
     assert.equal(t.box.querySelector('.spotlight-main-action').textContent.includes('Scopri il gestionale'),true);
   } finally {t.dom.window.close();}
@@ -38,7 +38,7 @@ test('il nuovo nome Simplex Manager resta visibile nel riquadro dopo la rinomina
     t.w.renderGestionaleSpotlight([{id:'app_1791209955436',name:'Simplex Manager',icon:'https://example.test/manager.png',demoUrl:'https://simplex-gestionale.pages.dev/?mode=demo',webUrl:'https://simplex-gestionale.pages.dev/'}]);
     assert.equal(t.box.hidden,false);
     assert.equal(t.box.querySelector('h2').textContent,'Simplex Manager');
-    assert.equal(t.box.querySelector('.spotlight-open-action').textContent.trim().includes('Apri demo'),true);
+    assert.equal(t.box.querySelector('.spotlight-open-action').textContent.trim().includes('APRI DEMO'),true);
     assert.equal(t.box.querySelector('.spotlight-open-action').href,'https://simplex-gestionale.pages.dev/?mode=demo');
   } finally {t.dom.window.close();}
 });

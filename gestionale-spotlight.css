@@ -107,3 +107,6 @@ html[data-theme] .catalog-refresh #homeView .spotlight-preview-data div:nth-chil
 @media(prefers-reduced-motion:reduce){
   html[data-theme] .catalog-refresh #homeView .spotlight-actions a{transition:none}
 }
+.spotlight-brand-logo{display:block;width:100%;max-width:440px;height:auto;object-fit:contain;margin:0 auto 14px}.manager-detail-brand{display:flex;justify-content:center;padding:18px;background:#f5f8ff;border:1px solid #dbe5f4;border-radius:20px;margin:20px 0}.manager-detail-brand img{width:100%;max-width:440px;height:auto;object-fit:contain}
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo){height:auto;gap:12px;align-self:center}html[data-theme] .catalog-refresh #homeView .spotlight-brand-logo{max-height:120px;margin:0;filter:drop-shadow(0 4px 6px #071c3e33)}html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo) .spotlight-screenshot{height:220px;max-height:220px}
+@media(max-width:700px){html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo) .spotlight-screenshot{height:180px;max-height:180px}}

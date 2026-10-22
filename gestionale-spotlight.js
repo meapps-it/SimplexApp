@@ -23,7 +23,7 @@
     }
     const label = typeof esc === 'function' ? esc : value => String(value || '');
     const icon = typeof safeIcon === 'function' ? safeIcon(app.icon) : '';
-    const web = typeof onlineURL === 'function' ? (onlineURL(app.demoUrl) || onlineURL(app.webUrl)) : '';
+    const web = typeof onlineURL === 'function' ? onlineURL(app.demoUrl) : '';
     const screenshot = Array.isArray(app.screenshots)
       ? app.screenshots.find(url => typeof url === 'string' && /^https:\/\//i.test(url)) : '';
     container.hidden = false;
@@ -41,10 +41,11 @@
         </div>
         <div class="spotlight-actions">
           <a class="spotlight-main-action" href="${label(link)}">Scopri il gestionale <span aria-hidden="true">→</span></a>
-          ${web ? `<a class="spotlight-open-action" href="${label(web)}" target="_blank" rel="noopener noreferrer">Apri demo <span aria-hidden="true">↗</span></a>` : ''}
+          ${web ? `<a class="spotlight-open-action" href="${label(web)}" target="_blank" rel="noopener noreferrer">APRI DEMO <span aria-hidden="true">↗</span></a>` : ''}
         </div>
       </div>
       <div class="gestionale-spotlight-visual" aria-hidden="true">
+        ${app.name === 'Simplex Manager' ? '<img class="spotlight-brand-logo" src="assets/simplex-manager-logo.png" alt="">' : ''}
         ${screenshot ? `<img class="spotlight-screenshot" src="${label(screenshot)}" alt="" loading="lazy">` :
           `<div class="spotlight-preview"><div class="spotlight-preview-bar"><span></span><span></span><span></span></div><div class="spotlight-preview-body"><div class="spotlight-preview-side"></div><div class="spotlight-preview-data"><div></div><div></div><div></div><div></div></div></div></div>`}
       </div>`;
