@@ -9,8 +9,8 @@
     if (!app || app.visiblePublic === false) return false;
     const name = normalize(app.name), id = normalize(app.id);
     const words = name.split(' ');
-    return ((words.includes('gestionale') || words.includes('gestione')) && words.includes('inventario'))
-      || (id.includes('gestionale') && id.includes('inventario'));
+    return (name === 'simplex manager' || ((words.includes('gestionale') || words.includes('gestione')) && words.includes('inventario'))
+      || (id.includes('gestionale') && id.includes('inventario')));
   }
   function renderGestionaleSpotlight(apps = []) {
     const container = document.getElementById('gestionaleSpotlight');
