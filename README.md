@@ -102,4 +102,5 @@ Le altre app mantengono la configurazione dei clienti SimplexApp: questo non mod
 ## Attivazione PWA unica
 Nella scheda Cliente è disponibile «Attivazione app unica»: salva il cliente Attivo e i suoi moduli, indica email del proprietario, piano e scadenza, genera e copia il codice monouso. Non viene salvato in chiaro. Il cliente accede con email verificata alla PWA e inserisce il codice. Per utenti già attivati continua a usare la gestione moduli e sospensione. Il vecchio codice configurazione non è il nuovo codice di attivazione.
 
-## Guida descrizioni nell’Area gestione (proposta di prova)\nNell’editor app appare una guida con esempio, contatori e anteprima dal vivo delle descrizioni breve e completa. Non cambia i valori dei campi, non salva automaticamente e non richiede modifiche al database. Restano valide le normali azioni Salva modifiche e Pubblica app. I nuovi asset sono disponibili anche offline tramite service worker.\n
+## Guida descrizioni nell’Area gestione (proposta di prova)
+Nell’editor app appare una guida con esempio, contatori e anteprima dal vivo delle descrizioni breve e completa. Non cambia i valori dei campi, non salva automaticamente e non richiede modifiche al database. Restano valide le normali azioni Salva modifiche e Pubblica app. I nuovi asset sono disponibili anche offline tramite service worker.
