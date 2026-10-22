@@ -31,7 +31,7 @@ test('Android: più selezioni successive si sommano senza perdere screenshot',()
     const a=t.file('uno.png'), b=t.file('due.jpg','image/jpeg'), c=t.file('tre.webp','image/webp');
     t.pick([a]);
     t.pick([b,c]);
-    assert.deepEqual(t.picker.files(),[a,b,c]);
+    assert.deepEqual(Array.from(t.picker.files()),[a,b,c]);
     assert.equal(t.d.querySelectorAll('.screen-editor-pending').length,3);
     assert.equal(t.d.querySelectorAll('.screen-editor-tile').length,4);
     assert.match(t.d.getElementById('count').textContent,/4 di 12 screenshot \(3 da caricare\)/);
@@ -47,7 +47,7 @@ test('rimuovere una nuova foto non elimina gli screenshot già salvati',()=>{
     const a=t.file('uno.png'),b=t.file('due.png');
     t.pick([a,b]);
     t.d.querySelector('.screen-editor-pending button').click();
-    assert.deepEqual(t.picker.files(),[b]);
+    assert.deepEqual(Array.from(t.picker.files()),[b]);
     assert.equal(t.revoked.length,1);
     assert.equal(t.d.getElementById('urls').value,'https://example.test/precedente.png');
     t.d.querySelector('.screen-editor-tile:not(.screen-editor-pending) button').click();
@@ -83,7 +83,7 @@ test('dopo ogni upload riuscito il file esce dalla coda e il link resta in sched
     const a=t.file('foto.png'),b=t.file('foto2.png');t.pick([a,b]);
     const urls=t.d.getElementById('urls');
     urls.value='https://example.test/upload1.png';t.picker.remove(a);
-    assert.deepEqual(t.picker.files(),[b]);
+    assert.deepEqual(Array.from(t.picker.files()),[b]);
     assert.equal(t.d.querySelectorAll('.screen-editor-tile').length,2);
     t.picker.clear();
     assert.equal(urls.value,'https://example.test/upload1.png');
