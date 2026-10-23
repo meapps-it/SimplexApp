@@ -6,6 +6,8 @@
  $('adminAppsPanel').prepend($('adminDashboard'));
  $('adminSearch').placeholder='Cerca per nome, categoria o stato…';
  const art={
+  home:['#47c9ff','#2167e8','M9 23l15-13 15 13 M14 21v18h8V28h5v11h8V21'],
+  favorites:['#ff91c9','#d94187','M24 38L11 25a8 8 0 0 1 11-12l2 2 2-2a8 8 0 0 1 11 12z'],
   apps:['#408dff','#1555d6','M12 12h10v10H12z M26 12h10v10H26z M12 26h10v10H12z M26 26h10v10H26z'],
   clients:['#43c9ff','#2961df','M18 23a6 6 0 1 0 0-12 6 6 0 0 0 0 12 M8 37v-4a10 10 0 0 1 20 0v4 M30 13a5 5 0 0 1 0 10 M33 28a8 8 0 0 1 7 8'],
   modules:['#ba8aff','#703bd7','M13 13h9v-2a4 4 0 0 1 8 0v2h7v9h-2a4 4 0 0 0 0 8h2v7H13V27h-2a4 4 0 0 1 0-8h2z'],
@@ -24,7 +26,8 @@
   backup:['#7baaff','#3759cb','M11 30v9h26v-9 M24 10v20 M16 22l8 8 8-8']
  };
  let serial=0,step=0,iconURL='',baseline='',disposed=false,lastModuleProduct=null;const observers=[];
- function icon(name){const a=art[name]||art.modules,id='studio-g'+(++serial);return `<span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="${id}" x2=".7" y2="1"><stop stop-color="${a[0]}"/><stop offset="1" stop-color="${a[1]}"/></linearGradient></defs><rect x="2" y="2" width="44" height="44" rx="14" fill="url(#${id})"/><path d="M9 13a8 8 0 0 1 8-6h15" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/><path d="${a[2]}" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;}
+ function icon(name){const a=art[name]||art.modules,id='studio-g'+(++serial);return `<span class="studio-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="${id}" x1=".1" y1="0" x2=".8" y2="1"><stop stop-color="${a[0]}"/><stop offset=".6" stop-color="${a[1]}"/><stop offset="1" stop-color="${a[1]}"/></linearGradient><radialGradient id="${id}-light" cx=".2" cy="0" r="1"><stop stop-color="white" stop-opacity=".65"/><stop offset=".65" stop-color="white" stop-opacity="0"/></radialGradient></defs><rect x="3" y="6" width="42" height="40" rx="13" fill="${a[1]}"/><rect x="2" y="2" width="44" height="41" rx="13" fill="url(#${id})" stroke="${a[1]}" stroke-width=".7"/><rect x="2.6" y="2.6" width="42.8" height="39.8" rx="12.5" fill="url(#${id}-light)" stroke="white" stroke-opacity=".45" stroke-width=".8"/><path d="M9 13a8 8 0 0 1 8-6h15" stroke="white" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round"/><path d="${a[2]}" transform="translate(0 1.5)" stroke="#0b2349" stroke-opacity=".3" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="${a[2]}" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;}
+
  const iconFor=key=>({categories:'inventory',dashboard:'apps',clients:'clients',customers:'clients',warehouse:'inventory',movements:'inventory',quotes:'orders',documents:'orders',scan:'products',turni:'appointments'}[key]||key);
  $('addApp').innerHTML=icon('apps')+'<span>Nuova app</span>';
  const groups=[...editor.querySelectorAll(':scope > fieldset.editor-group')];
@@ -76,7 +79,7 @@
  window.addEventListener('beforeunload',e=>{if(!editor.classList.contains('hidden')&&fingerprint()!==baseline){e.preventDefault();e.returnValue='';}});
  const syncNavigation=()=>document.body.classList.toggle('studio-admin-open',!root.classList.contains('hidden'));
  const navObserver=new MutationObserver(syncNavigation);navObserver.observe(root,{attributes:true,attributeFilter:['class']});observers.push(navObserver);syncNavigation();
- window.adminStudio={destroy(){disposed=true;observers.forEach(o=>o.disconnect());if(iconURL)URL.revokeObjectURL(iconURL);},opened,filterApps,refresh(){decorateCards();decorateModules();},selectStep};
+ window.adminStudio={icon,destroy(){disposed=true;observers.forEach(o=>o.disconnect());if(iconURL)URL.revokeObjectURL(iconURL);},opened,filterApps,refresh(){decorateCards();decorateModules();},selectStep};
  // New controls do not replace or bypass existing authentication, save or permission handlers.
  opened();decorateCards();decorateModules();
 })();

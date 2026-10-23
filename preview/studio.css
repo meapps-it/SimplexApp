@@ -1,0 +1,12 @@
+html[data-theme] body>.preview-banner{background:linear-gradient(110deg,#173257,#234e91);color:#e8f3ff;border:0;padding:10px 16px;font:600 11px/1.5 system-ui;text-align:center;letter-spacing:.04em}
+html[data-theme] .preview-rich-icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+html[data-theme] .preview-rich-icon .studio-icon{display:inline-flex;width:39px;height:39px;filter:drop-shadow(0 4px 4px #153d6b35)}
+html[data-theme] .preview-rich-icon svg{display:block;width:100%;height:100%;margin:0}
+html[data-theme] body>nav button{gap:5px;min-height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+html[data-theme] body>nav button>span:last-child{font-size:12px}
+html[data-theme] .preview-admin-entry{display:flex;gap:13px;align-items:center;background:linear-gradient(115deg,#eef5ff,#f2edff);border:1px solid #d7e3f8;padding:15px 18px;border-radius:20px;color:#25446d;text-decoration:none;box-shadow:0 8px 22px #1d478416;margin:0 0 22px}
+html[data-theme] .preview-admin-entry strong{display:block;font-size:15px}
+html[data-theme] .preview-admin-entry small{display:block;font-size:11px;line-height:1.5;margin-top:4px;color:#526c8d}
+html[data-theme] .preview-admin-entry>span:last-child{margin-left:auto;font-size:24px;color:#477ad1}
+html[data-theme] body #adminView .studio-icon{filter:drop-shadow(0 4px 2px #1b3f5f28) drop-shadow(0 9px 7px #24537c18)}
+@media(max-width:400px){html[data-theme] .preview-admin-entry{padding:13px;gap:10px}html[data-theme] .preview-admin-entry strong{font-size:14px}}

@@ -10,7 +10,7 @@ Questa revisione riguarda il pannello privato di SimplexApp. È preparata su un 
 - Anteprima locale dei testi e dell’icona, stato delle modifiche, salvataggio raggiungibile durante lo scorrimento e conferma prima di scartare una modifica.
 - Sezioni Demo e Moduli raggiungibili direttamente; moduli per applicazione con ricerca, icone e stato “In sviluppo”. I moduli non disponibili restano disabilitati. “Aggiorna opzioni dalla PWA” continua a usare il relativo endpoint autenticato esistente.
 - Icone SVG diverse, con gradienti e ombre, navigazione amministrativa visibile anche su 320 px; navigazione pubblica nascosta mentre si gestiscono le app.
-- Asset nuovi inclusi nel service worker v73 e nel generatore di anteprima locale.
+- Asset nuovi inclusi nel service worker v74 e nel generatore di anteprima locale.
 
 ## Confini funzionali
 
@@ -20,7 +20,7 @@ La revisione non modifica autenticazione, database, regole, API, licenze, Stripe
 
 ## Verifiche
 
-- `npm test`: 50 test superati, compresi anteprima senza HTML eseguibile, mantenimento valori tra sezioni, filtri senza mutare i dati, moduli non disponibili disabilitati, identificativi dei gradienti univoci e protezione dall’annullamento involontario.
+- `npm test`: 52 test superati, compresi anteprima senza HTML eseguibile, mantenimento valori tra sezioni, filtri senza mutare i dati, moduli non disponibili disabilitati, identificativi dei gradienti univoci e protezione dall’annullamento involontario.
 - `npm run preview:build`: anteprima compilata con i nuovi asset.
 - Chromium locale: elenco/filtri, tutti i cinque passaggi, modifiche al nome e al link demo inviate al gestore di salvataggio originale, moduli distinti per app, larghezze 320/393/768/1440 senza scorrimento orizzontale della pagina e senza errori JavaScript.
 - Le chiamate di rete amministrative nella prova browser sono sostituite da risposte dimostrative; tutte le richieste HTTPS sono bloccate. Nessuna modifica o registrazione sul database reale.
@@ -36,3 +36,14 @@ Per annullare una futura pubblicazione dell’interfaccia, ripristinare la revis
 ![Elenco app su smartphone](apps-mobile.png)
 ![Editor su smartphone](editor-mobile.png)
 ![Moduli su smartphone](modules-mobile.png)
+
+
+## Anteprima privata interattiva
+
+https://simplexapp-vetrina-privata-23ottobre.maurizio-enardu.chatgpt.site
+
+Pubblicata con Sites, accesso privato del proprietario. Dalla vetrina scegliere “Prova il nuovo pannello” o “Area gestione”. Include icone SVG con rilievo, luce e ombra, due colonne anche a 320 px e modifica locale di schede/moduli.
+
+Generazione riproducibile: `node scripts/build-restyling-preview.mjs --admin-studio`. Il percorso normale del generatore mantiene il vecchio adattatore in sola lettura. L’opzione studio usa invece solo fixture statiche e un adattatore dimostrativo in memoria: salvataggi azzerati al ricaricamento, nessun endpoint reale, caricamenti server e licenze bloccati. I moduli sono una fotografia delle capacità dichiarate dal codice di Simplex Manager, non una modifica al registro LIVE.
+
+Controllata in browser la vetrina, la modifica e il salvataggio di una scheda dimostrativa, l’assegnazione dei moduli e i moduli in sviluppo disabilitati. Verificate due colonne a 393 e 320 px senza overflow. La pubblicazione ufficiale non fa parte di questa anteprima.
