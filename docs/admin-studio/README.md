@@ -4,13 +4,13 @@ Questa revisione riguarda il pannello privato di SimplexApp. È preparata su un 
 
 ## Cosa cambia
 
-- Elenco app prima delle statistiche, con ricerca per nome/categoria/stato, filtro pubbliche/solo admin e ordinamento per nome o schede da completare.
+- Elenco app in due colonne anche su smartphone (da 320 px), prima delle statistiche, con ricerca per nome/categoria/stato, filtro pubbliche/solo admin e ordinamento per nome o schede da completare.
 - Schede con icona, indicatori di visibilità e stato, informazioni mancanti e comandi distinti per modifica, moduli e anteprima. Le azioni di eliminazione rimangono in “Altre opzioni” e mantengono la conferma esistente.
 - Editor in cinque sezioni: informazioni; icona e screenshot; foto della scheda; accessi e download; pubblicazione. I campi mantengono ID, valori, upload e gestori di salvataggio esistenti.
 - Anteprima locale dei testi e dell’icona, stato delle modifiche, salvataggio raggiungibile durante lo scorrimento e conferma prima di scartare una modifica.
 - Sezioni Demo e Moduli raggiungibili direttamente; moduli per applicazione con ricerca, icone e stato “In sviluppo”. I moduli non disponibili restano disabilitati. “Aggiorna opzioni dalla PWA” continua a usare il relativo endpoint autenticato esistente.
 - Icone SVG diverse, con gradienti e ombre, navigazione amministrativa visibile anche su 320 px; navigazione pubblica nascosta mentre si gestiscono le app.
-- Asset nuovi inclusi nel service worker v72 e nel generatore di anteprima locale.
+- Asset nuovi inclusi nel service worker v73 e nel generatore di anteprima locale.
 
 ## Confini funzionali
 
