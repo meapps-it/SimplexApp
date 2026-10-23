@@ -1,9 +1,5 @@
 (() => {
  'use strict';
- for(const button of document.querySelectorAll('body>nav button[data-view]')){
-  const name={home:'home',catalogo:'apps',preferiti:'favorites'}[button.dataset.view];if(!name)continue;
-  button.querySelector('svg')?.remove();button.insertAdjacentHTML('afterbegin','<span class="preview-rich-icon">'+window.adminStudio.icon(name)+'</span>');
- }
  const entry=document.createElement('a');entry.className='preview-admin-entry';entry.href='#admin';entry.innerHTML='<span class="preview-rich-icon">'+window.adminStudio.icon('settings')+'</span><span><strong>Prova il nuovo pannello</strong><small>App in due colonne · editor guidato · moduli</small></span><span aria-hidden="true">→</span>';
  document.querySelector('#homeView .top').after(entry);
  const text=document.querySelector('#adminView .admin-head>div>div');if(text)text.textContent='Schede app e moduli · anteprima privata';
