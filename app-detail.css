@@ -80,3 +80,18 @@ html[data-theme] .catalog-refresh #detailView :is(a,button):focus-visible{outlin
   html[data-theme] .catalog-refresh #detailView .detail-hero p{clear:both}
 }
 @media(prefers-reduced-motion:reduce){html[data-theme] .catalog-refresh #detailView .screenshot{transition:none}}
+/* Il marchio e il ritorno al catalogo accompagnano lo scorrimento della scheda. */
+html[data-theme] .catalog-refresh #detailView .detail-site-header{
+  position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;min-height:76px;padding:10px 0;margin:0 0 20px;
+  background:#f6f7fcf5;border-bottom:1px solid #dce5f4;box-shadow:0 5px 10px #183d6a08
+}
+html[data-theme] .catalog-refresh #detailView .detail-site-brand{display:block;min-width:0;width:210px;max-width:50%;flex-shrink:1;border-radius:8px}
+html[data-theme] .catalog-refresh #detailView .detail-site-brand img{display:block;width:100%;height:auto;max-height:64px;object-fit:contain}
+html[data-theme] .catalog-refresh #detailView .detail-site-header .backbtn{margin:0;min-height:44px;flex-shrink:0}
+html[data-theme] .catalog-refresh #detailView #detailContent :is(h1,h2){scroll-margin-top:100px}
+@media(max-width:600px){
+  html[data-theme] .catalog-refresh #detailView .detail-site-header{min-height:68px;gap:9px;padding:8px 0;margin-bottom:16px}
+  html[data-theme] .catalog-refresh #detailView .detail-site-brand{width:172px;max-width:49%}
+  html[data-theme] .catalog-refresh #detailView .detail-site-header .backbtn{font-size:11px;max-width:48%;padding:8px 10px;line-height:1.3;white-space:normal}
+}
