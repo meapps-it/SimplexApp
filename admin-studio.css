@@ -1,0 +1,87 @@
+/* Scoped to the private administration; the public catalogue keeps its design. */
+html[data-theme] body #adminView{--studio-blue:#2468df;--studio-ink:#183450;--studio-muted:#526780;background:radial-gradient(ellipse at 10% 0,#e5edff,transparent 48%),#f4f7fc;color:var(--studio-ink);min-height:100vh}
+html[data-theme] body #adminView .admin-wrap{max-width:1160px;padding:24px 22px 90px}
+html[data-theme] body #adminView .admin-head{background:linear-gradient(120deg,#112e56,#2058ae);border:1px solid #ffffff30;border-radius:26px;padding:25px;box-shadow:0 15px 30px #1c47742b;color:#fff;gap:20px}
+html[data-theme] body #adminView .admin-head h1{font-size:clamp(22px,3vw,30px);line-height:1.2;margin:7px 0 10px}
+html[data-theme] body #adminView .eyebrow{color:#a7dcff;letter-spacing:.12em;font-size:11px}
+html[data-theme] body #adminView .admin-card{border:1px solid #e1e8f3;border-radius:25px;box-shadow:0 12px 30px #243e6a0b}
+html[data-theme] body #adminView .admin-tabs{display:flex;gap:8px;overflow-x:auto;padding:8px 2px 14px;position:relative}
+html[data-theme] body #adminView .admin-tabs button{flex:1;min-width:105px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;border-radius:19px;background:#fff;border:1px solid #e1e8f3;box-shadow:0 5px 12px #1e3f6b0b;padding:13px 10px;color:#47617e}
+html[data-theme] body #adminView .admin-tabs button.active{background:#e9f0ff;border-color:#acc8ff;color:#174fab;box-shadow:0 7px 18px #2468df1c}
+html[data-theme] body #adminView .studio-icon{display:inline-flex;flex-shrink:0;width:46px;height:46px;filter:drop-shadow(0 4px 4px #12315b2d)}
+html[data-theme] body #adminView .studio-icon svg{width:100%;height:100%;stroke:none;overflow:visible}
+html[data-theme] body #adminView .admin-tabs button>.studio-icon{width:42px;height:42px}
+html[data-theme] body #adminView h2,html[data-theme] body #adminView h3{color:var(--studio-ink)}
+html[data-theme] body #adminView .note{color:var(--studio-muted);line-height:1.55}
+html[data-theme] body #adminView input:not([type=checkbox]):not([type=color]),html[data-theme] body #adminView textarea,html[data-theme] body #adminView select{box-sizing:border-box;border:1px solid #d5e0ef;border-radius:13px;background:#f9fbff;color:#1d3652;font:inherit;max-width:100%;min-width:0;padding:12px}
+html[data-theme] body #adminView input:focus-visible,html[data-theme] body #adminView textarea:focus-visible,html[data-theme] body #adminView select:focus-visible,html[data-theme] body #adminView button:focus-visible{outline:3px solid #69a3ff;outline-offset:3px}
+html[data-theme] body #adminView label{color:#304d6e}
+html[data-theme] body #adminView #adminSearch{width:100%;margin:8px 0 12px;padding:15px 18px}
+html[data-theme] body #adminView .studio-filters{display:flex;align-items:end;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+html[data-theme] body #adminView .studio-filters label{display:grid;gap:6px;font-size:12px;font-weight:800;flex:1}
+html[data-theme] body #adminView .studio-filters select{width:100%}
+html[data-theme] body #adminView .studio-filters p{color:var(--studio-muted);font-size:12px;margin:0 0 12px}
+html[data-theme] body #adminView #adminList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+html[data-theme] body #adminView .admin-item{display:flex;flex-direction:column;align-items:stretch;gap:15px;background:linear-gradient(145deg,#fff,#f9fbff);border:1px solid #dfe8f5;border-radius:22px;padding:22px;margin:0;box-shadow:0 9px 22px #21487610;min-width:0;transition:box-shadow .2s,transform .2s}
+html[data-theme] body #adminView .admin-app-heading{display:flex;align-items:center;gap:14px;min-width:0}
+html[data-theme] body #adminView .admin-app-icon{width:66px;height:66px;object-fit:contain;border-radius:18px;background:#fff;box-shadow:0 7px 15px #1e3f6b20;border:1px solid #e1e9f4}
+html[data-theme] body #adminView .admin-app-info{min-width:0}
+html[data-theme] body #adminView .admin-app-info strong{font-size:19px;display:block;line-height:1.3;overflow-wrap:anywhere}
+html[data-theme] body #adminView .admin-app-info small{display:block;color:var(--studio-muted);font-size:12px;margin-top:6px}
+html[data-theme] body #adminView .studio-app-badges{display:flex;flex-wrap:wrap;gap:6px}
+html[data-theme] body #adminView .studio-app-badges span{background:#e9f1ff;color:#275596;border:1px solid #d6e4fb;border-radius:8px;padding:5px 8px;font-size:11px;font-weight:800}
+html[data-theme] body #adminView .studio-app-badges span:nth-child(2){background:#e2f5ed;color:#20694e;border-color:#c7e9da}
+html[data-theme] body #adminView .studio-app-badges span:nth-child(3){background:#fff2cb;color:#7d571a;border-color:#f7e2a4}
+html[data-theme] body #adminView .studio-completeness{font-size:12px;line-height:1.5;color:var(--studio-muted);margin:0}
+html[data-theme] body #adminView .admin-launch-actions,html[data-theme] body #adminView .admin-manage-actions{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+html[data-theme] body #adminView .admin-launch-actions a{font-size:12px;min-height:42px;display:flex;align-items:center;text-decoration:none}
+html[data-theme] body #adminView .admin-manage-actions button{display:flex;align-items:center;justify-content:center;gap:8px;flex:1;font-size:13px;padding:10px;border:1px solid #dce7fa;background:#eef4ff;color:#22549a;min-height:48px}
+html[data-theme] body #adminView .admin-manage-actions .studio-icon{width:30px;height:30px}
+html[data-theme] body #adminView .admin-manage-actions .studio-open-preview{flex-basis:100%;background:#fff;color:#466180}
+html[data-theme] body #adminView .admin-more{font-size:12px;border-top:1px solid #e4ebf5;padding-top:12px;margin-top:auto}
+html[data-theme] body #adminView .admin-more summary{color:#5a6c83;cursor:pointer;padding:6px 0}
+html[data-theme] body #adminView .primary{background:linear-gradient(135deg,#2b84ff,#2056d5);box-shadow:0 7px 16px #2364d92b;border:1px solid #2c6bda;color:#fff;min-height:46px}
+html[data-theme] body #adminView .secondary{background:#eef3fb;color:#345879;border:1px solid #d8e3f2;min-height:44px}
+html[data-theme] body #adminView .danger{background:#fff0f1;color:#b03241;border:1px solid #f0c8ce;min-height:44px}
+html[data-theme] body #adminView .studio-editor-intro p{color:var(--studio-muted);font-size:13px;margin:5px 0 17px}
+html[data-theme] body #adminView .studio-kicker{color:#4772a8;font-size:10px;letter-spacing:.13em;font-weight:900}
+html[data-theme] body #adminView .studio-steps{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 13px}
+html[data-theme] body #adminView .studio-steps button{display:flex;align-items:center;gap:8px;flex:1;min-width:145px;border-radius:14px;border:1px solid #dfe6f3;color:#48617e;background:#fff;padding:10px;font-size:12px;font-weight:800}
+html[data-theme] body #adminView .studio-steps button.active{background:#edf3ff;border-color:#90b7fc;color:#194ea5;box-shadow:0 5px 12px #2d6bcb16}
+html[data-theme] body #adminView .studio-steps .studio-icon{width:32px;height:32px}
+html[data-theme] body #adminView .studio-preview{background:linear-gradient(115deg,#e9f3ff,#f4efff);border:1px solid #d5e4fa;border-radius:20px;padding:19px;margin:12px 0 24px}
+html[data-theme] body #adminView .studio-preview-heading{display:flex;gap:13px;align-items:center;margin-top:11px}
+html[data-theme] body #adminView .studio-preview img{width:57px;height:57px;object-fit:contain;border-radius:15px;background:#fff;box-shadow:0 6px 15px #254a7525}
+html[data-theme] body #adminView .studio-preview strong{display:block;font-size:19px;overflow-wrap:anywhere}
+html[data-theme] body #adminView .studio-preview small{font-size:11px;color:#526785;display:block;margin-top:5px}
+html[data-theme] body #adminView .studio-preview p{font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+html[data-theme] body #adminView #studioPreviewVisibility{font-size:11px;color:#456387}
+html[data-theme] body #adminView .editor-group{border:1px solid #dce6f4;border-radius:19px;padding:20px;min-width:0}
+html[data-theme] body #adminView .editor-group[hidden]{display:none!important}
+html[data-theme] body #adminView .editor-group legend{padding:0 10px;color:#28568e;font-size:15px}
+html[data-theme] body #adminView .editor-actions{position:sticky;bottom:12px;z-index:4;display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:#fffffff5;border:1px solid #d9e4f4;border-radius:18px;padding:13px;box-shadow:0 -5px 25px #19376316;margin-top:22px}
+html[data-theme] body #adminView #studioDraftStatus{flex:1;font-size:12px;color:#526d8b;min-width:130px}
+html[data-theme] body #adminView .module-grid,html[data-theme] body #adminView #productModulesList{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+html[data-theme] body #adminView .studio-module-tile{display:flex;align-items:center;gap:12px;border:1px solid #dfe6f1;border-radius:16px;padding:14px;background:#f8faff;box-shadow:0 5px 13px #204f8008;font-size:13px;line-height:1.35;min-width:0;overflow-wrap:anywhere}
+html[data-theme] body #adminView .studio-module-tile .studio-icon{width:37px;height:37px}
+html[data-theme] body #adminView .studio-module-tile input{order:2;margin-left:auto;accent-color:#2468df;width:19px;height:19px;flex-shrink:0}
+html[data-theme] body #adminView .studio-module-tile.studio-enabled{background:#eaf3ff;border-color:#8db9fc;box-shadow:0 4px 12px #2468df13}
+html[data-theme] body #adminView .studio-module-tile.studio-disabled{opacity:.6;background:#f1f3f7;box-shadow:none}
+@media(hover:hover){html[data-theme] body #adminView .admin-item:hover{transform:translateY(-3px);box-shadow:0 15px 28px #2148761c}}
+@media(max-width:700px){html[data-theme] body #adminView .admin-wrap{padding:14px 12px 100px}html[data-theme] body #adminView .admin-head{padding:20px;align-items:flex-start;gap:10px}html[data-theme] body #adminView .admin-head>div>div{font-size:12px}html[data-theme] body #adminView .admin-head .backbtn{font-size:12px;padding:10px;flex-shrink:0}html[data-theme] body #adminView #adminList{grid-template-columns:1fr}html[data-theme] body #adminView .admin-card{padding:18px}html[data-theme] body #adminView .admin-item{padding:18px}html[data-theme] body #adminView .admin-tabs button{min-width:88px;font-size:11px;padding:10px 6px}html[data-theme] body #adminView .admin-tabs button>.studio-icon{width:36px;height:36px}html[data-theme] body #adminView .form-grid{grid-template-columns:1fr}html[data-theme] body #adminView .editor-group{padding:14px}html[data-theme] body #adminView .studio-filters p{flex-basis:100%;margin:0}html[data-theme] body #adminView .editor-actions button{flex:1;font-size:12px}html[data-theme] body #adminView #studioDraftStatus{flex-basis:100%}html[data-theme] body #adminView .module-grid,html[data-theme] body #adminView #productModulesList{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-theme] body #adminView .studio-module-tile{flex-wrap:wrap;padding:12px;font-size:12px}html[data-theme] body #adminView .studio-steps button{min-width:135px}html[data-theme] body #adminView .admin-section-title{align-items:flex-start;gap:10px}html[data-theme] body #adminView .admin-section-title .primary{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html[data-theme] body #adminView *{transition:none!important;animation:none!important}}
+
+body.studio-admin-open>nav{display:none}
+html[data-theme] body #adminView:has(#appEditor:not(.hidden)) #adminAnalytics,html[data-theme] body #adminView:has(#appEditor:not(.hidden)) #adminVisits,html[data-theme] body #adminView:has(#appEditor:not(.hidden)) #workspaceStats{display:none}
+html[data-theme] body #adminView .admin-head>div>div{color:#c8dcf7}
+html[data-theme] body #adminView .studio-module-intro{display:flex;gap:15px;align-items:flex-start;background:linear-gradient(120deg,#f0eaff,#edf5ff);border:1px solid #dfd8f5;padding:20px;border-radius:19px;margin:20px 0}
+html[data-theme] body #adminView .studio-module-intro strong{font-size:18px}
+html[data-theme] body #adminView .studio-module-intro p{font-size:13px;line-height:1.6;color:#536681;margin:7px 0 0}
+html[data-theme] body #adminView .studio-module-search{display:grid;gap:7px;margin-top:20px}
+html[data-theme] body #adminView .studio-module-tile[hidden]{display:none!important}
+html[data-theme] body #adminView .studio-app-badges span[data-status=pending]{background:#fff2d6;color:#835817;border-color:#f2dbab}
+html[data-theme] body #adminView .studio-app-badges span[data-status=private]{background:#f0eaff;color:#69489d;border-color:#e0d2f8}
+@media(max-width:700px){html[data-theme] body #adminView .admin-tabs{gap:5px}html[data-theme] body #adminView .admin-tabs button{min-width:0;flex:1;padding:11px 3px;font-size:10px}html[data-theme] body #adminView .admin-tabs button>.studio-icon{width:32px;height:32px}html[data-theme] body #adminView .admin-tabs button>span:last-child{white-space:normal}html[data-theme] body #adminView .studio-module-intro{padding:15px}}
+html[data-theme] body #adminView .studio-module-tile>.studio-symbol,html[data-theme] body #adminView .studio-module-tile .studio-icon{display:inline-flex;flex:0 0 37px;width:37px;height:37px;padding:0;margin:0;border:0;border-radius:0;background:none;box-shadow:none}
+html[data-theme] body #adminView #addApp{display:flex;align-items:center;justify-content:center;gap:10px}
+html[data-theme] body #adminView #addApp .studio-icon{width:28px;height:28px}

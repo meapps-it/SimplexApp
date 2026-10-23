@@ -81,9 +81,9 @@ test('solo home pubblica, aggiornamento al render, inclusione nel cache offline'
   assert.match(html,/id="gestionaleSpotlight"[^>]+hidden/);
   assert.ok(html.indexOf('id="gestionaleSpotlight"')<html.indexOf('id="catalogGrid"'));
   assert.ok(html.indexOf('id="gestionaleSpotlight"')<html.indexOf('id="detailView"'));
-  assert.ok(html.indexOf('gestionale-spotlight.js?v=3')<html.indexOf('app.js?v=44'));
+  assert.ok(html.indexOf('gestionale-spotlight.js?v=3')<html.search(/src="app\.js\?v=\d+/));
   assert.match(app,/renderGestionaleSpotlight\?\.\(a\)/);
   assert.match(sw,/gestionale-spotlight\.js\?v=3/);
   assert.match(sw,/gestionale-spotlight\.css\?v=\d+/);
-  assert.match(sw,/app\.js\?v=44/);
+  assert.match(sw,/app\.js\?v=\d+/);
 });
