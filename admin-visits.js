@@ -32,10 +32,10 @@
         const pct=Math.min(100,Math.round(count(s.visits)/denom*100));
         return '<div class="visits-source"><div><span>'+esc(titles[s.source]||'Altre fonti')+'</span><strong>'+fmt(s.visits)+' · '+pct+'%</strong></div><span class="visits-track"><span style="width:'+pct+'%"></span></span></div>';
       }).join(''):'<p class="note">Ancora nessuna provenienza registrata.</p>';
-      const appRows=(Array.isArray(data.products)?data.products:[]).filter(x=>count(x.views)+count(x.demos)+count(x.opens)+count(x.downloads)>0);
-      const productHtml=appRows.length?'<div class="visits-table-wrap"><table class="visits-table"><thead><tr><th>Applicazione</th><th>Schede</th><th>Demo</th><th>Apri</th><th>Download</th></tr></thead><tbody>'+appRows.map(x=>{
+      const appRows=(Array.isArray(data.products)?data.products:[]).filter(x=>count(x.views)+count(x.demos)+count(x.downloads)>0);
+      const productHtml=appRows.length?'<div class="visits-table-wrap"><table class="visits-table"><thead><tr><th>Applicazione</th><th>Schede</th><th>Demo</th><th>Download</th></tr></thead><tbody>'+appRows.map(x=>{
         const name=products().find(p=>p.id===x.product)?.name||x.product;
-        return '<tr><th>'+esc(name)+'</th><td>'+fmt(x.views)+'</td><td>'+fmt(x.demos)+'</td><td>'+fmt(x.opens)+'</td><td>'+fmt(x.downloads)+'</td></tr>';
+        return '<tr><th>'+esc(name)+'</th><td>'+fmt(x.views)+'</td><td>'+fmt(x.demos)+'</td><td>'+fmt(x.downloads)+'</td></tr>';
       }).join('')+'</tbody></table></div>':'<p class="note">Ancora nessun clic sulle applicazioni.</p>';
       const points=series.length>45?series.filter((x,i)=>i%3===0):series;
       inner='<div class="visits-overview">'+columns.map(([label,value,tip])=>'<div class="visits-kpi" title="'+esc(tip)+'"><span>'+esc(label)+'</span><strong>'+fmt(value)+'</strong></div>').join('')+'</div>'+
@@ -44,10 +44,10 @@
         const date=new Date(d.day+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short'});
         return '<span class="visits-bar" style="height:'+height+'%" title="'+esc(date)+' · '+fmt(value)+' visite" aria-label="'+esc(date)+': '+fmt(value)+' visite"></span>';
       }).join('')+'</div></div><p class="visits-caption">Passa sul grafico per vedere il valore giornaliero. I grafici mostrano accessi, non persone identificate.</p>'+
-      '<div class="visits-lower"><div><h3>Da dove arrivano</h3>'+sourceHtml+'</div><div><h3>Interesse per le applicazioni</h3>'+productHtml+'</div></div>'+
+      '<div class="visits-lower"><div><h3>Provenienza delle visite</h3>'+sourceHtml+'</div><div><h3>Interesse per le applicazioni</h3>'+productHtml+'</div></div>'+
       '<p class="visits-caption">Statistiche anonime a partire dall’attivazione. Non sono disponibili dati delle visite precedenti. Le tue visite sul browser con sessione admin salvata sono escluse; filtri anti-bot non garantiti.</p>';
     }
-    root.innerHTML='<div class="visits-header"><div><span class="analytics-eyebrow">PUBBLICO E INTERESSE</span><h2>Visite a SimplexApp</h2><p class="note">Scopri se Facebook, Instagram e Google portano persone al sito.</p></div><div class="visits-actions"><label>Periodo<select id="visits-range"><option value="7" '+(days===7?'selected':'')+'>7 giorni</option><option value="30" '+(days===30?'selected':'')+'>30 giorni</option><option value="90" '+(days===90?'selected':'')+'>90 giorni</option></select></label><button id="visits-refresh" type="button" class="secondary" '+(loading?'disabled':'')+'>Aggiorna</button></div></div><div aria-live="polite">'+inner+'</div>';
+    root.innerHTML='<div class="visits-header"><div><span class="analytics-eyebrow">PUBBLICO E INTERESSE</span><h2>Visite e provenienza</h2><p class="note">Scopri se Facebook, Instagram e Google portano persone al sito.</p></div><div class="visits-actions"><label>Periodo<select id="visits-range"><option value="7" '+(days===7?'selected':'')+'>7 giorni</option><option value="30" '+(days===30?'selected':'')+'>30 giorni</option><option value="90" '+(days===90?'selected':'')+'>90 giorni</option></select></label><button id="visits-refresh" type="button" class="secondary" '+(loading?'disabled':'')+'>Aggiorna</button></div></div><div aria-live="polite">'+inner+'</div>';
     root.querySelector('#visits-range').onchange=e=>{days=Number(e.target.value);data=null;load(true);};
     root.querySelector('#visits-refresh').onclick=()=>load(true);
   }
