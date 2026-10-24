@@ -44,7 +44,7 @@
       </div>
       <div class="gestionale-spotlight-visual" aria-hidden="true">
         
-        <img class="spotlight-screenshot spotlight-promo-banner" src="assets/promotional/turni-operai.png" alt="Turni Operai Italia, immagine promozionale" loading="lazy">
+        <img class="spotlight-screenshot spotlight-promo-banner" src="assets/promotional/turni-operai-2026.avif" alt="Turni Operai Italia, immagine promozionale" loading="lazy">
       </div>`;
   }
   window.renderGestionaleSpotlight = renderGestionaleSpotlight;
