@@ -44,8 +44,7 @@
       </div>
       <div class="gestionale-spotlight-visual" aria-hidden="true">
         
-        ${screenshot ? `<img class="spotlight-screenshot" src="${label(screenshot)}" alt="" loading="lazy">` :
-          `<div class="spotlight-preview"><div class="spotlight-preview-bar"><span></span><span></span><span></span></div><div class="spotlight-preview-body"><div class="spotlight-preview-side"></div><div class="spotlight-preview-data"><div></div><div></div><div></div><div></div></div></div></div>`}
+        <img class="spotlight-screenshot spotlight-promo-banner" src="assets/promotional/turni-operai.png" alt="Turni Operai Italia, immagine promozionale" loading="lazy">
       </div>`;
   }
   window.renderGestionaleSpotlight = renderGestionaleSpotlight;
