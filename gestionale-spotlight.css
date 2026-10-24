@@ -132,3 +132,10 @@ html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.sp
   }
   html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual .spotlight-preview{display:none}
 }
+
+/* Il banner Turni Operai resta orizzontale sia su desktop che su telefono. */
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual .spotlight-promo-banner{
+  display:block;width:100%;height:auto;max-width:100%;max-height:none;aspect-ratio:16 / 9;
+  object-fit:contain;border-radius:12px;border:0;
+}
+html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-promo-banner){height:auto;min-height:0;}
