@@ -125,6 +125,10 @@ html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.sp
   html[data-theme] .catalog-refresh #homeView .spotlight-actions{gap:8px;display:flex}
   html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual:has(.spotlight-brand-logo){margin:0;gap:0}
   html[data-theme] .catalog-refresh #homeView .spotlight-brand-logo{width:220px;max-width:100%;max-height:64px}
-  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual .spotlight-screenshot,
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual{height:auto;min-height:0;margin:4px 0 0;display:block}
+  html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual .spotlight-promo-banner{
+    display:block;width:100%;height:auto;max-height:none;max-width:100%;object-fit:contain;
+    border:0;border-radius:12px;box-shadow:0 8px 20px #071c3e45
+  }
   html[data-theme] .catalog-refresh #homeView .gestionale-spotlight-visual .spotlight-preview{display:none}
 }
