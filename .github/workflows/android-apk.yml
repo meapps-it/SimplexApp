@@ -28,10 +28,12 @@ jobs:
       - name: Test, lint and build unsigned release
         run: gradle -p android-native testReleaseUnitTest lintRelease assembleRelease --no-daemon
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: SimplexApp-1.0.0-unsigned
           path: |
             android-native/app/build/outputs/apk/release/*.apk
             android-native/app/build/reports/lint-results-release.html
+            android-native/app/build/intermediates/lint_intermediate_text_report/release/lintReportRelease/lint-results-release.txt
             android-native/app/build/test-results/testReleaseUnitTest/*.xml
           if-no-files-found: error
