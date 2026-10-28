@@ -23,7 +23,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,6 +45,7 @@ public class MainActivity extends Activity {
     private WebView web;
     private ProgressBar loading;
     private TextView error;
+    private SystemAppearance appearance;
     private ValueCallback<Uri[]> fileCallback;
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private final AtomicBoolean cancelled=new AtomicBoolean();
@@ -57,17 +57,20 @@ public class MainActivity extends Activity {
         super.onCreate(state);
         LinearLayout root=new LinearLayout(this);root.setOrientation(LinearLayout.VERTICAL);root.setBackgroundColor(Color.rgb(245,246,251));
         root.setOnApplyWindowInsetsListener((v,insets)->{v.setPadding(insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),insets.getSystemWindowInsetRight(),insets.getSystemWindowInsetBottom());return insets;});
-        LinearLayout tools=new LinearLayout(this);tools.setPadding(dp(8),0,dp(8),0);
-        Button home=new Button(this);home.setText("SimplexApp");home.setAllCaps(false);home.setOnClickListener(v->web.loadUrl(HOME));tools.addView(home,new LinearLayout.LayoutParams(0,dp(48),1));
-        Button refresh=new Button(this);refresh.setText("Ricarica");refresh.setAllCaps(false);refresh.setOnClickListener(v->{error.setVisibility(View.GONE);web.reload();});tools.addView(refresh,new LinearLayout.LayoutParams(-2,dp(48)));root.addView(tools);
         loading=new ProgressBar(this,null,android.R.attr.progressBarStyleHorizontal);loading.setMax(100);root.addView(loading,new LinearLayout.LayoutParams(-1,dp(3)));
-        error=new TextView(this);error.setText("Connessione non disponibile. Controlla Internet e premi Ricarica.");error.setPadding(dp(16),dp(12),dp(16),dp(12));error.setVisibility(View.GONE);root.addView(error);
+        error=new TextView(this);error.setText("Connessione non disponibile. Controlla Internet e tocca qui per riprovare.");error.setPadding(dp(16),dp(12),dp(16),dp(12));error.setVisibility(View.GONE);root.addView(error);error.setOnClickListener(v->{error.setVisibility(View.GONE);web.reload();});
         web=new WebView(this);root.addView(web,new LinearLayout.LayoutParams(-1,0,1));setContentView(root);
-        WebSettings settings=web.getSettings();settings.setJavaScriptEnabled(true);settings.setDomStorageEnabled(true);settings.setAllowFileAccess(false);settings.setAllowContentAccess(true);settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);settings.setSupportMultipleWindows(true);settings.setJavaScriptCanOpenWindowsAutomatically(false);settings.setUserAgentString(settings.getUserAgentString()+" SimplexAppAndroid/1.0.0");
+        WebSettings settings=web.getSettings();settings.setJavaScriptEnabled(true);settings.setDomStorageEnabled(true);settings.setAllowFileAccess(false);settings.setAllowContentAccess(true);settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);settings.setSupportMultipleWindows(true);settings.setJavaScriptCanOpenWindowsAutomatically(false);settings.setUserAgentString(settings.getUserAgentString()+" SimplexAppAndroid/1.0.1");
+        appearance=new SystemAppearance(this);settings.setTextZoom(Math.max(1,Math.round(100*getResources().getConfiguration().fontScale)));
+        android.webkit.ServiceWorkerController.getInstance().setServiceWorkerClient(new android.webkit.ServiceWorkerClient(){
+            @Override public android.webkit.WebResourceResponse shouldInterceptRequest(WebResourceRequest request){return appearance.fontResponse(request.getUrl());}
+        });
         CookieManager.getInstance().setAcceptCookie(true);
         web.setWebViewClient(new WebViewClient(){
             @Override public boolean shouldOverrideUrlLoading(WebView view,WebResourceRequest request){return route(request.getUrl().toString(),view);}
-            @Override public void onPageFinished(WebView view,String url){loading.setVisibility(View.GONE);CookieManager.getInstance().flush();}
+            @Override public android.webkit.WebResourceResponse shouldInterceptRequest(WebView view,WebResourceRequest request){return appearance.fontResponse(request.getUrl());}
+            @Override public void onPageCommitVisible(WebView view,String url){appearance.apply(view,url);}
+            @Override public void onPageFinished(WebView view,String url){appearance.apply(view,url);loading.setVisibility(View.GONE);CookieManager.getInstance().flush();}
             @Override public void onReceivedError(WebView view,WebResourceRequest request,WebResourceError problem){if(request.isForMainFrame()){loading.setVisibility(View.GONE);error.setVisibility(View.VISIBLE);}}
         });
         web.setDownloadListener(downloadListener());
@@ -135,7 +138,7 @@ public class MainActivity extends Activity {
                     if(cancelled.get())throw new Exception("Download annullato.");
                     if(!UrlPolicy.https(current))throw new Exception("Il server ha restituito un collegamento non sicuro.");
                     connection=(HttpURLConnection)new URL(current).openConnection();downloadConnection=connection;connection.setConnectTimeout(20000);connection.setReadTimeout(30000);connection.setInstanceFollowRedirects(false);
-                    connection.setRequestProperty("User-Agent","SimplexAppAndroid/1.0.0");
+                    connection.setRequestProperty("User-Agent","SimplexAppAndroid/1.0.1");
                     // Never forward account cookies or authorization headers to download servers.
                     int code=connection.getResponseCode();
                     if(code>=300&&code<400){String location=connection.getHeaderField("Location");if(location==null)throw new Exception("Collegamento di download non valido.");current=new URL(new URL(current),location).toString();connection.disconnect();connection=null;continue;}

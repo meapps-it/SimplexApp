@@ -1,4 +1,4 @@
-# SimplexApp Android 1.0.0
+# SimplexApp Android 1.0.1
 
 Existing SimplexApp site hosted in a native Android WebView, package `it.simplexapp.store`, Android 8 or newer. Website changes appear without rebuilding the APK. The website/PWA remains available.
 
@@ -15,3 +15,5 @@ gradle -p android-native testReleaseUnitTest lintRelease assembleRelease
 CI produces an **unsigned** release APK; this is not installable until signed. The private release key is maintained outside the repository. Future updates must keep the same package ID and signing certificate and increment versionCode.
 
 Checks: URL policy unit tests, Android lint, release build and post-build APK identity/signature verification. A real-phone acceptance check is still required: install SimplexApp, download one catalogue APK, authorize the source, confirm installation, cancel/retry a download and upload an APK from Admin. No production application is installed or removed by CI.
+
+Version 1.0.1 removes the native Home/Reload toolbar. Retry is available by tapping the offline message; Android Back remains available. Web text uses the native Android typeface exposed through public shaping APIs on Android 12+, served in memory only to the local WebView font route. Devices which cannot expose a usable font fall back to WebView system-ui. Font size follows Android fontScale exactly once through textZoom. Logos and text embedded in images retain their original artwork.
