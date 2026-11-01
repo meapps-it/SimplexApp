@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
 test('tutte le sezioni di Area gestione hanno un simbolo e una label leggibile',()=>{
- const dom=new JSDOM(readFileSync(new URL('../index.html',import.meta.url),'utf8'));
+ const dom=new JSDOM(readFileSync(new URL('../app.html',import.meta.url),'utf8'));
  try{
   const d=dom.window.document;
   const labels={adminAppsTab:'Dashboard',adminClientsTab:'Clienti',adminDemosTab:'Demo',adminModulesTab:'Moduli',adminSettingsTab:'Impostazioni'};

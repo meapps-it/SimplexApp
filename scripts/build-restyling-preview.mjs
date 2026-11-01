@@ -3,7 +3,7 @@ const studio=process.argv.includes('--admin-studio');
 const out=new URL('../preview-dist/',import.meta.url),root=new URL('../',import.meta.url);
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});
 const files=['admin-studio.js','admin-studio.css','admin-editor-guide.js','admin-editor-guide.css','screenshots-editor.js','screenshots-editor.css','gestionale-spotlight.js','gestionale-spotlight.css','app-detail.css','index.html','style.css','premium.css','design.css','catalog-refresh.css','workspace.css','admin.css','visits.css','restyling.css','restyling-ui.js','app.js','media.js','vitrine.js','tenant-config.js','tenant-customization.js','admin-analytics.js'];
-for(const file of files)await copyFile(new URL(file,root),new URL(file,out));
+for(const file of files)await copyFile(new URL(file==='index.html'?'app.html':file,root),new URL(file,out));
 await cp(new URL('assets/',root),new URL('assets/',out),{recursive:true});
 await cp(new URL('data/',root),new URL('data/',out),{recursive:true});
 await copyFile(new URL(studio?'preview/studio-demo.js':'preview/cloud-demo.js',root),new URL('cloud-demo.js',out));

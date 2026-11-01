@@ -1,6 +1,6 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {JSDOM} from 'jsdom';
 test('Admin preview follows the selected PWA and never keeps another client branding',async()=>{
- const dom=new JSDOM(await readFile('index.html','utf8'),{url:'https://example.com/',runScripts:'outside-only'}),w=dom.window;
+ const dom=new JSDOM(await readFile('app.html','utf8'),{url:'https://example.com/',runScripts:'outside-only'}),w=dom.window;
  w.getApps=()=>[{id:'inventory',name:'Gestionale & Inventario',icon:'https://example.com/icon.png'},{id:'other',name:'Altra PWA'}];const defs=[{key:'products',label:'Articoli',ready:true},{key:'inventory',label:'Magazzino',ready:true,requires:['products']}];w.modulesForProduct=id=>id==='inventory'?defs:[];w.readClientModules=()=>Object.fromEntries([...w.document.querySelectorAll('.client-module')].map(el=>[el.dataset.module,el.checked]));w.updateModuleCount=()=>{};
  w.eval(await readFile('tenant-config.js','utf8'));w.eval(await readFile('tenant-customization.js','utf8'));const editor=w.tenantCustomization,T=w.SimplexTenants;
  editor.setProfiles([{product_id:'inventory',capabilities:{version:2,fields:T.fields,menu_layouts:T.layouts,themes:Object.keys(T.presets),defaults:{app_name:'Originale',primary_color:'#0c2d50'}}},{product_id:'other',capabilities:{version:2,fields:['app_name'],menu_layouts:['original']}}]);

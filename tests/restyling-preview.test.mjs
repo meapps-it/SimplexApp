@@ -19,7 +19,7 @@ test('packaged preview has restrictive CSP and excludes live integrations and se
  assert.ok(html.includes('cloud-demo.js'));assert.ok(html.includes('demo-ui.js'));assert.ok(html.includes('noindex,nofollow'));
 });
 test('restyling preserves original download/PWA routing, logo and administrative controls',async()=>{
- const html=await read('index.html'),app=await read('app.js');
+ const html=await read('app.html'),app=await read('app.js');
  assert.ok(html.includes('assets/simplexapp-header-horizontal.webp'));assert.ok(html.includes('id="contactForm"'));
  for(const id of ['saveApp','saveClient','adminAnalytics','adminSettingsPanel','loginForm'])assert.ok(html.includes('id="'+id+'"'));
  assert.ok(app.includes('Apri PWA nel browser'));assert.ok(app.includes('Scarica APK Android'));assert.ok(app.includes('href="#app/${encodeURIComponent(a.id)}"'));
