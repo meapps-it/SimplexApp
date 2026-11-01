@@ -195,7 +195,7 @@ const keys={apps:'simplex_cloud_apps_v1',site:'simplex_cloud_site_v1',favs:'simp
 let memory={},storageWarning=false,currentCat='',onlyFav=false,editingIcon='',showAllUpdates=false;
 function read(k,fallback){try{const val=JSON.parse(localStorage.getItem(k));return val??fallback}catch{return memory[k]??fallback}}
 function write(k,v){try{localStorage.setItem(k,JSON.stringify(v));memory[k]=v;return true}catch{memory[k]=v;storageWarning=true;toast('Salvataggio permanente non disponibile. Esporta un backup JSON.');return false}}
-function getApps(){const a=read(keys.apps,DEFAULT_APPS);return Array.isArray(a)?a:DEFAULT_APPS}
+function getApps(){const a=read(keys.apps,DEFAULT_APPS);return window.SimplexRistoCatalog?window.SimplexRistoCatalog.merge(Array.isArray(a)?a:DEFAULT_APPS):(Array.isArray(a)?a:DEFAULT_APPS)}
 function getPublicApps(){return getApps().filter(a=>a.visiblePublic!==false)}
 function setApps(a){write(keys.apps,a);render();renderAdminList();if(location.hash.startsWith('#app/'))renderDetail(detailId())}
 function getSite(){return {...SITE_DEFAULT,...read(keys.site,{})}}
@@ -434,3 +434,4 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-priv
 window.addEventListener('storage',e=>{if(e.key==='simplex_admin_session'&&!e.newValue){clearPrivateProductLinks();clearProductModules();$('adminControls').classList.add('hidden')}});
 
 if($('refreshProductProfile'))$('refreshProductProfile').onclick=async()=>{const product=$('moduleProductSelect').value;if(!product||!hasServerModules(product))return toast('Scegli una PWA con backend collegato');const button=$('refreshProductProfile');button.disabled=true;try{await adminCall('product-profile-refresh',{id:product});await loadProductModules();renderWorkspace();toast('Opzioni aggiornate dalla PWA');}catch(e){toast(e.message);}finally{button.disabled=false;}};
+
