@@ -75,7 +75,7 @@ test('nome utente e icona non possono iniettare HTML',()=>{
   } finally {t.dom.window.close();}
 });
 test('solo home pubblica, aggiornamento al render, inclusione nel cache offline',()=>{
-  const html=readFileSync(new URL('../app.html',import.meta.url),'utf8');
+  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
   const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');
   assert.match(html,/id="gestionaleSpotlight"[^>]+hidden/);

@@ -22,7 +22,7 @@ test('descrizioni: anteprima locale sicura, senza alterare i campi', () => {
   } finally {dom.window.close();}
 });
 test('descrizioni: gli asset vengono caricati e sono disponibili offline',()=>{
-  const html=readFileSync(new URL('../app.html',import.meta.url),'utf8');
+  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');
   assert.match(html,/admin-editor-guide\.js\?v=1/);
   assert.match(html,/admin-editor-guide\.css\?v=1/);
