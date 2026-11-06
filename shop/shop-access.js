@@ -85,7 +85,7 @@
   for(const [node,hidden] of [[googleInline,!available],[googleFallback,!available],[get('accessGoogle'),!!token||!resetForm.hidden||available]])if(node.hidden!==hidden)node.hidden=hidden;
  }
  async function setupGoogleInline(){
-  if(location.origin!=='https://simplexapp.it')return false;
+  if(!['https://simplexapp.it','https://veglamour.cloud','https://www.veglamour.cloud'].includes(location.origin))return false;
   if(gisLoading)return gisLoading;
   gisLoading=(async()=>{
    const rawNonce=Array.from(crypto.getRandomValues(new Uint8Array(32)),x=>x.toString(16).padStart(2,'0')).join('');
