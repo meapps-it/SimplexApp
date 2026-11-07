@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8"><script>
-if (location.hostname === 'veglamour.cloud' && /^\/shop(?:\/|$)/.test(location.pathname)) {
+if (location.hostname === 'simplexapp.it' && /^\/shop(?:\/index\.html|\/)?$/.test(location.pathname)) {
+  const catalogUrl = new URL('https://veglamour.cloud/');
+  if (new URLSearchParams(location.search).get('view') === 'promozioni') {
+    catalogUrl.searchParams.set('view', 'promozioni');
+  }
+  location.replace(catalogUrl.href);
+} else if (location.hostname === 'veglamour.cloud' && /^\/shop(?:\/|$)/.test(location.pathname)) {
   const catalogBase = document.createElement('base');
   catalogBase.href = '/';
   document.head.appendChild(catalogBase);
