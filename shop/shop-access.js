@@ -72,7 +72,7 @@
  function googleConsentError(invalid){get('accessGooglePrivacyLabel').classList.toggle('consent-invalid',invalid);get('accessGooglePrivacy').setAttribute('aria-invalid',String(invalid));get('accessGoogleConsentError').hidden=!invalid;}
  get('accessGooglePrivacy').addEventListener('change',()=>{if(get('accessGooglePrivacy').checked){googleConsentError(false);if(get('accessError').textContent==='Accetta il trattamento dei dati per continuare con Google.')get('accessError').textContent=''}});
 
- get('accessGoogle').onclick=async()=>{if(!get('accessGooglePrivacy').checked){googleConsentError(true);get('accessError').textContent='Accetta il trattamento dei dati per continuare con Google.';get('accessGooglePrivacy').focus();get('accessGooglePrivacyLabel').scrollIntoView({block:'nearest',behavior:'smooth'});return}googleConsentError(false);const button=get('accessGoogle');button.disabled=true;try{const client=await google(),result=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname,queryParams:{prompt:'select_account'}}});if(result.error)throw result.error}catch(error){get('accessError').textContent=error.message;button.disabled=false}};
+ get('accessGoogle').onclick=async()=>{if(!get('accessGooglePrivacy').checked){googleConsentError(true);get('accessError').textContent='Accetta il trattamento dei dati per continuare con Google.';get('accessGooglePrivacy').focus();get('accessGooglePrivacyLabel').scrollIntoView({block:'nearest',behavior:'smooth'});return}googleConsentError(false);const button=get('accessGoogle');button.disabled=true;try{const client=await google(),result=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+(location.origin==='https://veglamour.cloud'?'/':location.pathname),queryParams:{prompt:'select_account'}}});if(result.error)throw result.error}catch(error){get('accessError').textContent=error.message;button.disabled=false}};
 
  // Official Google Identity Services button with the browser account chooser.
  const googleInline=document.createElement('div');googleInline.id='accessGoogleInline';googleInline.hidden=true;
@@ -85,7 +85,7 @@
   for(const [node,hidden] of [[googleInline,!available],[googleFallback,!available],[get('accessGoogle'),!!token||!resetForm.hidden||available]])if(node.hidden!==hidden)node.hidden=hidden;
  }
  async function setupGoogleInline(){
-  if(!['https://simplexapp.it','https://veglamour.cloud','https://www.veglamour.cloud'].includes(location.origin))return false;
+  if(location.origin!=='https://simplexapp.it')return false;
   if(gisLoading)return gisLoading;
   gisLoading=(async()=>{
    const rawNonce=Array.from(crypto.getRandomValues(new Uint8Array(32)),x=>x.toString(16).padStart(2,'0')).join('');
